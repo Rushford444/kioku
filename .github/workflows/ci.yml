@@ -1,0 +1,113 @@
+name: CI
+
+# Every gate of the brief runs on the three supported platforms: formatting,
+# clippy (pedantic), the test suite, the doc tests and the licence check.
+# No job publishes anything and no job needs an identity.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  gates:
+    name: gates (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+      - uses: taiki-e/install-action@c509219cf42fba86913069efd0ade2458c59337b # v2
+        with:
+          tool: cargo-nextest@0.9.151
+      - uses: taiki-e/install-action@c509219cf42fba86913069efd0ade2458c59337b # v2
+        with:
+          tool: cargo-deny@0.20.2
+      - name: fmt
+        run: cargo fmt --check
+      - name: clippy (pedantic)
+        run: cargo clippy --all-targets --all-features -- -D warnings -W clippy::pedantic
+      - name: tests
+        run: cargo nextest run --all-features --no-fail-fast
+      - name: doc tests
+        run: cargo test --doc --all-features
+      - name: licences and advisories
+        run: cargo deny check
+
+  traced-tests:
+    name: traced tests (Linux aarch64)
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+      - uses: taiki-e/install-action@c509219cf42fba86913069efd0ade2458c59337b # v2
+        with:
+          tool: cargo-nextest@0.9.151
+      - name: Download and verify pinned tracer
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o "$RUNNER_TEMP/strace.deb" https://deb.debian.org/debian/pool/main/s/strace/strace_6.1-0.1_arm64.deb
+          echo "751817724af91cb95df566a21a154f9a7dcdd938e700e5cb9a5a47eb19752ea2  $RUNNER_TEMP/strace.deb" | sha256sum -c -
+          dpkg-deb -x "$RUNNER_TEMP/strace.deb" "$RUNNER_TEMP/tracer"
+          echo "0e69fa123b3d9732645ce1ac8c89819d100f83cdc9e52a80565d9ad8e7d8cf28  $RUNNER_TEMP/tracer/usr/bin/strace" | sha256sum -c -
+      - name: Build static trace helpers
+        shell: bash
+        run: |
+          set -euo pipefail
+          cc -nostdlib -static tests/false_green_zoo/read_aarch64.S -o "$RUNNER_TEMP/trace-read"
+          cc -nostdlib -static tests/false_green_zoo/exec_aarch64.S -o "$RUNNER_TEMP/trace-exec"
+          cc -nostdlib -static tests/false_green_zoo/operations_aarch64.S -o "$RUNNER_TEMP/trace-ops"
+          mkdir "$RUNNER_TEMP/trace-tmp"
+      - name: Run traced and ordinary tests
+        env:
+          KIOKU_STRACE: ${{ runner.temp }}/tracer/usr/bin/strace
+          KIOKU_TRACE_TEST_HELPER: ${{ runner.temp }}/trace-read
+          KIOKU_TRACE_EXEC_HELPER: ${{ runner.temp }}/trace-exec
+          KIOKU_TRACE_OPS_HELPER: ${{ runner.temp }}/trace-ops
+          TMPDIR: ${{ runner.temp }}/trace-tmp
+        run: cargo nextest run --all-features --no-fail-fast --run-ignored all --test-threads 1
+      - name: Replay demo and check temporary-directory safety
+        env:
+          KIOKU_BIN: target/debug/kioku
+          KIOKU_STRACE: ${{ runner.temp }}/tracer/usr/bin/strace
+        run: sh scripts/test-demo.sh
+
+  traced-tests-x86_64:
+    name: traced tests (Linux x86_64)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+      - name: Download and verify pinned tracer
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o "$RUNNER_TEMP/strace.deb" https://deb.debian.org/debian/pool/main/s/strace/strace_6.1-0.1_amd64.deb
+          echo "1942d086a6244a1a9643489d3b0aa604ac44b88991d6c69217a63a193671bd4f  $RUNNER_TEMP/strace.deb" | sha256sum -c -
+          dpkg-deb -x "$RUNNER_TEMP/strace.deb" "$RUNNER_TEMP/tracer"
+          echo "aebaf212ce84a12208c5fa25f08c892029e6f6949b778da55e071ac145404a1e  $RUNNER_TEMP/tracer/usr/bin/strace" | sha256sum -c -
+      - name: Build static x86_64 trace helper
+        shell: bash
+        run: |
+          set -euo pipefail
+          cc -nostdlib -static tests/false_green_zoo/read_x86_64.S -o "$RUNNER_TEMP/trace-read"
+      - name: Run x86_64 traced test
+        env:
+          KIOKU_STRACE: ${{ runner.temp }}/tracer/usr/bin/strace
+          KIOKU_TRACE_TEST_HELPER: ${{ runner.temp }}/trace-read
+        run: cargo test --all-features --test trace x86_64_static_helper_is_traced -- --ignored --nocapture

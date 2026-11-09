@@ -1,0 +1,16 @@
+# Build artefacts
+/target
+
+# cargo-mutants scratch directories
+/mutants.out
+mutants.out/
+/mutants.out.old
+mutants.out.old/
+
+# Local tools
+/.serena/
+node_modules/
+
+# Editor and OS noise
+*.swp
+.DS_Store

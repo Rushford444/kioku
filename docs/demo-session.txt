@@ -1,0 +1,18 @@
+tracer sha256: 0e69fa123b3d9732645ce1ac8c89819d100f83cdc9e52a80565d9ad8e7d8cf28
+$ kioku --version
+kioku 0.1.0
+$ kioku run --trust-trace -- ./check input.txt
+kioku: trace-v2 assumes deterministic behavior and stable inputs; exit status only, output not replayed; effective mode: bytes
+executed (exit 0, 157 ms)
+$ kioku run --trust-trace -- ./check input.txt
+kioku: trace-v2 assumes deterministic behavior and stable inputs; exit status only, output not replayed; effective mode: bytes
+executed (exit 0, 189 ms)
+$ kioku run --trust-trace -- ./check input.txt
+kioku: trace-v2 assumes deterministic behavior and stable inputs; exit status only, output not replayed; effective mode: bytes
+cached (pass, 189 ms saved)
+$ kioku status
+kioku: 1 trace states, 0 quarantines, 0 legacy entries
+  counters: 1 hits (1 measured), 2 misses, 2 executions, 0 bypassed, 0 invalidated
+  saved: 189 ms over 1 measured hit (includes tracing overhead)
+  store: /tmp/kioku-demo.EtJuXMT8i5/cache
+synthetic environment secret: absent from the demo directory

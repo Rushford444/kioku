@@ -1,0 +1,70 @@
+[package]
+name = "kdw-kioku"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89"
+description = "Conservative command exit-status reuse with opt-in tracing"
+repository = "https://github.com/Rushford444/kioku"
+homepage = "https://kodawaristudio.fr"
+documentation = "https://docs.rs/kdw-kioku"
+readme = "README.md"
+authors = ["Kodawari <contact@kodawaristudio.fr>"]
+license = "MIT"
+keywords = ["cache", "fingerprint", "content-addressed", "build"]
+categories = ["development-tools", "caching"]
+include = [
+    "/AGENTS.md",
+    "/CHANGELOG.md",
+    "/CONTRIBUTING.md",
+    "/Cargo.lock",
+    "/LICENSE",
+    "/README.fr.md",
+    "/README.md",
+    "/SECURITY.md",
+    "/SKILL.md",
+    "/deny.toml",
+    "/llms.txt",
+    "/.github/**",
+    "/docs/**",
+    "/scripts/**",
+    "/src/**",
+    "/tests/**",
+]
+
+[lib]
+name = "kioku"
+path = "src/lib.rs"
+
+[[bin]]
+name = "kioku"
+path = "src/main.rs"
+
+[dependencies]
+blake3 = "1.8"
+clap = { version = "4", features = ["derive"] }
+fs4 = "0.13"
+globset = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+getrandom = "0.3"
+thiserror = "2"
+toml = "0.8"
+tree-sitter = "0.25"
+tree-sitter-javascript = "0.25"
+tree-sitter-rust = "0.24"
+tree-sitter-typescript = "0.23"
+
+[dev-dependencies]
+assert_cmd = "2"
+proptest = "1"
+tempfile = "3"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+
+[profile.release]
+strip = true
