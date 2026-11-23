@@ -10,6 +10,8 @@
 **Kioku runs only the Rust tests a change can reach — and refuses to skip anything it cannot prove is unaffected.**
 
 [![CI](https://github.com/Rushford444/kioku/actions/workflows/ci.yml/badge.svg)](https://github.com/Rushford444/kioku/actions/workflows/ci.yml)
+
+> **CI status — repair in progress.** The 0.4.0 source builds and its full test suite passes on Linux (787 passed, 69 ignored), but the public CI is not green yet: **Windows does not compile in 0.4.0** (the execute-only support described below is currently broken there), and 3 tests still depend on the maintainer's environment and fail on GitHub runners. Use Linux or macOS for now; no 0.4.0 release archives are published until the CI is green.
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Kioku is a local Rust CLI for teams whose `cargo nextest run` takes minutes. You

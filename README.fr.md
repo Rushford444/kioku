@@ -11,6 +11,8 @@
 de sauter tout ce qu'il ne peut pas prouver intact.**
 
 [![CI](https://github.com/Rushford444/kioku/actions/workflows/ci.yml/badge.svg)](https://github.com/Rushford444/kioku/actions/workflows/ci.yml)
+
+> **État de la CI — réparation en cours.** Les sources 0.4.0 compilent et toute la suite passe sous Linux (787 réussis, 69 ignorés), mais la CI publique n'est pas encore verte : **Windows ne compile pas en 0.4.0** (le mode exécution seule décrit plus bas y est cassé pour l'instant) et 3 tests dépendent encore de l'environnement du mainteneur et échouent sur les machines GitHub. Utilisez Linux ou macOS pour le moment ; aucune archive 0.4.0 n'est publiée tant que la CI n'est pas verte.
 [![Licence MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 
 Kioku est un outil en ligne de commande, écrit en Rust, pour les équipes dont
