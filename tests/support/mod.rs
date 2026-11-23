@@ -58,14 +58,25 @@ pub fn true_program() -> PathBuf {
     }
 }
 
-#[cfg(test)]
-#[test]
-fn true_program_succeeds_with_closed_stdin_and_empty_environment() {
-    let status = std::process::Command::new(true_program())
-        .args(["synthetic-argument", "--ignored"])
-        .stdin(std::process::Stdio::null())
-        .env_clear()
-        .status()
-        .expect("the success program must start");
-    assert!(status.success(), "success program returned {status}");
+/// Environment variable naming an operator stop file that must be absent while the tests run.
+pub const OPERATOR_STOP_FILE_ENV: &str = "KIOKU_TEST_OPERATOR_STOP_FILE";
+
+/// The stop file that `value` (the content of [`OPERATOR_STOP_FILE_ENV`]) points at, if it exists.
+///
+/// An unset variable means no check.
+#[allow(dead_code)]
+pub fn existing_operator_stop_file(value: Option<&std::ffi::OsStr>) -> Option<PathBuf> {
+    let path = std::path::Path::new(value?);
+    path.exists().then(|| path.to_path_buf())
+}
+
+/// Fails the test while the operator stop file named by [`OPERATOR_STOP_FILE_ENV`] exists.
+///
+/// Without the variable nothing outside the repository is read.
+#[allow(dead_code)]
+pub fn assert_no_operator_stop_file() {
+    let value = std::env::var_os(OPERATOR_STOP_FILE_ENV);
+    if let Some(path) = existing_operator_stop_file(value.as_deref()) {
+        panic!("operator STOP: {} exists", path.display());
+    }
 }

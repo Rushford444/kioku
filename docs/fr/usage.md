@@ -28,10 +28,11 @@ kioku run --trust-trace --verify-rate 1 -- /chemin/absolu/vers/verification-dete
 `--verify-rate` va de 0 à 1 ; 1 vérifie chaque résultat réutilisable. Le
 traçage exige Linux aarch64 ou x86_64, le strace Debian épinglé pour cette
 architecture et un exécutable ELF statique little-endian sans interpréteur. Les
-observations non prises en charge entraînent l’exécution.
-Le traçage inclut toujours l’environnement initial complet ; aucune option
-supplémentaire n’est nécessaire. Consultez la [configuration](configuration.md).
-Les commandes dynamiques ordinaires ne bénéficient pas actuellement du cache tracé.
+observations non prises en charge entraînent l’exécution. `--strict-env` est
+accepté mais n’a aucun effet : l’environnement initial complet est déjà inclus
+dans l’identité tracée. Consultez la
+[configuration](configuration.md). Les commandes dynamiques ordinaires ne
+bénéficient pas actuellement du cache tracé.
 
 ## CI et agents
 
@@ -57,12 +58,17 @@ kioku --json status
 kioku --json run -- cargo test
 ```
 
-Le schéma kioku est `kioku/v1`. Pour `run` et `verify`, son JSON va sur stderr ;
+Le schéma des commandes historiques est `kioku/v1`. Les commandes de sélection
+(`kioku test`, `kioku select base`, `kioku select learn`) ont leurs propres
+schémas de rapport : toute réponse JSON n’est donc pas `kioku/v1`. Pour `run` et
+`verify`, son JSON va sur stderr ;
 stdout et stderr de la commande restent hérités. Rediriger stderr ne sépare donc
 pas le JSON du stderr de la commande. Les autres commandes écrivent le JSON sur
 stdout ; les erreurs vont sur stderr. Consultez `cacheable` et `denial_reason`,
 pas seulement `trace_state`. Kioku transmet le code de sortie de l’enfant, y
-compris 1, 2, 3, 126 et 127 ; une terminaison sans code vaut 1. Kioku utilise
-aussi 2 pour l’usage, 3 pour une erreur interne, 126 si le lancement échoue et
-127 si la commande est introuvable. Ces valeurs se chevauchent : le code seul
+compris 1, 2, 3, 126 et 127. Sous Unix, un enfant tué par un signal est rapporté
+comme 128 plus le numéro du signal ; une terminaison sans code ne vaut 1 que sur
+une plateforme qui n’en rapporte aucun. Kioku utilise aussi 2 pour l’usage, 3
+pour une erreur interne, 126 si le lancement échoue et 127 si la commande est
+introuvable. Ces valeurs se chevauchent : le code seul
 ne révèle pas son origine. Les arguments doivent être en UTF-8.

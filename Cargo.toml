@@ -1,35 +1,25 @@
 [package]
 name = "kdw-kioku"
-version = "0.1.0"
+version = "0.4.0"
 edition = "2024"
 rust-version = "1.89"
 description = "Conservative command exit-status reuse with opt-in tracing"
 repository = "https://github.com/Rushford444/kioku"
 homepage = "https://kodawaristudio.fr"
-documentation = "https://docs.rs/kdw-kioku"
-readme = "README.md"
 authors = ["Kodawari <contact@kodawaristudio.fr>"]
 license = "MIT"
+publish = false
+include = [
+    "/src/**", "/Cargo.toml", "/Cargo.lock", "/LICENSE",
+    "/README.md", "/README.fr.md", "/CHANGELOG.md",
+    "/CONTRIBUTING.md", "/SECURITY.md", "/docs/usage.md",
+    "/docs/configuration.md", "/docs/fr/usage.md",
+    "/docs/fr/configuration.md", "/docs/REPLAY-V03.md",
+    "/docs/demo-session.txt", "/docs/assets/banner-light.jpg",
+    "/docs/assets/banner-dark.jpg", "/docs/AGENTS-KIOKU.md",
+]
 keywords = ["cache", "fingerprint", "content-addressed", "build"]
 categories = ["development-tools", "caching"]
-include = [
-    "/AGENTS.md",
-    "/CHANGELOG.md",
-    "/CONTRIBUTING.md",
-    "/Cargo.lock",
-    "/LICENSE",
-    "/README.fr.md",
-    "/README.md",
-    "/SECURITY.md",
-    "/SKILL.md",
-    "/deny.toml",
-    "/llms.txt",
-    "/.github/**",
-    "/docs/**",
-    "/scripts/**",
-    "/src/**",
-    "/tests/**",
-]
 
 [lib]
 name = "kioku"
@@ -40,10 +30,12 @@ name = "kioku"
 path = "src/main.rs"
 
 [dependencies]
+anyhow = "1"
 blake3 = "1.8"
 clap = { version = "4", features = ["derive"] }
 fs4 = "0.13"
 globset = "0.4"
+libc = "0.2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sha2 = "0.10"

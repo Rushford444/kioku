@@ -1,0 +1,503 @@
+{
+ "edge-array-root.json": {
+  "base": {
+   "binaries": [],
+   "reason": "not object",
+   "verdict": "reject"
+  },
+  "bytes": 2,
+  "depinfo": {
+   "reason": "missing rust-suites",
+   "suites": [],
+   "verdict": "reject"
+  },
+  "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+ },
+ "edge-binary-path-missing.json": {
+  "base": {
+   "binaries": [
+    {
+     "binary_id": "kdw-kioku",
+     "kind": "lib",
+     "src_path": "src/lib.rs",
+     "tests": [
+      "a"
+     ]
+    }
+   ],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 340,
+  "depinfo": {
+   "reason": "suite missing binary-path",
+   "suites": [],
+   "verdict": "reject"
+  },
+  "sha256": "756cde2d376c97af953a33fb7766aee5eedbbe049f49a79db000b625d47306a8"
+ },
+ "edge-duplicate-target.json": {
+  "base": {
+   "binaries": [
+    {
+     "binary_id": "kdw-kioku::cli",
+     "kind": "test",
+     "src_path": "tests/cli.rs",
+     "tests": [
+      "a"
+     ]
+    },
+    {
+     "binary_id": "kdw-kioku::cli2",
+     "kind": "test",
+     "src_path": "tests/cli.rs",
+     "tests": [
+      "b"
+     ]
+    }
+   ],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 775,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku::cli",
+     "ignored": [],
+     "kind": "test",
+     "tests": [
+      "a"
+     ]
+    },
+    {
+     "binary_id": "kdw-kioku::cli2",
+     "ignored": [],
+     "kind": "test",
+     "tests": [
+      "b"
+     ]
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "bd7d9be6106c929dfa2df923c067f99b2f0488d1143a30d62990ecdb06a3bd12"
+ },
+ "edge-empty-name.json": {
+  "base": {
+   "binaries": [
+    {
+     "binary_id": "kdw-kioku",
+     "kind": "lib",
+     "src_path": "src/lib.rs",
+     "tests": [
+      ""
+     ]
+    }
+   ],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 385,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": [
+      ""
+     ]
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "6b9f8d3c5c95705f33fdfdfa658f68a7fabb05d38b93b779d323ab52b1475cad"
+ },
+ "edge-empty-object.json": {
+  "base": {
+   "binaries": [],
+   "reason": "missing rust-suites",
+   "verdict": "reject"
+  },
+  "bytes": 2,
+  "depinfo": {
+   "reason": "missing rust-suites",
+   "suites": [],
+   "verdict": "reject"
+  },
+  "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+ },
+ "edge-empty-suites.json": {
+  "base": {
+   "binaries": [],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 19,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [],
+   "verdict": "accept"
+  },
+  "sha256": "bbac31675832cbadae75f084502bcebe3b0cecf8fa2e027c82a8e1218956f55a"
+ },
+ "edge-extra-fields.json": {
+  "base": {
+   "binaries": [
+    {
+     "binary_id": "kdw-kioku",
+     "kind": "lib",
+     "src_path": "src/lib.rs",
+     "tests": [
+      "a"
+     ]
+    }
+   ],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 418,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": [
+      "a"
+     ]
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "bf828f13cf764e76d5ca157d78d52e419ccd04eadf2e19c87e2a4958ae08e6ce"
+ },
+ "edge-ignored-missing.json": {
+  "base": {
+   "binaries": [],
+   "reason": "case missing ignored",
+   "verdict": "reject"
+  },
+  "bytes": 329,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": [
+      "a"
+     ]
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "8ad712996336628eb02447db7c6d25cfde1bcfac3b1613e4edf86ada98903463"
+ },
+ "edge-ignored-string.json": {
+  "base": {
+   "binaries": [],
+   "reason": "ignored not bool",
+   "verdict": "reject"
+  },
+  "bytes": 331,
+  "depinfo": {
+   "reason": "ignored not bool",
+   "suites": [],
+   "verdict": "reject"
+  },
+  "sha256": "57a11cfb6b7753f419cd17a3106a533d637b429f2628faf05f1fae2174b6ad37"
+ },
+ "edge-key-mismatch.json": {
+  "base": {
+   "binaries": [],
+   "reason": "key != binary-id",
+   "verdict": "reject"
+  },
+  "bytes": 304,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "other",
+     "ignored": [],
+     "kind": "lib",
+     "tests": []
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "04999d3ffe0b30a984b720368e0e1339e5b2d9b65b74cad0ea55b60467158247"
+ },
+ "edge-kind-unknown.json": {
+  "base": {
+   "binaries": [],
+   "reason": "no cargo target",
+   "verdict": "reject"
+  },
+  "bytes": 310,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "weird",
+     "tests": []
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "6fc8ced560316d3461481256e017c01e69f1737705af5c5f1a0ad63c0b3a9aee"
+ },
+ "edge-not-json.json": {
+  "base": {
+   "binaries": [],
+   "reason": "json",
+   "verdict": "reject"
+  },
+  "bytes": 16,
+  "depinfo": {
+   "reason": "json",
+   "suites": [],
+   "verdict": "reject"
+  },
+  "sha256": "3ab6125109202d26ac7aa4704fd0380032a1c42c112bfd135a5f07bb578856b2"
+ },
+ "edge-null-root.json": {
+  "base": {
+   "binaries": [],
+   "reason": "not object",
+   "verdict": "reject"
+  },
+  "bytes": 4,
+  "depinfo": {
+   "reason": "missing rust-suites",
+   "suites": [],
+   "verdict": "reject"
+  },
+  "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+ },
+ "edge-status-missing.json": {
+  "base": {
+   "binaries": [],
+   "reason": "suite missing status",
+   "verdict": "reject"
+  },
+  "bytes": 288,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": []
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "30f9ac7df0325c67816ea5cccb57039d0d73f4144d9c36ce4ad2bf75ec8bfd41"
+ },
+ "edge-status-skipped.json": {
+  "base": {
+   "binaries": [],
+   "reason": "status not listed",
+   "verdict": "reject"
+  },
+  "bytes": 309,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": []
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "b611851f22d12d395dbb296ea40f2e19e05ed2a4b11b0bd5abc0e18917541e53"
+ },
+ "edge-test-count-mismatch.json": {
+  "base": {
+   "binaries": [],
+   "reason": "test-count mismatch",
+   "verdict": "reject"
+  },
+  "bytes": 403,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": [
+      "a"
+     ]
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "dd5f72b2a7c457b9851f309aa3a308acc9571a1e3ae6134087656cfeb9d78d25"
+ },
+ "edge-test-count-ok.json": {
+  "base": {
+   "binaries": [
+    {
+     "binary_id": "kdw-kioku",
+     "kind": "lib",
+     "src_path": "src/lib.rs",
+     "tests": [
+      "a",
+      "b"
+     ]
+    }
+   ],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 504,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [
+      "b"
+     ],
+     "kind": "lib",
+     "tests": [
+      "a",
+      "b"
+     ]
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "c1b704e7b47b3b4d2ecaec624e526db4ec67ec9a8dff1eab9a287ad27996aaa2"
+ },
+ "edge-testcases-empty.json": {
+  "base": {
+   "binaries": [
+    {
+     "binary_id": "kdw-kioku",
+     "kind": "lib",
+     "src_path": "src/lib.rs",
+     "tests": []
+    }
+   ],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 308,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": []
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "ce530103441d61dd2b67c7cfa0663e3f83513816eca1ebe300ec0dba5d5b5eaa"
+ },
+ "edge-testcases-missing.json": {
+  "base": {
+   "binaries": [],
+   "reason": "suite missing testcases",
+   "verdict": "reject"
+  },
+  "bytes": 291,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": []
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "3311eb34379efb4ddd9c3ed19dfc6f56ad8ed800f7470007e9e0d74fa9ffb4d7"
+ },
+ "edge-truncated.json": {
+  "base": {
+   "binaries": [],
+   "reason": "json",
+   "verdict": "reject"
+  },
+  "bytes": 52,
+  "depinfo": {
+   "reason": "json",
+   "suites": [],
+   "verdict": "reject"
+  },
+  "sha256": "9edeadf3f48d8f33118df4a6e4879b57a03d967997ec39796d70702da912e5a6"
+ },
+ "edge-unicode-name.json": {
+  "base": {
+   "binaries": [
+    {
+     "binary_id": "kdw-kioku",
+     "kind": "lib",
+     "src_path": "src/lib.rs",
+     "tests": [
+      "tests::\u00e9_\u00fc_ok"
+     ]
+    }
+   ],
+   "reason": "ok",
+   "verdict": "accept"
+  },
+  "bytes": 400,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku",
+     "ignored": [],
+     "kind": "lib",
+     "tests": [
+      "tests::\u00e9_\u00fc_ok"
+     ]
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "7a0f3fb81e082686f5226f189b86229bcb33a2df861a4c48872346eb1935d499"
+ },
+ "edge-unknown-target.json": {
+  "base": {
+   "binaries": [],
+   "reason": "no cargo target",
+   "verdict": "reject"
+  },
+  "bytes": 323,
+  "depinfo": {
+   "reason": "ok",
+   "suites": [
+    {
+     "binary_id": "kdw-kioku::ghost",
+     "ignored": [],
+     "kind": "test",
+     "tests": []
+    }
+   ],
+   "verdict": "accept"
+  },
+  "sha256": "e102eb967745b18a05cdcb2eef1db1f035997f5412256cf44117b3ab8eab08cc"
+ }
+}

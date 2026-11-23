@@ -31,6 +31,7 @@ TARGET="${2:-}"
 TARGET_DIR="${CARGO_TARGET_DIR:-target}"
 
 cd "$REPO_ROOT"
+export CARGO_NET_OFFLINE="${CARGO_NET_OFFLINE:-true}"
 # Cargo is provided through the explicitly configured PATH; HOME may be private.
 command -v cargo >/dev/null || { echo "cargo absent from PATH" >&2; exit 3; }
 
@@ -99,10 +100,12 @@ else
 fi
 
 mkdir -p "$OUT"
-[ ! -e "$OUT/stage" ] || { echo "stage already exists: $OUT/stage" >&2; exit 2; }
-STAGE="$OUT/stage"
-VERIFY=""
-trap 'rm -rf "$STAGE" ${VERIFY:+"$VERIFY"}' EXIT
+WORK="$(mktemp -d "$OUT/.kioku-package.XXXXXXXXXX")"
+STAGE="$WORK/stage"
+VERIFY="$WORK/verify"
+FINAL_ARCHIVE="$ARCHIVE"
+ARCHIVE="$WORK/archive.$EXT"
+trap 'rm -rf -- "$WORK"' EXIT
 
 [ -f "$BIN_DIR/$BIN" ] || { echo "binaire absent: $BIN_DIR/$BIN" >&2; exit 3; }
 mkdir "$STAGE"
@@ -112,8 +115,7 @@ cp "$BIN_DIR/$BIN" "$STAGE/$BIN"
 # tests, agent instructions and CI files stay in the repository.
 for file in LICENSE README.md README.fr.md CHANGELOG.md CONTRIBUTING.md SECURITY.md \
   docs/usage.md docs/configuration.md docs/fr/usage.md docs/fr/configuration.md \
-  docs/REPLAY.md docs/demo-session.txt docs/demo.sh \
-  docs/demo-helper-aarch64.S \
+  docs/REPLAY-V03.md docs/demo-session.txt docs/AGENTS-KIOKU.md \
   docs/assets/banner-light.jpg docs/assets/banner-dark.jpg; do
   [ -f "$file" ] || { echo "missing release document: $file" >&2; exit 3; }
   mkdir -p "$STAGE/$(dirname "$file")"
@@ -144,12 +146,10 @@ rm -rf "$STAGE"
 # l'hote correspond a la cible, on demarre le binaire qu'elle contient. Une
 # archive qui echoue ici est supprimee : rien de non verifie ne reste a publier.
 fail() {
-  rm -rf "$STAGE" "$VERIFY"
-  rm -f "$ARCHIVE"
   echo "ECHEC: $*" >&2
   exit 3
 }
-VERIFY="$(mktemp -d)"
+mkdir "$VERIFY"
 case "$ARCHIVE" in
   *.zip)
     if command -v unzip >/dev/null 2>&1; then
@@ -170,8 +170,20 @@ else
 fi
 
 SHA="$(sha256_of "$ARCHIVE")"
-printf '%s  %s\n' "$SHA" "$(basename "$ARCHIVE")" > "$OUT/SHA256SUMS"
+SUMS="$FINAL_ARCHIVE.sha256"
+printf '%s  %s\n' "$SHA" "$(basename "$FINAL_ARCHIVE")" > "$WORK/checksum"
+# Refuse an existing checksum before exposing an archive, including dangling links.
+[ ! -e "$SUMS" ] && [ ! -L "$SUMS" ] || fail "checksum already exists: $SUMS"
+# Hard links refuse overwrites. If the checksum link fails, remove only the
+# archive link created by this invocation, never a replacement from elsewhere.
+ln "$ARCHIVE" "$FINAL_ARCHIVE" || fail "archive already exists or cannot be created: $FINAL_ARCHIVE"
+if ! ln "$WORK/checksum" "$SUMS"; then
+  if [ "$FINAL_ARCHIVE" -ef "$ARCHIVE" ]; then
+    rm -- "$FINAL_ARCHIVE"
+  fi
+  fail "checksum already exists or cannot be created: $SUMS"
+fi
 
-echo "== archive : $ARCHIVE"
+echo "== archive : $FINAL_ARCHIVE"
 echo "== sha256  : $SHA"
 echo "== aucune publication effectuee"

@@ -78,6 +78,134 @@ enum Command {
     Clean(CleanArgs),
     /// Manage persistent command quarantine.
     Quarantine(QuarantineArgs),
+    /// Run only the tests that depend on what changed; every skipped test is journaled.
+    ///
+    /// Compares the working tree with the last known green state of the base branch (see
+    /// `kioku select base`). A partial run is never a full green. Exit codes: 0 partial
+    /// green, 1 red, 3 incomplete or selection error (the full suite was run), 5 full green.
+    Test(TestArgs),
+    /// Prepare and inspect the test selection (`base`, `learn`, `plan`).
+    Select(SelectArgs),
+}
+
+#[derive(Args, Debug)]
+struct SelectRepoArgs {
+    /// Repository root.
+    #[arg(long, value_name = "DIR", default_value = ".")]
+    repo: PathBuf,
+    /// Selection store (default: `$KIOKU_SELECT_STORE`, then `$XDG_CACHE_HOME/kioku/select`, then `~/.cache/kioku/select`).
+    #[arg(long, value_name = "DIR")]
+    store: Option<PathBuf>,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum TestRunner {
+    Nextest,
+    Vitest,
+}
+
+#[path = "select/vitest.rs"]
+mod vitest;
+
+#[derive(Args, Debug)]
+struct TestArgs {
+    #[command(flatten)]
+    location: SelectRepoArgs,
+    /// Test runner. Vitest runs the full suite as a conservative fallback.
+    #[arg(long, value_enum, default_value = "nextest")]
+    runner: TestRunner,
+    /// Base reference (default: main, else master).
+    #[arg(long, value_name = "REF")]
+    base: Option<String>,
+    /// `d1` proposal (JSON `{"add": [...], "skip": [...]}`): it can only add tests.
+    #[arg(long, value_name = "FILE")]
+    d1: Option<PathBuf>,
+    /// Return the last nextest nonzero code; success may be partial.
+    /// Both full and partial green return 0: check status and scope.
+    /// Selection errors remain errors even if nextest succeeds.
+    #[arg(long)]
+    native_exit_code: bool,
+    /// nextest filter expression; a filtered run is never a full green.
+    #[arg(short = 'E', long = "filter", value_name = "EXPR")]
+    filter: Option<String>,
+    /// Cargo features (repeatable or comma separated).
+    #[arg(long = "features", value_name = "FEATURE", value_delimiter = ',')]
+    features: Vec<String>,
+    /// Where to write the journal (default: target/kioku-select/journal.json).
+    #[arg(long, value_name = "PATH")]
+    journal: Option<PathBuf>,
+    /// Timeout of each nextest run, in seconds.
+    #[arg(long, value_name = "SECONDS", default_value_t = kioku::select::exec::DEFAULT_TIMEOUT_SECS)]
+    timeout: u64,
+}
+
+#[derive(Args, Debug)]
+struct SelectArgs {
+    #[command(subcommand)]
+    action: SelectAction,
+}
+
+#[derive(Subcommand, Debug)]
+enum SelectAction {
+    /// Inventory the clean checked-out base: tests, `JUnit` results, dependency graph.
+    Base {
+        #[command(flatten)]
+        location: SelectRepoArgs,
+        /// Inventory runner (Vitest uses its local list and JSON reporter).
+        #[arg(long, value_enum, default_value = "nextest")]
+        runner: TestRunner,
+        /// `JUnit` of a full run of the base (default: run `cargo nextest run`).
+        #[arg(long, value_name = "FILE")]
+        junit: Option<PathBuf>,
+        /// Cargo features (repeatable or comma separated).
+        #[arg(long = "features", value_name = "FEATURE", value_delimiter = ',')]
+        features: Vec<String>,
+        /// Timeout of the nextest run, in seconds.
+        #[arg(long, value_name = "SECONDS", default_value_t = kioku::select::exec::DEFAULT_TIMEOUT_SECS)]
+        timeout: u64,
+    },
+    /// Learn the edges the dependency graph misses, from per-test coverage of the base.
+    Learn {
+        #[command(flatten)]
+        location: SelectRepoArgs,
+        /// Base commit or reference (default: HEAD).
+        #[arg(long, value_name = "REF")]
+        base: Option<String>,
+        /// Per-test coverage already measured (`lines.json`).
+        #[arg(
+            long,
+            value_name = "FILE",
+            conflicts_with = "run",
+            required_unless_present = "run"
+        )]
+        coverage_json: Option<PathBuf>,
+        /// Measure the coverage now (instrumented run of the base).
+        #[arg(long)]
+        run: bool,
+        /// Timeout of the coverage run, in seconds.
+        #[arg(long, value_name = "SECONDS", default_value_t = kioku::select::exec::DEFAULT_TIMEOUT_SECS)]
+        timeout: u64,
+    },
+    /// Like `kioku test` without running anything (status `planned`).
+    Plan {
+        #[command(flatten)]
+        location: SelectRepoArgs,
+        /// Base reference (default: main, else master).
+        #[arg(long, value_name = "REF")]
+        base: Option<String>,
+        /// `d1` proposal (JSON): it can only add tests.
+        #[arg(long, value_name = "FILE")]
+        d1: Option<PathBuf>,
+        /// nextest filter expression.
+        #[arg(short = 'E', long = "filter", value_name = "EXPR")]
+        filter: Option<String>,
+        /// Cargo features (repeatable or comma separated).
+        #[arg(long = "features", value_name = "FEATURE", value_delimiter = ',')]
+        features: Vec<String>,
+        /// Also write the planned journal here.
+        #[arg(long, value_name = "PATH")]
+        journal: Option<PathBuf>,
+    },
 }
 
 #[derive(Args, Debug)]
@@ -97,17 +225,18 @@ enum QuarantineAction {
 #[derive(Args, Debug)]
 struct ResetArgs {
     /// Exact command in UTF-8, after `--`.
-    #[arg(trailing_var_arg = true, required = true)]
+    #[arg(trailing_var_arg = true, allow_hyphen_values = true, required = true)]
     cmd: Vec<String>,
 }
 
 #[derive(Args, Debug, Clone)]
 struct CommandArgs {
     /// Assert deterministic behavior and stable inputs for traced reuse.
-    ///
-    /// The complete initial environment is part of the trace identity; no option narrows it.
     #[arg(long)]
     trust_trace: bool,
+    /// Accepted; currently has no effect. The complete initial environment is already part of the traced identity.
+    #[arg(long)]
+    strict_env: bool,
     /// Execute the child when its output is required.
     #[arg(long)]
     require_output: bool,
@@ -117,8 +246,19 @@ struct CommandArgs {
     /// Fingerprint mode: ast or bytes.
     #[arg(long, value_enum)]
     mode: Option<ModeArg>,
+    /// Restrict the tracked inputs to these globs.
+    #[arg(long = "inputs", value_name = "GLOB")]
+    inputs: Vec<String>,
+    /// Declare an environment variable as part of the cache key.
+    #[arg(long = "env", value_name = "VAR")]
+    env: Vec<String>,
     /// The command to run, after `--`.
-    #[arg(trailing_var_arg = true, required = true, value_name = "CMD")]
+    #[arg(
+        trailing_var_arg = true,
+        allow_hyphen_values = true,
+        required = true,
+        value_name = "CMD"
+    )]
     cmd: Vec<String>,
 }
 
@@ -269,6 +409,288 @@ fn dispatch(cli: Cli) -> ExitCode {
         Command::Status => status(cli.json, cli.quiet),
         Command::Clean(args) => clean(cli.json, cli.quiet, &args),
         Command::Quarantine(args) => quarantine(cli.json, cli.quiet, &args),
+        Command::Test(args) => select_test(cli.json, cli.quiet, &args),
+        Command::Select(args) => select_dispatch(cli.json, cli.quiet, args.action),
+    }
+}
+
+/// Exit code of a selection command that could not even start (usage or internal error).
+fn select_failure(json: bool, error: &kioku::select::SelectError) -> ExitCode {
+    print_error(json, "select", &error.to_string());
+    ExitCode::from(3)
+}
+
+fn print_select_report(
+    json: bool,
+    quiet: bool,
+    plan_only: bool,
+    report: &kioku::select::exec::TestReport,
+) -> ExitCode {
+    for note in &report.notes {
+        eprintln!("{note}");
+    }
+    if json {
+        println!("{}", report.summary_json());
+    } else if !quiet {
+        for line in report.human_lines(plan_only) {
+            println!("{line}");
+        }
+    }
+    ExitCode::from(report.exit_code)
+}
+
+/// What `kioku test` and `kioku select plan` share.
+struct RunSpec {
+    base: Option<String>,
+    d1: Option<PathBuf>,
+    filter: Option<String>,
+    features: Vec<String>,
+    journal: Option<PathBuf>,
+    timeout: u64,
+    plan_only: bool,
+}
+
+fn test_options(
+    location: &SelectRepoArgs,
+    spec: RunSpec,
+) -> Result<kioku::select::exec::TestOptions, kioku::select::SelectError> {
+    Ok(kioku::select::exec::TestOptions {
+        repo: location.repo.clone(),
+        store: kioku::select::exec::Store::resolve(location.store.as_deref())?,
+        base_ref: spec.base,
+        d1: spec.d1,
+        user_filter: spec.filter,
+        features: spec.features,
+        journal: spec.journal,
+        timeout: Duration::from_secs(spec.timeout),
+        plan_only: spec.plan_only,
+    })
+}
+
+fn compatible_exit_code(code: u8, native: bool) -> u8 {
+    if native && code == kioku::select::exec::EXIT_FULL_GREEN {
+        kioku::select::exec::EXIT_PARTIAL_GREEN
+    } else {
+        code
+    }
+}
+
+fn select_test(json: bool, quiet: bool, args: &TestArgs) -> ExitCode {
+    if matches!(args.runner, TestRunner::Vitest) {
+        if args.base.is_some()
+            || args.d1.is_some()
+            || args.filter.is_some()
+            || !args.features.is_empty()
+            || args.journal.is_some()
+            || args.location.store.is_some()
+            || args.timeout != kioku::select::exec::DEFAULT_TIMEOUT_SECS
+        {
+            print_error(
+                json,
+                "select",
+                "Vitest fallback does not support selection options",
+            );
+            return ExitCode::from(2);
+        }
+        return vitest::run(&args.location.repo, json, quiet);
+    }
+    let options = test_options(
+        &args.location,
+        RunSpec {
+            base: args.base.clone(),
+            d1: args.d1.clone(),
+            filter: args.filter.clone(),
+            features: args.features.clone(),
+            journal: args.journal.clone(),
+            timeout: args.timeout,
+            plan_only: false,
+        },
+    );
+    match options.and_then(|options| kioku::select::exec::run_test(&options)) {
+        Ok(mut report) => {
+            report.exit_code = if args.native_exit_code {
+                report
+                    .native_exit_code
+                    .filter(|code| *code != 0)
+                    .unwrap_or_else(|| compatible_exit_code(report.exit_code, true))
+            } else {
+                report.exit_code
+            };
+            print_select_report(json, quiet, false, &report)
+        }
+        Err(error) => select_failure(json, &error),
+    }
+}
+
+fn select_dispatch(json: bool, quiet: bool, action: SelectAction) -> ExitCode {
+    match action {
+        SelectAction::Base {
+            location,
+            runner,
+            junit,
+            features,
+            timeout,
+        } => {
+            if matches!(runner, TestRunner::Vitest) {
+                if junit.is_some()
+                    || !features.is_empty()
+                    || timeout != kioku::select::exec::DEFAULT_TIMEOUT_SECS
+                {
+                    print_error(
+                        json,
+                        "select",
+                        "Vitest base requires native results and default options",
+                    );
+                    return ExitCode::from(2);
+                }
+                print_error(
+                    json,
+                    "select",
+                    "Vitest base preparation unavailable; full execution only",
+                );
+                return ExitCode::from(3);
+            }
+            select_base(json, quiet, &location, junit, features, timeout)
+        }
+        SelectAction::Learn {
+            location,
+            base,
+            coverage_json,
+            run: _,
+            timeout,
+        } => select_learn(json, quiet, &location, base, coverage_json, timeout),
+        SelectAction::Plan {
+            location,
+            base,
+            d1,
+            filter,
+            features,
+            journal,
+        } => {
+            let options = test_options(
+                &location,
+                RunSpec {
+                    base,
+                    d1,
+                    filter,
+                    features,
+                    journal,
+                    timeout: kioku::select::exec::DEFAULT_TIMEOUT_SECS,
+                    plan_only: true,
+                },
+            );
+            match options.and_then(|options| kioku::select::exec::run_test(&options)) {
+                Ok(report) => print_select_report(json, quiet, true, &report),
+                Err(error) => select_failure(json, &error),
+            }
+        }
+    }
+}
+
+fn select_base(
+    json: bool,
+    quiet: bool,
+    location: &SelectRepoArgs,
+    junit: Option<PathBuf>,
+    features: Vec<String>,
+    timeout: u64,
+) -> ExitCode {
+    let outcome =
+        kioku::select::exec::Store::resolve(location.store.as_deref()).and_then(|store| {
+            kioku::select::exec::build_base(&kioku::select::exec::BaseOptions {
+                repo: location.repo.clone(),
+                store,
+                junit,
+                features,
+                timeout: Duration::from_secs(timeout),
+            })
+        });
+    match outcome {
+        Ok(report) => {
+            if json {
+                println!(
+                    "{}",
+                    json!({
+                        "schema": kioku::select::BASE_SCHEMA,
+                        "commit": report.commit,
+                        "binaries": report.binaries,
+                        "tests": report.tests,
+                        "green": report.green,
+                        "graph_digest": report.graph_digest,
+                        "path": report.path.display().to_string(),
+                        "elapsed_ms": u64::try_from(report.elapsed.as_millis()).unwrap_or(u64::MAX),
+                        "nextest_ms": u64::try_from(report.nextest_elapsed.as_millis()).unwrap_or(u64::MAX),
+                    })
+                );
+            } else if !quiet {
+                println!(
+                    "kioku select base: {} — {} binaires, {} tests, {} ({:.1} s dont nextest {:.1} s) -> {}",
+                    report.commit,
+                    report.binaries,
+                    report.tests,
+                    if report.green { "VERT" } else { "NON VERT" },
+                    report.elapsed.as_secs_f64(),
+                    report.nextest_elapsed.as_secs_f64(),
+                    report.path.display()
+                );
+            }
+            ExitCode::SUCCESS
+        }
+        Err(error) => select_failure(json, &error),
+    }
+}
+
+fn select_learn(
+    json: bool,
+    quiet: bool,
+    location: &SelectRepoArgs,
+    base: Option<String>,
+    coverage_json: Option<PathBuf>,
+    timeout: u64,
+) -> ExitCode {
+    let outcome =
+        kioku::select::exec::Store::resolve(location.store.as_deref()).and_then(|store| {
+            kioku::select::exec::learn_from_coverage(&kioku::select::exec::LearnOptions {
+                repo: location.repo.clone(),
+                store,
+                base_ref: base,
+                coverage_json,
+                timeout: Duration::from_secs(timeout),
+            })
+        });
+    match outcome {
+        Ok(report) => {
+            if json {
+                println!(
+                    "{}",
+                    json!({
+                        "schema": kioku::select::LEARNED_SCHEMA,
+                        "base_commit": report.commit,
+                        "tests_with_edges": report.tests_with_edges,
+                        "edges": report.edges,
+                        "alerts": report.alerts.len(),
+                        "path": report.path.display().to_string(),
+                    })
+                );
+            } else if !quiet {
+                for alert in &report.alerts {
+                    println!(
+                        "  alerte : {} {} — {}",
+                        alert.test.binary_id, alert.test.name, alert.message
+                    );
+                }
+                println!(
+                    "kioku select learn: {} — {} arêtes apprises sur {} tests, {} alertes -> {}",
+                    report.commit,
+                    report.edges,
+                    report.tests_with_edges,
+                    report.alerts.len(),
+                    report.path.display()
+                );
+            }
+            ExitCode::SUCCESS
+        }
+        Err(error) => select_failure(json, &error),
     }
 }
 
@@ -278,6 +700,8 @@ fn quarantine(json: bool, quiet: bool, args: &QuarantineArgs) -> ExitCode {
         argv: reset.cmd.clone(),
         cwd: current_dir(),
         mode: None,
+        inputs: Vec::new(),
+        env: Vec::new(),
     };
     if let Err(error) = runner::reset_quarantine(&request) {
         print_error(json, "runtime", &error.to_string());
@@ -288,7 +712,7 @@ fn quarantine(json: bool, quiet: bool, args: &QuarantineArgs) -> ExitCode {
         quiet,
         to_stderr: false,
     };
-    out.event(&json!({"schema": SCHEMA, "event": "quarantine-reset", "policy": kioku::trace::CONTRACT, "contract": "caller-asserted-stable-inputs", "mode_requested": null, "mode_effective": "bytes", "result": "exit-status", "output_replayed": false}));
+    out.event(&json!({"schema": SCHEMA, "event": "quarantine-reset", "policy": "trace-v1", "contract": "caller-asserted-stable-inputs", "mode_requested": null, "mode_effective": "bytes", "result": "exit-status", "output_replayed": false}));
     out.human("kioku: quarantine reset; new discovery and learning required");
     ExitCode::SUCCESS
 }
@@ -317,6 +741,8 @@ fn request_of(args: &CommandArgs) -> Request {
             let (root, _) = kioku::key::repository(&cwd).ok()?;
             kioku::config::mode(&root, &args.cmd).ok().flatten()
         }),
+        inputs: args.inputs.clone(),
+        env: args.env.clone(),
     }
 }
 
@@ -420,10 +846,10 @@ fn run_or_verify(json: bool, quiet: bool, args: &CommandArgs, verify: bool) -> E
         }
     } else {
         match outcome.decision {
-            Decision::Cached => out.human(&match outcome.saved_ms {
-                Some(saved) => format!("cached (pass, {} saved)", human_duration(saved)),
-                None => "cached (pass, saved time unavailable)".to_string(),
-            }),
+            Decision::Cached => out.human(&format!(
+                "cached (pass, {} saved)",
+                human_duration(outcome.saved_ms)
+            )),
             Decision::Executed => out.human(&format!(
                 "executed (exit {}, {})",
                 outcome.exit_code,
@@ -460,6 +886,7 @@ fn explain(json: bool, quiet: bool, args: &CommandArgs) -> ExitCode {
     };
 
     print_explanation_json(&out, &explanation, args, &request);
+    let diff = explanation.diff.as_ref();
     out.human(&format!(
         "kioku: {}",
         if explanation.hit {
@@ -513,6 +940,41 @@ fn explain(json: bool, quiet: bool, args: &CommandArgs) -> ExitCode {
             "  partial repository AST diagnostic would match: {would_skip} (not a reuse decision)"
         ));
     }
+    if let (Some(entry), Some(diff)) = (explanation.closest.as_ref(), diff) {
+        out.human(&format!(
+            "  closest entry: {} ({})",
+            entry.key,
+            kioku::store::format_iso8601(entry.created_unix_ms)
+        ));
+        for path in &diff.added {
+            out.human(&format!("  + {path}"));
+        }
+        for path in &diff.removed {
+            out.human(&format!("  - {path}"));
+        }
+        for modified in &diff.modified {
+            out.human(&format!(
+                "  ~ {} ({} -> {})",
+                modified.path, modified.old_digest, modified.new_digest
+            ));
+            if modified.old_mode != modified.new_mode {
+                out.human(&format!(
+                    "    {} permissions {} -> {}",
+                    modified.path,
+                    format_permissions(modified.old_mode),
+                    format_permissions(modified.new_mode)
+                ));
+            }
+        }
+        for changed in diff.env.iter().chain(&diff.lockfiles).chain(&diff.tools) {
+            out.human(&format!(
+                "  ~ {} ({} -> {})",
+                changed.name,
+                changed.old.as_deref().unwrap_or("-"),
+                changed.new.as_deref().unwrap_or("-")
+            ));
+        }
+    }
     ExitCode::SUCCESS
 }
 
@@ -522,6 +984,7 @@ fn print_explanation_json(
     args: &CommandArgs,
     request: &Request,
 ) {
+    let diff = explanation.diff.as_ref();
     if args.trust_trace {
         out.human("kioku: trace-v2 assumes deterministic behavior and stable inputs; exit status only, output not replayed; effective mode: bytes");
     } else {
@@ -549,64 +1012,34 @@ fn print_explanation_json(
         "traced": explanation.traced,
         "denial_reason": explanation.denial_reason,
         "dependencies": explanation.dependencies,
-        // Kept in the contract, always null: the trace policy stores no
-        // comparable legacy entry for a command.
-        "closest": null,
-        "diff": null,
+        "closest": explanation.closest,
+        "diff": diff.map(|diff| json!({
+            "added": diff.added,
+            "removed": diff.removed,
+            "modified": diff.modified.iter().map(|modified| json!({
+                "path": modified.path,
+                "old_digest": modified.old_digest,
+                "new_digest": modified.new_digest,
+                "old_mode": modified.old_mode,
+                "new_mode": modified.new_mode,
+            })).collect::<Vec<_>>(),
+            "env": diff.env.iter().map(|changed| json!({
+                "name": changed.name,
+                "old": changed.old,
+                "new": changed.new,
+            })).collect::<Vec<_>>(),
+            "lockfiles": diff.lockfiles.iter().map(|changed| json!({
+                "name": changed.name,
+                "old": changed.old,
+                "new": changed.new,
+            })).collect::<Vec<_>>(),
+            "tools": diff.tools.iter().map(|changed| json!({
+                "name": changed.name,
+                "old": changed.old,
+                "new": changed.new,
+            })).collect::<Vec<_>>(),
+        })),
     }));
-}
-
-/// Describes the recorded saving, without attributing a legacy total to hits.
-fn saving_line(counters: &kioku::store::Counters) -> String {
-    let measured = counters.measured_hits;
-    let saved = human_duration(counters.saved_ms);
-    let legacy = measured.map_or(counters.saved_ms, |_| counters.legacy_saved_ms);
-    let mut parts = Vec::new();
-    if counters.hits > 0 {
-        match measured {
-            Some(0) => parts.push(format!(
-                "unknown (0 of {} hits had a recorded duration)",
-                counters.hits
-            )),
-            Some(count) => {
-                parts.push(format!(
-                    "{saved} over {count} measured {} (includes tracing overhead)",
-                    plural(count)
-                ));
-                let unmeasured = counters.hits - count;
-                if unmeasured > 0 {
-                    parts.push(format!(
-                        "{unmeasured} {} without a recorded duration",
-                        plural(unmeasured)
-                    ));
-                }
-            }
-            None => parts.push(format!(
-                "unknown ({} hits counted before per-hit measurement)",
-                counters.hits
-            )),
-        }
-    }
-    if legacy > 0 {
-        let note = if measured.is_none() && counters.hits > 0 {
-            " (not attributed to hits)"
-        } else {
-            ""
-        };
-        parts.push(format!(
-            "{} recorded by an older version{note}",
-            human_duration(legacy)
-        ));
-    }
-    if parts.is_empty() {
-        parts.push("0 ms (no hit yet)".to_string());
-    }
-    parts.join("; ")
-}
-
-/// Returns `hit` or `hits` for a counter line.
-fn plural(count: u64) -> &'static str {
-    if count == 1 { "hit" } else { "hits" }
 }
 
 fn status(json: bool, quiet: bool) -> ExitCode {
@@ -644,43 +1077,25 @@ fn status(json: bool, quiet: bool) -> ExitCode {
         "bytes": status.bytes,
         "cached_ms": status.cached_ms,
         "counters": status.counters,
-        "reason": status.denial_reason,
     }));
 
-    if let Some(reason) = &status.denial_reason {
-        out.human(&format!("  {}", human_reason(reason)));
-    }
     out.human(&format!(
         "kioku: {} trace states, {} quarantines, {} legacy entries",
         status.trace_states, status.quarantines, status.entries
     ));
-    let counters = &status.counters;
-    let measured = counters.measured_hits;
-    let measured_label = if counters.hits == 0 {
-        "none".to_string()
-    } else {
-        measured.map_or_else(
-            || "measurement unknown".to_string(),
-            |count| format!("{count} measured"),
-        )
-    };
     out.human(&format!(
-        "  counters: {} hits ({measured_label}), {} misses, {} executions, {} bypassed, {} invalidated",
-        counters.hits,
-        counters.misses,
-        counters.executions,
-        counters.bypassed,
-        counters.invalidated
+        "  legacy: {}, {} legacy saved",
+        human_bytes(status.bytes),
+        human_duration(status.counters.saved_ms)
     ));
-    out.human(&format!("  saved: {}", saving_line(counters)));
-    if status.entries > 0 {
-        out.human(&format!(
-            "  legacy store: {} entries, {}",
-            status.entries,
-            human_bytes(status.bytes)
-        ));
-    }
     out.human(&format!("  store: {}", status.store_root.display()));
+    out.human(&format!(
+        "  legacy hits: {}, misses: {}, executions: {}, invalidated: {}",
+        status.counters.hits,
+        status.counters.misses,
+        status.counters.executions,
+        status.counters.invalidated
+    ));
     if status.invalid > 0 {
         out.human(&format!(
             "  {} unreadable files were ignored",
@@ -742,15 +1157,7 @@ fn clean(json: bool, quiet: bool, args: &CleanArgs) -> ExitCode {
         "removed": result.removed,
         "kept": result.kept,
         "bytes_freed": result.bytes_freed,
-        "reason": result.denial_reason,
     }));
-    if let Some(reason) = &result.denial_reason {
-        out.human(&format!(
-            "kioku: {}; nothing to clean",
-            human_reason(reason)
-        ));
-        return ExitCode::SUCCESS;
-    }
     out.human(&format!(
         "kioku: removed {} entries ({}), kept {}",
         result.removed,
@@ -775,7 +1182,6 @@ fn human_reason(code: &str) -> &'static str {
             "unsupported executable format (only static ELF binaries are traced)"
         }
         "repository-unavailable" => "not a Git repository",
-        "store-in-work-tree" => "the store is inside the work tree: the cache is off",
         "program-unresolved" => "program not found or not executable",
         "cwd-unavailable" => "working directory unavailable",
         "trace-unsupported-path" => "repository path is not valid UTF-8",
@@ -836,6 +1242,35 @@ fn parse_duration(value: &str) -> Result<Duration, String> {
     Ok(Duration::from_secs(number.saturating_mul(multiplier)))
 }
 
+/// Unix permissions, written the way `ls` writes them.
+fn format_permissions(mode: u32) -> String {
+    let bits = [
+        (0o400, 'r'),
+        (0o200, 'w'),
+        (0o100, 'x'),
+        (0o040, 'r'),
+        (0o020, 'w'),
+        (0o010, 'x'),
+        (0o004, 'r'),
+        (0o002, 'w'),
+        (0o001, 'x'),
+    ];
+    let mut text: String = bits
+        .iter()
+        .map(|(bit, letter)| if mode & bit != 0 { *letter } else { '-' })
+        .collect();
+    if mode & 0o4000 != 0 {
+        text.insert(0, 's');
+    }
+    if mode & 0o2000 != 0 {
+        text.insert(0, 'w');
+    }
+    if mode & 0o1000 != 0 {
+        text.insert(0, 'x');
+    }
+    text
+}
+
 fn human_duration(milliseconds: u64) -> String {
     if milliseconds < 1000 {
         format!("{milliseconds} ms")
@@ -860,6 +1295,17 @@ fn human_bytes(bytes: u64) -> String {
 mod tests {
     use super::{human_bytes, human_duration, parse_duration};
     use std::time::Duration;
+
+    #[test]
+    fn native_mode_changes_only_full_success() {
+        for code in [0, 1, 2, 3, 5, 126, 127] {
+            assert_eq!(super::compatible_exit_code(code, false), code);
+            assert_eq!(
+                super::compatible_exit_code(code, true),
+                if code == 5 { 0 } else { code }
+            );
+        }
+    }
 
     #[test]
     fn parses_the_documented_durations() {

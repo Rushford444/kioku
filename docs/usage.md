@@ -28,9 +28,10 @@ kioku run --trust-trace --verify-rate 1 -- /absolute/path/to/deterministic-check
 restricted to Linux aarch64 and x86_64, the pinned Debian strace for that
 architecture and static little-endian ELF children without an interpreter.
 Dynamic commands execute with `denial_reason: "executable-format"`, never a
-silent fallback. Traced reuse always includes the complete initial environment;
-no extra option is needed. See [configuration](configuration.md) for modes and
-variables. Do not expect caching for ordinary dynamically linked commands.
+silent fallback. `--strict-env` is accepted but has no effect: the complete
+initial environment is already part of the traced identity. See
+[configuration](configuration.md) for modes and variables. Do not expect
+caching for ordinary dynamically linked commands.
 
 ## CI and agents
 
@@ -56,12 +57,15 @@ kioku --json status
 kioku --json run -- cargo test
 ```
 
-Kioku's JSON schema is `kioku/v1`. For `run` and `verify`, JSON goes to stderr;
+The legacy commands' JSON schema is `kioku/v1`. The selection commands
+(`kioku test`, `kioku select base`, `kioku select learn`) use their own report
+schemas, so not every JSON response is `kioku/v1`. For `run` and `verify`, JSON goes to stderr;
 the child keeps its inherited stdout and stderr. Redirecting stderr does not
 separate child stderr from kioku's JSON. Other commands emit JSON on stdout;
 errors go to stderr. Inspect `cacheable` and `denial_reason`, not merely
 `trace_state`. Kioku propagates the child exit code, including 1, 2, 3, 126
-and 127. A child termination without a code maps to 1. Kioku also uses 2 for
-usage errors, 3 for internal errors, 126 for launch failure and 127 for a
-command not found. These values overlap: the code alone does not identify its
+and 127. On Unix a child killed by a signal is reported as 128 plus the signal
+number; a termination without a code maps to 1 only on a platform that reports
+none. Kioku also uses 2 for usage errors, 3 for internal errors, 126 for launch
+failure and 127 for a command not found. These values overlap: the code alone does not identify its
 origin. Arguments must be UTF-8.

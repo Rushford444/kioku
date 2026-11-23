@@ -1,0 +1,17 @@
+name: Local conservative CI
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  checks:
+    # Requires an offline-provisioned runner and a locally available checkout action.
+    runs-on: local-rust
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+      - name: Conservative test routing
+        env:
+          FORGEJO_EVENT_NAME: ${{ forgejo.event_name }}
+          FORGEJO_REF: ${{ forgejo.ref }}
+        run: bash examples/forgejo-ci.sh

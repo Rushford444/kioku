@@ -5,13 +5,10 @@ description: Use when running a command and assessing whether an exit-status cac
 
 # kioku
 
-The default behavior executes the command. Traced reuse is an explicit
+The default v0.2 behavior executes the command. Traced reuse is an explicit
 opt-in with caller assumptions; consult the installed command's help and
 [safety assumptions](README.md#traced-reuse-assumptions). It is Linux-specific and fails closed when
 tracing or an observed operation is unsupported. Other platforms execute.
-
-Traced reuse always includes the complete initial environment and the files the
-child observes; no option narrows them.
 
 A hit skips the command and reuses only its successful exit status. It does
 not replay stdout or stderr and does not create build artifacts. Do not rely on
@@ -38,6 +35,7 @@ Use `--json` for machine-readable `kioku/v1` output. For `run` and `verify`,
 kioku events go to stderr and child stdout remains separate; other commands
 write JSON to stdout and errors to stderr. Check `--help` for exact syntax.
 
-The Cargo package is `kdw-kioku`; it is not published on crates.io. Git credentials
-must be preconfigured while the repository is private. Install noninteractively with `GIT_TERMINAL_PROMPT=0 cargo install --git https://github.com/Rushford444/kioku --tag v0.1.0 --locked`.
+Configure Git credentials in advance for the private repository, then install
+noninteractively with `GIT_TERMINAL_PROMPT=0 cargo install --git https://github.com/Rushford444/kioku --locked`.
+Without credentials, authentication fails instead of requesting them at the terminal.
 Use `CI=true kioku --json run -- cargo test` in CI; this remains execute-only by default.

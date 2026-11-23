@@ -1,0 +1,322 @@
+{
+ "edge-blank-line.lcov": {
+  "bytes": 52,
+  "files": [],
+  "reason": "unparsable line",
+  "sha256": "bc1b8b16950c7396237367bddbbe53fa711655a43dcb9cd6acee67a05db79ed7",
+  "verdict": "reject"
+ },
+ "edge-brda-fields.lcov": {
+  "bytes": 74,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "BRDA fields",
+  "sha256": "f8e4ed69d1c61e7eed5ada5a1baf72722a0afbd161b8664d511aefc3e805bf6d",
+  "verdict": "reject"
+ },
+ "edge-brda-mismatch.lcov": {
+  "bytes": 76,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "BRF mismatch",
+  "sha256": "f427d2b142a86eff7cc0d4e295948bc6da87eddc9eee6bd7f21ee266873abe1d",
+  "verdict": "reject"
+ },
+ "edge-brda.lcov": {
+  "bytes": 134,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "ok",
+  "sha256": "5d47a30b3bef59a1214051a4bf92b9c9156992e8357cd9cec63d2a0cb57462d5",
+  "verdict": "accept"
+ },
+ "edge-crlf.lcov": {
+  "bytes": 56,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "ok",
+  "sha256": "f652a64fb69239463b861785437aa33633b86c1fe00dcfcf8746bb41df3a608c",
+  "verdict": "accept"
+ },
+ "edge-da-checksum.lcov": {
+  "bytes": 69,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "ok",
+  "sha256": "e871172a0e78c1af872eee0d97108c381808195235da0c255ac6318333309539",
+  "verdict": "accept"
+ },
+ "edge-da-non-integer.lcov": {
+  "bytes": 54,
+  "files": [],
+  "reason": "DA not integer",
+  "sha256": "8bcb401269719c9f38e498e8cdabcdae02e6fc7c2fce8a301d852ac91e7e2e56",
+  "verdict": "reject"
+ },
+ "edge-da-outside-record.lcov": {
+  "bytes": 58,
+  "files": [],
+  "reason": "DA structure/duplicate",
+  "sha256": "a1f79065f0fb4cb4e19c8bc38bbb1a83cabefbd61594aca17261d66a8ed3dc29",
+  "verdict": "reject"
+ },
+ "edge-da-zero-line.lcov": {
+  "bytes": 51,
+  "files": [],
+  "reason": "DA structure/duplicate",
+  "sha256": "3c32fffe86209da9c60cd9afcc7c7518917e26baa6d8ba7acb806f477e6eb630",
+  "verdict": "reject"
+ },
+ "edge-duplicate-da.lcov": {
+  "bytes": 58,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "DA structure/duplicate",
+  "sha256": "63ee40355839b211464580d0f8b2f625b38290fd80b39092311e0336a6f9f8df",
+  "verdict": "reject"
+ },
+ "edge-duplicate-summary.lcov": {
+  "bytes": 56,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "duplicate summary",
+  "sha256": "aeb81662e8bf13bee7c5c0479084b213f1b6f5222e722ce9ebeb76e83b8b962e",
+  "verdict": "reject"
+ },
+ "edge-empty-record-no-summary.lcov": {
+  "bytes": 85,
+  "files": [],
+  "reason": "empty record without LF:0 LH:0",
+  "sha256": "6bcb39b4c9442063cd3ece3399bc68eade6c22db438dd73ae178dccb42f34fa6",
+  "verdict": "reject"
+ },
+ "edge-empty-record.lcov": {
+  "bytes": 95,
+  "files": [
+   "src/b.rs"
+  ],
+  "reason": "ok",
+  "sha256": "f9ff318e59dbd62b21a9762f4226a8675a11afeede23e96b41e514729c9c86a1",
+  "verdict": "accept"
+ },
+ "edge-empty.lcov": {
+  "bytes": 0,
+  "files": [],
+  "reason": "unparsable line",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "verdict": "reject"
+ },
+ "edge-end-without-record.lcov": {
+  "bytes": 65,
+  "files": [],
+  "reason": "end outside record",
+  "sha256": "7e0334e3ef1500bf07023742c263d2c15209807ea6a8bae4a75d6198742c9ae9",
+  "verdict": "reject"
+ },
+ "edge-escape-path.lcov": {
+  "bytes": 55,
+  "files": [],
+  "reason": "trailing/no records/no hit/no files",
+  "sha256": "177d901e7d8226c2dbeea292b6c7e002381022e5bedcfab7fb0fda662752d169",
+  "verdict": "reject"
+ },
+ "edge-fn-empty-name.lcov": {
+  "bytes": 65,
+  "files": [],
+  "reason": "FN name/number",
+  "sha256": "e3181c96ded911720d8686946bdbff4c38fdb469bb2298d6db9f82b0f4cb7b44",
+  "verdict": "reject"
+ },
+ "edge-fn-without-fnda.lcov": {
+  "bytes": 60,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "FN != FNDA",
+  "sha256": "8be0e91be93d280198cf21d7d3546e42ff82a82bb81c62dafab9448924fef879",
+  "verdict": "reject"
+ },
+ "edge-fn-zero-line.lcov": {
+  "bytes": 71,
+  "files": [],
+  "reason": "FN name/number",
+  "sha256": "4fa04dadeb42586b1e5e52f38c8e08dd952c12112d1c9a8f93bfc05da73f2887",
+  "verdict": "reject"
+ },
+ "edge-fnf-above-fn.lcov": {
+  "bytes": 83,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "FNF bounds",
+  "sha256": "314a4d4398e38ccd50a242e30c4258e70054053b852f5f00b5948b0a259487c5",
+  "verdict": "reject"
+ },
+ "edge-fnh-above-fnf.lcov": {
+  "bytes": 83,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "FNF bounds",
+  "sha256": "a08880e2584cad4e933771fcc63133adbe3ccdc836e91a18eb93df78241aaa22",
+  "verdict": "reject"
+ },
+ "edge-lf-below-da.lcov": {
+  "bytes": 58,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "LF/LH bounds",
+  "sha256": "376b83af8db80fde8e3dbad0a1e8f52c059c41427b41ffa1c7eb78c1c119c73c",
+  "verdict": "reject"
+ },
+ "edge-lf-without-lh.lcov": {
+  "bytes": 46,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "LF/LH both-or-neither",
+  "sha256": "fcca73c3c7acea762036dfa1e763553d702671f3c09e0c4987fdce8641de2c77",
+  "verdict": "reject"
+ },
+ "edge-lh-above-lf.lcov": {
+  "bytes": 51,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "LF/LH bounds",
+  "sha256": "c3b3da8f9143af1cc67f7867aace3b79b728aa04cbb0a1c8949a1dab8b198ff3",
+  "verdict": "reject"
+ },
+ "edge-lh-positive-no-da.lcov": {
+  "bytes": 102,
+  "files": [],
+  "reason": "LF/LH bounds",
+  "sha256": "d5a392d46a816e20570ca36cfe33f1032a7438cfb64b46781781873a76d7f77a",
+  "verdict": "reject"
+ },
+ "edge-multi-record-mixed.lcov": {
+  "bytes": 350,
+  "files": [
+   "src/a.rs",
+   "tests/t.rs"
+  ],
+  "reason": "ok",
+  "sha256": "798a85783635484ae402a6fe64057b1fd5b59d9eb749b287c6857684c64adcd1",
+  "verdict": "accept"
+ },
+ "edge-no-final-newline.lcov": {
+  "bytes": 50,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "ok",
+  "sha256": "538e0a0a3a3e52c31bb7335cd1ccaefad5acd8314a392fe1f83a66aaeae1d5cf",
+  "verdict": "accept"
+ },
+ "edge-no-hit.lcov": {
+  "bytes": 58,
+  "files": [],
+  "reason": "trailing/no records/no hit/no files",
+  "sha256": "ecaa59c973f13b1b7a14c92ecc1762575e4d3cbbf4560250d30b16d1c86bb284",
+  "verdict": "reject"
+ },
+ "edge-outside-repo.lcov": {
+  "bytes": 66,
+  "files": [],
+  "reason": "trailing/no records/no hit/no files",
+  "sha256": "9f6f2cc9057fe0fa09790bb6de35456db5a6e8ce119485434fedd1ce99d737e7",
+  "verdict": "reject"
+ },
+ "edge-sf-in-record.lcov": {
+  "bytes": 71,
+  "files": [],
+  "reason": "SF inside record or empty",
+  "sha256": "612f6305515c271616785b3776e4d0b32554aa1115b71ca30ffce858f4efcf71",
+  "verdict": "reject"
+ },
+ "edge-target-dir.lcov": {
+  "bytes": 73,
+  "files": [],
+  "reason": "trailing/no records/no hit/no files",
+  "sha256": "09948351ed8046e72780cced547f95ba43af6f74863f1516aa0aa8159e33bfe3",
+  "verdict": "reject"
+ },
+ "edge-tn-inside-record.lcov": {
+  "bytes": 55,
+  "files": [],
+  "reason": "unknown key TN",
+  "sha256": "eec89224cc6c2cd4a6088eb378ea56c3b78611da6008158b155386aef1b04d54",
+  "verdict": "reject"
+ },
+ "edge-tn-only.lcov": {
+  "bytes": 4,
+  "files": [],
+  "reason": "trailing/no records/no hit/no files",
+  "sha256": "ad78bcf9de2caa140900bda1f8c4979af5f3f5c069f5eda785475f7427a306e0",
+  "verdict": "reject"
+ },
+ "edge-truncated.lcov": {
+  "bytes": 37,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "trailing/no records/no hit/no files",
+  "sha256": "011895c0dca5ff1649061516cd54bf33f5ff75561ca2ffaee71e94253d70f69e",
+  "verdict": "reject"
+ },
+ "edge-unknown-key.lcov": {
+  "bytes": 56,
+  "files": [
+   "src/a.rs"
+  ],
+  "reason": "unknown key ZZ",
+  "sha256": "2770db54745cb55f8454fbe1e71fbfcb2f87e7043e4f08c44cf028f28343b78a",
+  "verdict": "reject"
+ },
+ "real-llvm23-constructs.lcov": {
+  "bytes": 1090,
+  "files": [
+   "src/lib.rs",
+   "tests/it.rs"
+  ],
+  "reason": "ok",
+  "sha256": "d571054af8c55de0c5f70d4edaac6f9896cfb4130e1bdb97aac5626341be84a1",
+  "verdict": "accept"
+ },
+ "real-llvm23-kioku-6records.lcov": {
+  "bytes": 73552,
+  "files": [
+   "src/select/base.rs",
+   "src/select/classify.rs",
+   "tests/select_l1_classify.rs"
+  ],
+  "reason": "ok",
+  "sha256": "d4e6a3967cd29062aec7026c60a75607cc9a866d24aa7a55f9993628fa0b02f3",
+  "verdict": "accept"
+ },
+ "real-llvm23-monomorph.lcov": {
+  "bytes": 668,
+  "files": [
+   "src/lib.rs",
+   "tests/it.rs"
+  ],
+  "reason": "ok",
+  "sha256": "eb2fbe102e7aa378c39ddf4f5b781d32cd48bf8016ea949a7005af19b7a71669",
+  "verdict": "accept"
+ },
+ "real-llvm23-uncovered.lcov": {
+  "bytes": 276,
+  "files": [],
+  "reason": "trailing/no records/no hit/no files",
+  "sha256": "4ae0b0b80aa272c9a3d90e1bddadfdf10e2d66c7cbf9bede13ce61075edab149",
+  "verdict": "reject"
+ }
+}

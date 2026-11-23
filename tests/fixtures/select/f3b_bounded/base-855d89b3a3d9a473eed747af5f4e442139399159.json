@@ -1,0 +1,38 @@
+{
+  "binaries": [
+    {
+      "binary_id": "mini",
+      "kind": "lib",
+      "src_path": "src/lib.rs",
+      "target_name": "mini",
+      "tests": []
+    },
+    {
+      "binary_id": "mini::it",
+      "kind": "test",
+      "src_path": "tests/it.rs",
+      "target_name": "it",
+      "tests": [
+        {
+          "duration_ms": 2,
+          "name": "hits_covered",
+          "status": "pass"
+        }
+      ]
+    }
+  ],
+  "binary_count": 2,
+  "build_env": {},
+  "commit": "855d89b3a3d9a473eed747af5f4e442139399159",
+  "content_digest": "sha256:fc306cbb226c345d4d1a6919f519b47f1efd078e00ff0780b52bd6c6c5ae6235",
+  "features": [],
+  "graph_digest": "e326c84c4fc855166bc57adcffdd187b5c1c1e35fea09e06cb4c04a62d618a57",
+  "green": true,
+  "schema": "kioku/select/base/v2",
+  "test_count": 1,
+  "toolchain": {
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "nextest": "cargo-nextest 0.9.151 (6b3f99457 2026-11-02)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  }
+}

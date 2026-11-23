@@ -94,6 +94,7 @@ pub struct ManifestEntry {
 
 /// A cached successful run.
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Entry {
     /// Schema identifier of this document.
     pub schema: String,
@@ -119,15 +120,48 @@ pub struct Entry {
     pub portable: bool,
     /// Absolute repository root. Metadata only: never part of the cache key.
     pub repo: String,
-    /// Fingerprint of every input file.
+    /// Fingerprint of every input file. Duplicate paths are rejected, even when
+    /// the records are identical.
+    #[serde(deserialize_with = "deserialize_inputs")]
     pub inputs: BTreeMap<String, ManifestEntry>,
-    /// Environment variables that took part in the key. A variable that is not
-    /// set is `None`, which is not the same as a variable set to an empty value.
+    /// Current [`Snapshot::env`](crate::Snapshot::env) representation of the
+    /// variables that took part in the key. A variable that is not set is
+    /// `None`, which is not the same as a variable set to an empty value.
     pub env: BTreeMap<String, Option<String>>,
     /// Fingerprint of every detected lockfile.
     pub lockfiles: BTreeMap<String, String>,
     /// Versions of the detected tools.
     pub tools: BTreeMap<String, String>,
+}
+
+fn deserialize_inputs<'de, D>(deserializer: D) -> Result<BTreeMap<String, ManifestEntry>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    struct InputsVisitor;
+
+    impl<'de> serde::de::Visitor<'de> for InputsVisitor {
+        type Value = BTreeMap<String, ManifestEntry>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            formatter.write_str("an input manifest with unique paths")
+        }
+
+        fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
+        where
+            A: serde::de::MapAccess<'de>,
+        {
+            let mut inputs = BTreeMap::new();
+            while let Some((path, entry)) = map.next_entry::<String, ManifestEntry>()? {
+                if inputs.insert(path, entry).is_some() {
+                    return Err(serde::de::Error::custom("duplicate input path"));
+                }
+            }
+            Ok(inputs)
+        }
+    }
+
+    deserializer.deserialize_map(InputsVisitor)
 }
 
 /// The state of the current run, used to decide whether a stored entry is a hit.
@@ -202,41 +236,18 @@ impl CommandIdentity<'_> {
 pub struct Counters {
     /// Schema identifier of this document.
     pub schema: String,
-    /// Number of runs served from a cached pass.
+    /// Number of runs served from the cache.
     pub hits: u64,
-    /// Number of hits whose saving could be measured, because the run that
-    /// learned the pass recorded a duration. `None` when the document predates
-    /// this field: the count is unknown, not zero.
-    #[serde(default)]
-    pub measured_hits: Option<u64>,
-    /// Number of runs not served from a cached pass and not bypassed: a miss,
-    /// a learning run or a verification.
+    /// Number of runs that were not served from the cache.
     pub misses: u64,
-    /// Number of child processes kioku started and observed.
+    /// Number of child processes started.
     pub executions: u64,
-    /// Number of runs that never consulted the cache, because caching was
-    /// disabled by an option, an environment variable or a carried standard
-    /// input.
+    /// Number of runs forced to execute by `KIOKU_DISABLE`.
     pub bypassed: u64,
-    /// Milliseconds saved by the hits whose saving was measured. Tracing
-    /// overhead is part of the recorded learning duration, so this is an upper
-    /// bound of the gain over a direct execution.
+    /// Milliseconds saved by the hits.
     pub saved_ms: u64,
-    /// Number of learned passes quarantined because a verification of their
-    /// claimed success failed.
+    /// Number of cached passes invalidated after a failure.
     pub invalidated: u64,
-    /// Milliseconds recorded by an older version, before per-hit measurement.
-    /// Kept for information, never attributed to a measured hit.
-    #[serde(default, skip_serializing_if = "is_zero")]
-    pub legacy_saved_ms: u64,
-}
-
-#[allow(
-    clippy::trivially_copy_pass_by_ref,
-    reason = "serde requires a predicate that borrows the field"
-)]
-const fn is_zero(value: &u64) -> bool {
-    *value == 0
 }
 
 impl Default for Counters {
@@ -244,13 +255,11 @@ impl Default for Counters {
         Self {
             schema: COUNTERS_SCHEMA.to_string(),
             hits: 0,
-            measured_hits: Some(0),
             misses: 0,
             executions: 0,
             bypassed: 0,
             saved_ms: 0,
             invalidated: 0,
-            legacy_saved_ms: 0,
         }
     }
 }
@@ -498,24 +507,40 @@ impl Store {
 
     /// Reads the counters of the store.
     ///
-    /// A missing or malformed document yields default counters: counters are
-    /// telemetry, never a reason to fail a command.
+    /// A missing document yields default counters. Existing history must be
+    /// readable and use the current schema; malformed history is never reset.
     ///
     /// # Errors
     ///
-    /// Returns an error only when the lock cannot be taken.
+    /// Returns an error when the lock cannot be taken or the document cannot be
+    /// read or validated.
     pub fn read_counters(&self) -> Result<Counters, Error> {
-        self.with_lock(|| {
-            let path = self.root.join(COUNTERS_FILE);
-            let raw = match fs::read_to_string(&path) {
-                Ok(raw) => raw,
-                Err(source) if source.kind() == std::io::ErrorKind::NotFound => {
-                    return Ok(Counters::default());
-                }
-                Err(source) => return Err(Error::Io { path, source }),
-            };
-            Ok(serde_json::from_str::<Counters>(&raw).unwrap_or_default())
-        })
+        self.with_lock(|| self.read_counters_unlocked())
+    }
+
+    fn read_counters_unlocked(&self) -> Result<Counters, Error> {
+        let path = self.root.join(COUNTERS_FILE);
+        let raw = match fs::read_to_string(&path) {
+            Ok(raw) => raw,
+            Err(source) if source.kind() == std::io::ErrorKind::NotFound => {
+                return Ok(Counters::default());
+            }
+            Err(source) => return Err(Error::Io { path, source }),
+        };
+        let counters = serde_json::from_str::<Counters>(&raw).map_err(|source| Error::Json {
+            path: path.clone(),
+            source,
+        })?;
+        if counters.schema != COUNTERS_SCHEMA {
+            return Err(Error::Io {
+                path,
+                source: std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "unsupported counters schema",
+                ),
+            });
+        }
+        Ok(counters)
     }
 
     /// Updates the counters of the store under the store lock.
@@ -523,7 +548,7 @@ impl Store {
     /// # Errors
     ///
     /// Returns an error when the lock cannot be taken or the document cannot be
-    /// written.
+    /// read, validated or written.
     pub fn update_counters(&self, update: impl FnOnce(&mut Counters)) -> Result<Counters, Error> {
         self.with_lock(|| self.update_counters_unlocked(update))
     }
@@ -533,18 +558,7 @@ impl Store {
         update: impl FnOnce(&mut Counters),
     ) -> Result<Counters, Error> {
         let path = self.root.join(COUNTERS_FILE);
-        let mut counters = match fs::read_to_string(&path) {
-            Ok(raw) => serde_json::from_str::<Counters>(&raw).unwrap_or_default(),
-            Err(_) => Counters::default(),
-        };
-        // A document written before per-hit measurement kept a saved total
-        // without a measured count. Move that total to the legacy bucket once,
-        // so a later hit cannot claim it as its own measured saving.
-        if counters.measured_hits.is_none() {
-            counters.legacy_saved_ms = counters.legacy_saved_ms.saturating_add(counters.saved_ms);
-            counters.saved_ms = 0;
-            counters.measured_hits = Some(0);
-        }
+        let mut counters = self.read_counters_unlocked()?;
         update(&mut counters);
         counters.schema = COUNTERS_SCHEMA.to_string();
         let body = serde_json::to_vec_pretty(&counters).map_err(|source| Error::Json {
@@ -622,12 +636,12 @@ impl Store {
         let mut report = CleanReport::default();
         let dir = self.entries_dir();
         let reader = match fs::read_dir(&dir) {
-            Ok(reader) => Some(reader),
-            Err(source) if source.kind() == std::io::ErrorKind::NotFound => None,
+            Ok(reader) => reader,
+            Err(source) if source.kind() == std::io::ErrorKind::NotFound => return Ok(report),
             Err(source) => return Err(Error::Io { path: dir, source }),
         };
         let now = now_unix_ms();
-        for item in reader.into_iter().flatten() {
+        for item in reader {
             let item = item.map_err(|source| Error::Io {
                 path: dir.clone(),
                 source,
@@ -713,10 +727,10 @@ impl Store {
 /// the store of that subdirectory and never the store of the repository root.
 ///
 /// This is the single resolution of the store path: the runtime opens the store
-/// here, and every path that reads or writes the store resolves it the same
-/// way. A store inside the work tree turns the cache off: the files of the
-/// store are not part of the key, so a tracked file that happens to live there
-/// would be left out of it too, and a change of it would not change the key.
+/// here and the key excludes exactly this directory from the captured files.
+/// Both sides must name the same directory, otherwise the exclusion would drop
+/// files that are not the store (a false green) or would keep the store files in
+/// the key (no hit at all).
 #[must_use]
 pub fn store_dir(cwd: &Path, git_dir: &Path) -> PathBuf {
     match std::env::var_os(STORE_DIR_ENV) {
@@ -774,6 +788,40 @@ pub fn now_unix_ms() -> u64 {
         .ok()
         .and_then(|since| u64::try_from(since.as_millis()).ok())
         .unwrap_or(0)
+}
+
+/// Formats a Unix timestamp as an RFC 3339 UTC timestamp.
+#[must_use]
+pub fn format_iso8601(unix_ms: u64) -> String {
+    let seconds = unix_ms / 1000;
+    let days = i64::try_from(seconds / 86_400).unwrap_or(0);
+    let rest = seconds % 86_400;
+    let (year, month, day) = civil_from_days(days);
+    format!(
+        "{year:04}-{month:02}-{day:02}T{:02}:{:02}:{:02}Z",
+        rest / 3600,
+        (rest % 3600) / 60,
+        rest % 60
+    )
+}
+
+fn civil_from_days(days: i64) -> (i64, u32, u32) {
+    let shifted = days + 719_468;
+    let era = shifted.div_euclid(146_097);
+    let day_of_era = shifted.rem_euclid(146_097);
+    let year_of_era =
+        (day_of_era - day_of_era / 1460 + day_of_era / 36_524 - day_of_era / 146_096) / 365;
+    let year = year_of_era + era * 400;
+    let day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
+    let month_prime = (5 * day_of_year + 2) / 153;
+    let day = u32::try_from(day_of_year - (153 * month_prime + 2) / 5 + 1).unwrap_or(1);
+    let month = u32::try_from(if month_prime < 10 {
+        month_prime + 3
+    } else {
+        month_prime - 9
+    })
+    .unwrap_or(1);
+    (if month <= 2 { year + 1 } else { year }, month, day)
 }
 
 #[cfg(test)]
@@ -1168,54 +1216,18 @@ impl TraceTransaction {
         }
     }
 
-    /// Creates the quarantine marker of a pass.
-    ///
-    /// Returns `false` when the pass was already quarantined: the creation is
-    /// atomic, so concurrent verifications of the same false green count one
-    /// invalidation, not one each.
-    pub(crate) fn quarantine(&self, id: &str) -> Result<bool, Error> {
+    pub(crate) fn quarantine(&self, id: &str) -> Result<(), Error> {
         let path = self.path("quarantine", id)?;
-        match private_options().create_new(true).write(true).open(&path) {
-            Ok(file) => file
-                .sync_all()
-                .map(|()| true)
-                .map_err(|source| Error::Io { path, source }),
-            Err(source) if source.kind() == std::io::ErrorKind::AlreadyExists => Ok(false),
-            Err(source) => Err(Error::Io { path, source }),
-        }
-    }
-
-    /// Records the measured duration of the run that learned a pass.
-    ///
-    /// A duration describes the state it was measured on: publishing a
-    /// different state replaces it, publishing an equivalent one keeps the
-    /// first record, so a verification never replaces the duration of the
-    /// learning run. Timing is telemetry: it never takes part in a reuse
-    /// decision, and a missing or unreadable value is reported as an unknown
-    /// saving.
-    pub(crate) fn set_timing(&self, id: &str, duration_ms: u64) -> Result<(), Error> {
-        let path = self.path("timing", id)?;
-        let mut file = private_options()
+        let file = private_options()
             .create(true)
             .write(true)
-            .truncate(true)
+            .truncate(false)
             .open(&path)
             .map_err(|source| Error::Io {
                 path: path.clone(),
                 source,
             })?;
-        file.write_all(duration_ms.to_string().as_bytes())
-            .map_err(|source| Error::Io { path, source })
-    }
-
-    /// Reads the recorded duration of the run that learned a pass.
-    pub(crate) fn timing(&self, id: &str) -> Result<Option<u64>, Error> {
-        let path = self.path("timing", id)?;
-        match fs::read_to_string(&path) {
-            Ok(raw) => Ok(raw.trim().parse().ok()),
-            Err(source) if source.kind() == std::io::ErrorKind::NotFound => Ok(None),
-            Err(source) => Err(Error::Io { path, source }),
-        }
+        file.sync_all().map_err(|source| Error::Io { path, source })
     }
 
     pub(crate) fn ast_diagnostic(
@@ -1312,9 +1324,7 @@ impl TraceTransaction {
             let path = entry.path();
             let name = entry.file_name();
             let name = name.to_string_lossy();
-            if !(name.starts_with("state-")
-                || name.starts_with("ast-diagnostic-")
-                || name.starts_with("timing-"))
+            if !(name.starts_with("state-") || name.starts_with("ast-diagnostic-"))
                 || path.extension().and_then(|v| v.to_str()) != Some("json")
             {
                 continue;
@@ -1342,7 +1352,7 @@ impl TraceTransaction {
     }
 
     pub(crate) fn reset_quarantine(&self, id: &str) -> Result<(), Error> {
-        for kind in ["quarantine", "state", "ast-diagnostic", "timing"] {
+        for kind in ["quarantine", "state", "ast-diagnostic"] {
             let path = self.path(kind, id)?;
             match fs::remove_file(&path) {
                 Ok(()) => {}
@@ -1380,59 +1390,6 @@ mod trace_store_tests {
             .trace_transaction(|tx| Ok(!tx.quarantined(&id)?))
             .unwrap();
         assert!(!finally_allowed);
-    }
-
-    #[test]
-    fn quarantine_reports_only_the_first_creation() {
-        let tmp = tempfile::tempdir().unwrap();
-        let store = Store::open(tmp.path());
-        let id = "c".repeat(64);
-        assert!(store.trace_transaction(|tx| tx.quarantine(&id)).unwrap());
-        assert!(
-            !store.trace_transaction(|tx| tx.quarantine(&id)).unwrap(),
-            "a second verification must not count another invalidation"
-        );
-        let (_, quarantines) = store
-            .trace_transaction(super::TraceTransaction::counts)
-            .unwrap();
-        assert_eq!(quarantines, 1);
-    }
-
-    #[test]
-    fn a_barrier_race_creates_one_quarantine_and_counts_one_invalidation() {
-        let tmp = tempfile::tempdir().unwrap();
-        let store = Store::open(tmp.path());
-        let id = "d".repeat(64);
-        let barrier = std::sync::Arc::new(std::sync::Barrier::new(2));
-        let threads: Vec<_> = (0..2)
-            .map(|_| {
-                let store = store.clone();
-                let barrier = std::sync::Arc::clone(&barrier);
-                let id = id.clone();
-                std::thread::spawn(move || {
-                    barrier.wait();
-                    let created = store.trace_transaction(|tx| tx.quarantine(&id)).unwrap();
-                    if created {
-                        store
-                            .update_counters(|counters| {
-                                counters.invalidated = counters.invalidated.saturating_add(1);
-                            })
-                            .unwrap();
-                    }
-                    created
-                })
-            })
-            .collect();
-        let created: Vec<bool> = threads
-            .into_iter()
-            .map(|thread| thread.join().unwrap())
-            .collect();
-        assert_eq!(created.iter().filter(|created| **created).count(), 1);
-        assert_eq!(store.read_counters().unwrap().invalidated, 1);
-        let (_, quarantines) = store
-            .trace_transaction(super::TraceTransaction::counts)
-            .unwrap();
-        assert_eq!(quarantines, 1);
     }
 
     #[test]

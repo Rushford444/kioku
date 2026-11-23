@@ -3,8 +3,8 @@
 > A conservative local command exit-status cache with opt-in traced reuse.
 
 Default runs execute; a hit does not replay output or artifacts. Trace reuse
-requires Linux aarch64 or x86_64, a pinned tracer, a static child, and
-explicit caller assumptions. It is not proof of hermeticity.
+requires Linux/aarch64, a pinned tracer, a static child, and explicit caller
+assumptions. It is not proof of hermeticity.
 
 - [README](https://github.com/Rushford444/kioku/blob/main/README.md): installation, limits, and safety assumptions
 - [Usage](https://github.com/Rushford444/kioku/blob/main/docs/usage.md): commands and output

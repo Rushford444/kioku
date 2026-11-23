@@ -5,7 +5,7 @@
 //! requested AST mode uses bytes. Unsupported observations do not authorize reuse.
 //!
 //! [`key::Snapshot`] and its capture options remain available as legacy fingerprint
-//! utilities. They are not the runtime trace policy or a guarantee that every
+//! utilities. They are not the runtime v0.2 trace policy or a guarantee that every
 //! input a command can read has been captured.
 //!
 //! # Example
@@ -29,11 +29,14 @@
 
 #![forbid(unsafe_code)]
 
+pub mod ci2;
 pub mod config;
 pub mod fingerprint;
 pub mod key;
 pub mod policy;
+pub mod profiles;
 pub mod runner;
+pub mod select;
 pub mod store;
 pub mod tools;
 pub mod trace;

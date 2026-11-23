@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="nextest-run" tests="5" skipped="0" failures="0" errors="0" uuid="4a620b39-dc83-4b71-95d6-e2c468d14944" timestamp="2026-11-15T14:15:50.096+00:00" time="0.081">
+    <testsuite name="kdw-kioku::bin/kioku" tests="1" skipped="0" errors="0" failures="0">
+        <testcase name="tests::formats_sizes_and_durations" classname="kdw-kioku::bin/kioku" timestamp="2026-11-15T14:15:50.097+00:00" time="0.003"/>
+    </testsuite>
+    <testsuite name="kdw-kioku::v2_r14_schema" tests="2" skipped="0" errors="0" failures="0">
+        <testcase name="origin_claim_variant_refuses_an_undeclared_field" classname="kdw-kioku::v2_r14_schema" timestamp="2026-11-15T14:15:50.097+00:00" time="0.003"/>
+        <testcase name="input_selector_variant_refuses_an_undeclared_field" classname="kdw-kioku::v2_r14_schema" timestamp="2026-11-15T14:15:50.097+00:00" time="0.004"/>
+    </testsuite>
+    <testsuite name="kdw-kioku" tests="1" skipped="0" errors="0" failures="0">
+        <testcase name="ci2::domain::strict_json::tests::duplicate_inside_array_object_is_rejected_before_value_normalization" classname="kdw-kioku" timestamp="2026-11-15T14:15:50.097+00:00" time="0.004"/>
+    </testsuite>
+    <testsuite name="kdw-kioku::cli" tests="1" skipped="0" errors="0" failures="0">
+        <testcase name="a_command_that_reads_the_standard_input_is_never_cached" classname="kdw-kioku::cli" timestamp="2026-11-15T14:15:50.097+00:00" time="0.080"/>
+    </testsuite>
+</testsuites>

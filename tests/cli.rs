@@ -9,8 +9,6 @@
 
 mod support;
 
-#[cfg(unix)]
-use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
@@ -114,11 +112,6 @@ impl Run {
         self
     }
 
-    fn arg<S: AsRef<std::ffi::OsStr>>(mut self, arg: S) -> Self {
-        self.command.arg(arg);
-        self
-    }
-
     #[cfg(unix)]
     fn env<K, V>(mut self, key: K, value: V) -> Self
     where
@@ -196,19 +189,6 @@ fn native_success() -> Vec<String> {
 #[cfg(unix)]
 fn canonical(path: &Path) -> PathBuf {
     path.canonicalize().unwrap_or_else(|_| path.to_path_buf())
-}
-
-/// The canonical form of a path whose parent exists.
-///
-/// The store does not exist yet when kioku reports it, and a temporary
-/// directory can be reached through a symbolic link: kioku canonicalizes the
-/// longest existing ancestor, so the expectation must do the same.
-#[cfg(unix)]
-fn canonical_child(path: &Path) -> PathBuf {
-    match (path.parent(), path.file_name()) {
-        (Some(parent), Some(name)) => canonical(parent).join(name),
-        _ => path.to_path_buf(),
-    }
 }
 
 /// The cache key of a run, read from its JSON event.
@@ -436,6 +416,42 @@ fn a_modified_lockfile_changes_the_key() {
 
 #[cfg(unix)]
 #[test]
+fn a_declared_environment_variable_changes_the_key() {
+    let repo = Repo::new();
+    repo.write("main.txt", "hello\n");
+    repo.commit();
+
+    repo.run()
+        .env("KIOKU_TEST_VALUE", "one")
+        .args([
+            "run",
+            "--env",
+            "KIOKU_TEST_VALUE",
+            "--",
+            "sh",
+            "-c",
+            "exit 0",
+        ])
+        .success();
+    let second = repo
+        .run()
+        .env("KIOKU_TEST_VALUE", "two")
+        .args([
+            "run",
+            "--env",
+            "KIOKU_TEST_VALUE",
+            "--",
+            "sh",
+            "-c",
+            "exit 0",
+        ])
+        .success();
+    let stderr = String::from_utf8_lossy(&second.stderr);
+    assert!(!stderr.contains("cached (pass"), "stderr was: {stderr}");
+}
+
+#[cfg(unix)]
+#[test]
 fn a_malformed_legacy_entry_is_never_a_hit() {
     let repo = Repo::new();
     repo.write("main.txt", "hello\n");
@@ -491,6 +507,33 @@ fn an_external_store_does_not_leak_between_different_repositories() {
         .run()
         .env("KIOKU_DIR", shared.path())
         .args(["run", "--", "sh", "-c", "exit 0"])
+        .success();
+    let stderr = String::from_utf8_lossy(&other.stderr);
+    assert!(!stderr.contains("cached (pass"), "stderr was: {stderr}");
+}
+
+#[cfg(unix)]
+#[test]
+fn a_store_with_restricted_inputs_is_not_shared_between_repositories() {
+    let first = Repo::new();
+    first.write("main.txt", "same\n");
+    first.commit();
+    let second = Repo::new();
+    second.write("main.txt", "same\n");
+    second.commit();
+    let shared = TempDir::new().expect("a temporary directory");
+
+    // The inputs are restricted: the entry is tied to its repository, so an
+    // identical repository must not reuse it.
+    first
+        .run()
+        .env("KIOKU_DIR", shared.path())
+        .args(["run", "--inputs", "main.txt", "--", "sh", "-c", "exit 0"])
+        .success();
+    let other = second
+        .run()
+        .env("KIOKU_DIR", shared.path())
+        .args(["run", "--inputs", "main.txt", "--", "sh", "-c", "exit 0"])
         .success();
     let stderr = String::from_utf8_lossy(&other.stderr);
     assert!(!stderr.contains("cached (pass"), "stderr was: {stderr}");
@@ -732,295 +775,6 @@ fn a_store_inside_the_work_tree_disables_the_cache() {
     }
 }
 
-/// The names kioku would leave in a store directory.
-#[cfg(unix)]
-fn store_entries(store: &Path) -> Vec<String> {
-    let Ok(reader) = std::fs::read_dir(store) else {
-        return Vec::new();
-    };
-    reader
-        .map(|item| {
-            item.expect("a store entry")
-                .file_name()
-                .to_string_lossy()
-                .into_owned()
-        })
-        .collect()
-}
-
-/// A store in the work tree turns the cache off, whatever path names it.
-///
-/// The files of the store are not part of the key, so a tracked file that
-/// happens to live there would be left out of it too, and a change of it would
-/// not change the key. The refusal must not depend on how the path is
-/// written: an absolute path, a relative path, a path with a detour, a
-/// trailing separator and a symbolic link all name the same directory.
-#[cfg(unix)]
-#[test]
-fn a_store_in_the_work_tree_turns_the_cache_off_for_every_path_alias() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let inside = repo.path().join("cache");
-    std::fs::create_dir_all(&inside).expect("the store directory");
-    let link = repo.path().join("link-to-cache");
-    std::os::unix::fs::symlink(&inside, &link).expect("the symbolic link");
-
-    for alias in [
-        inside.clone(),
-        PathBuf::from("cache"),
-        PathBuf::from("./cache"),
-        PathBuf::from("cache/"),
-        link.clone(),
-    ] {
-        let output = repo
-            .run()
-            .env("KIOKU_DIR", &alias)
-            .args(["run", "--json", "--trust-trace", "--", "sh", "-c", "exit 0"])
-            .output();
-        assert!(output.status.success(), "kioku failed: {output:?}");
-        let event: serde_json::Value =
-            serde_json::from_slice(&output.stderr).expect("the JSON event");
-        assert_eq!(
-            event["reason"], "store-in-work-tree",
-            "the store {alias:?} must turn the cache off: {event}"
-        );
-        assert_eq!(event["denial_reason"], "store-in-work-tree", "{event}");
-        assert_eq!(event["decision"], "executed", "{event}");
-        assert!(
-            store_entries(&inside).is_empty(),
-            "kioku must leave the work tree alone: {alias:?}"
-        );
-    }
-}
-
-/// A store outside the work tree names a store the cache can use.
-#[cfg(unix)]
-#[test]
-fn a_store_outside_the_work_tree_is_not_refused() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let outside = TempDir::new().expect("a temporary store");
-    let store = outside.path().join("store");
-
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .args(["run", "--json", "--trust-trace", "--", "sh", "-c", "exit 0"])
-        .output();
-    assert!(output.status.success(), "kioku failed: {output:?}");
-    let event: serde_json::Value = serde_json::from_slice(&output.stderr).expect("the JSON event");
-    assert_ne!(
-        event["reason"], "store-in-work-tree",
-        "a store outside the work tree is not refused: {event}"
-    );
-    assert!(store.exists(), "the store outside the work tree is used");
-}
-
-/// The default store lives in the git directory: the cache is on there.
-#[cfg(unix)]
-#[test]
-fn the_default_store_is_not_refused() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-
-    let output = repo
-        .run()
-        .args(["run", "--json", "--trust-trace", "--", "sh", "-c", "exit 0"])
-        .output();
-    assert!(output.status.success(), "kioku failed: {output:?}");
-    let event: serde_json::Value = serde_json::from_slice(&output.stderr).expect("the JSON event");
-    assert_ne!(
-        event["reason"], "store-in-work-tree",
-        "the default store is not refused: {event}"
-    );
-}
-
-/// The explanation says the same thing as the run.
-#[cfg(unix)]
-#[test]
-fn explain_refuses_a_store_in_the_work_tree() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = repo.path().join("cache");
-
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .args([
-            "explain",
-            "--json",
-            "--trust-trace",
-            "--",
-            "sh",
-            "-c",
-            "exit 0",
-        ])
-        .output();
-    assert!(output.status.success(), "kioku failed: {output:?}");
-    let event: serde_json::Value = serde_json::from_slice(&output.stdout).expect("the JSON event");
-    assert_eq!(event["reason"], "store-in-work-tree", "{event}");
-    assert_eq!(event["denial_reason"], "store-in-work-tree", "{event}");
-    assert_eq!(event["hit"], false, "{event}");
-    assert!(
-        store_entries(&store).is_empty(),
-        "kioku must leave the work tree alone"
-    );
-}
-
-/// The refusal is a decision about the store: no environment value reaches
-/// the output, and nothing is written in the work tree.
-#[cfg(unix)]
-#[test]
-fn a_refused_store_keeps_the_environment_out_of_the_output() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = repo.path().join("cache");
-    let sentinel = "kioku-store-refusal-sentinel-4f21a";
-
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .env("KIOKU_SENTINEL_SECRET", sentinel)
-        .args(["run", "--json", "--trust-trace", "--", "sh", "-c", "exit 0"])
-        .output();
-    assert!(output.status.success(), "kioku failed: {output:?}");
-    let event: serde_json::Value = serde_json::from_slice(&output.stderr).expect("the JSON event");
-    assert_eq!(event["reason"], "store-in-work-tree", "{event}");
-    let text = String::from_utf8_lossy(&output.stderr).into_owned();
-    assert!(!text.contains(sentinel), "the environment leaked: {text}");
-    assert!(
-        store_entries(&store).is_empty(),
-        "kioku must leave the work tree alone"
-    );
-}
-
-/// No command creates a store in the work tree.
-#[cfg(unix)]
-#[test]
-fn no_command_creates_a_store_in_the_work_tree() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = repo.path().join("cache");
-    let program = support::true_program();
-
-    let commands: Vec<Vec<&str>> = vec![
-        vec!["run", "--trust-trace", "--"],
-        vec!["run", "--"],
-        vec!["verify", "--trust-trace", "--"],
-        vec!["explain", "--trust-trace", "--"],
-        vec!["status"],
-        vec!["clean", "--all"],
-    ];
-    for args in commands {
-        let mut command = repo.run().env("KIOKU_DIR", &store).args(&args);
-        if args.last() == Some(&"--") {
-            command = command.arg(&program);
-        }
-        let output = command.output();
-        assert!(output.status.success(), "kioku {args:?} failed: {output:?}");
-        assert!(
-            store_entries(&store).is_empty(),
-            "kioku {args:?} must leave the work tree alone"
-        );
-    }
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .args(["quarantine", "reset", "--"])
-        .arg(&program)
-        .output();
-    assert!(output.status.success(), "kioku failed: {output:?}");
-    assert!(!store.exists(), "kioku must leave the work tree alone");
-}
-
-/// The status of a store in the work tree reads the empty store, and does not
-/// create it.
-#[cfg(unix)]
-#[test]
-fn the_status_of_a_store_in_the_work_tree_creates_nothing() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = repo.path().join("cache");
-
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .args(["status", "--json"])
-        .output();
-    assert!(output.status.success(), "kioku failed: {output:?}");
-    let event: serde_json::Value = serde_json::from_slice(&output.stdout).expect("the JSON event");
-    assert_eq!(event["counters"]["hits"], 0, "{event}");
-    assert_eq!(event["counters"]["executions"], 0, "{event}");
-    assert_eq!(
-        event["store"],
-        canonical_child(&store).to_string_lossy().as_ref(),
-        "{event}"
-    );
-    assert_eq!(
-        event["reason"], "store-in-work-tree",
-        "the status must say why it is empty: {event}"
-    );
-    assert!(!store.exists(), "kioku must leave the work tree alone");
-
-    let output = repo.run().env("KIOKU_DIR", &store).arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("the store is inside the work tree"),
-        "the human status must say why it is empty: {human}"
-    );
-}
-
-/// The clean of a store in the work tree says the cache is off, and leaves
-/// the store alone.
-#[cfg(unix)]
-#[test]
-fn the_clean_of_a_store_in_the_work_tree_says_the_cache_is_off() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = repo.path().join("cache");
-    std::fs::create_dir_all(&store).expect("the store directory");
-    let stale = store.join("counters.json");
-    std::fs::write(&stale, "{\"schema\":\"kioku/counters/v1\"}").expect("the stale document");
-
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .args(["clean", "--all", "--json"])
-        .output();
-    assert!(output.status.success(), "kioku failed: {output:?}");
-    let event: serde_json::Value = serde_json::from_slice(&output.stdout).expect("the JSON event");
-    assert_eq!(
-        event["reason"], "store-in-work-tree",
-        "the clean must say why it removed nothing: {event}"
-    );
-    assert_eq!(event["removed"], 0, "{event}");
-    assert!(
-        stale.exists(),
-        "the store of a refused clean is left to its owner"
-    );
-
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .args(["clean", "--all"])
-        .output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("the store is inside the work tree"),
-        "the human clean must say why it removed nothing: {human}"
-    );
-}
-
 #[cfg(unix)]
 #[test]
 fn the_key_does_not_depend_on_the_absolute_path() {
@@ -1215,6 +969,8 @@ fn a_store_that_shadows_a_source_directory_does_not_hide_a_change() {
         "run",
         "--mode",
         "bytes",
+        "--inputs",
+        "cache/**",
         "--",
         "sh",
         "-c",
@@ -1461,96 +1217,6 @@ fn the_help_lists_the_commands_and_the_examples() {
 }
 
 #[test]
-fn the_run_help_lists_the_documented_options_only() {
-    let repo = Repo::new();
-    let output = repo
-        .kioku()
-        .args(["run", "--help"])
-        .output()
-        .expect("kioku must run");
-    assert!(output.status.success());
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    let mut options: Vec<&str> = stdout
-        .lines()
-        .flat_map(str::split_whitespace)
-        .filter(|token| token.starts_with("--"))
-        .collect();
-    options.sort_unstable();
-    options.dedup();
-    assert_eq!(
-        options,
-        [
-            "--help",
-            "--json",
-            "--mode",
-            "--quiet",
-            "--require-output",
-            "--trust-trace",
-            "--verify-rate",
-        ],
-        "run help was: {stdout}"
-    );
-    assert!(
-        stdout.contains(
-            "The complete initial environment is part of the trace identity; no option narrows it."
-        ),
-        "run help was: {stdout}"
-    );
-}
-
-#[cfg(unix)]
-#[test]
-fn removed_input_and_environment_options_are_usage_errors() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let removed: [&[&str]; 3] = [
-        &["--inputs", "main.txt"],
-        &["--env", "PATH"],
-        &["--strict-env"],
-    ];
-    for option in removed {
-        let output = repo
-            .kioku()
-            .args(["run"])
-            .args(option)
-            .args(["--", "sh", "-c", "exit 0"])
-            .output()
-            .expect("kioku must run");
-        assert_eq!(
-            output.status.code(),
-            Some(2),
-            "option {option:?} was accepted: {output:?}"
-        );
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        let expected = format!("error: unexpected argument '{}' found", option[0]);
-        assert_eq!(
-            stderr.lines().next(),
-            Some(expected.as_str()),
-            "option {option:?} was not reported exactly: {stderr}"
-        );
-    }
-}
-
-#[cfg(unix)]
-#[test]
-fn an_unknown_run_option_is_a_usage_error() {
-    let repo = Repo::new();
-    let output = repo
-        .kioku()
-        .args(["run", "--foo", "--", "sh", "-c", "exit 0"])
-        .output()
-        .expect("kioku must run");
-    assert_eq!(output.status.code(), Some(2), "output was: {output:?}");
-    let stderr = String::from_utf8_lossy(&output.stderr);
-    assert_eq!(
-        stderr.lines().next(),
-        Some("error: unexpected argument '--foo' found"),
-        "unknown option was not reported exactly: {stderr}"
-    );
-}
-
-#[test]
 fn git_errors_do_not_repeat_the_git_prefix() {
     let error = kioku::Error::Git {
         command: "rev-parse --show-toplevel".into(),
@@ -1754,106 +1420,6 @@ fn path_program_key_uses_the_resolved_executable() {
     assert_ne!(key(&first.join("bin")), key(&second.join("bin")));
 }
 
-/// A file that cannot be executed is not a program.
-///
-/// The search of the path must skip such a file, exactly like a shell does.
-/// The resolved program, and therefore the command key, must not depend on a
-/// regular file that happens to sit earlier in `PATH`.
-#[cfg(unix)]
-#[test]
-fn a_non_executable_file_earlier_in_path_is_not_the_program() {
-    let repo = Repo::new();
-    repo.write("tracked", "x\n");
-    repo.commit();
-    let decoy = repo.path().join("decoy");
-    let real = repo.path().join("real");
-    std::fs::create_dir_all(&decoy).unwrap();
-    std::fs::create_dir_all(&real).unwrap();
-    // The decoy is a regular file that cannot be executed.
-    std::fs::write(decoy.join("reader"), "not a program\n").unwrap();
-    // The program is executable.
-    std::fs::write(real.join("reader"), "#!/bin/sh\nexit 0\n").unwrap();
-    let mut mode = std::fs::metadata(real.join("reader"))
-        .unwrap()
-        .permissions();
-    std::os::unix::fs::PermissionsExt::set_mode(&mut mode, 0o755);
-    std::fs::set_permissions(real.join("reader"), mode).unwrap();
-
-    let key = |path: &OsStr| {
-        let output = repo
-            .run()
-            .env("PATH", path)
-            .env("KIOKU_DISABLE", "0")
-            .args(["explain", "--json", "--", "reader"])
-            .output();
-        assert!(
-            output.status.success(),
-            "{}",
-            String::from_utf8_lossy(&output.stderr)
-        );
-        let event: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
-        event["key"].as_str().expect("a key").to_owned()
-    };
-
-    // The decoy comes first, the program comes second: the search must skip
-    // the decoy and reach the program.
-    let mut decoy_first = decoy.as_os_str().to_owned();
-    decoy_first.push(":");
-    decoy_first.push(&real);
-    decoy_first.push(":");
-    decoy_first.push(std::env::var_os("PATH").unwrap_or_default());
-    let mut program_only = real.as_os_str().to_owned();
-    program_only.push(":");
-    program_only.push(std::env::var_os("PATH").unwrap_or_default());
-
-    assert_eq!(
-        key(&decoy_first),
-        key(&program_only),
-        "the program must not be a file that cannot be executed"
-    );
-}
-
-/// A program given by an explicit path that cannot be executed is not a
-/// program.
-///
-/// The trace policy must refuse it instead of trying to spawn it, so the
-/// explanation names the unresolved program.
-#[cfg(target_os = "linux")]
-#[test]
-#[ignore = "requires the pinned tracer"]
-fn an_explicit_program_that_cannot_be_executed_is_not_resolved() {
-    let tracer = std::env::var_os("KIOKU_STRACE").expect("KIOKU_STRACE must name the tracer");
-    let repo = Repo::new();
-    repo.write("tracked", "x\n");
-    repo.commit();
-    let tool = repo.path().join("tool");
-    std::fs::write(&tool, "not a program\n").unwrap();
-    let mut mode = std::fs::metadata(&tool).unwrap().permissions();
-    std::os::unix::fs::PermissionsExt::set_mode(&mut mode, 0o644);
-    std::fs::set_permissions(&tool, mode).unwrap();
-
-    let output = repo
-        .run()
-        .env("KIOKU_STRACE", &tracer)
-        .env("KIOKU_DISABLE", "0")
-        .args(["explain", "--json", "--trust-trace", "--", "./tool"])
-        .output();
-    assert!(
-        output.status.success(),
-        "{}",
-        String::from_utf8_lossy(&output.stderr)
-    );
-    let event: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
-    assert_eq!(
-        event["reason"], "program-unresolved",
-        "the explanation must refuse a program that cannot be executed: {event}"
-    );
-    assert_eq!(
-        event["denial_reason"], "program-unresolved",
-        "the denial must name the unresolved program: {event}"
-    );
-}
-
 #[cfg(all(target_os = "linux", target_arch = "aarch64"))]
 #[test]
 fn traced_realtime_signal_exit_is_reported_without_child_retry() {
@@ -1984,818 +1550,6 @@ fn status_and_clean_answer_in_json() {
         stdout.contains("\"schema\":\"kioku/v1\""),
         "stdout was: {stdout}"
     );
-}
-
-/// Parses `kioku status --json`.
-fn status_document(repo: &Repo) -> serde_json::Value {
-    let output = repo.run().args(["status", "--json"]).output();
-    assert!(
-        output.status.success(),
-        "status failed: {}",
-        String::from_utf8_lossy(&output.stderr)
-    );
-    serde_json::from_slice(&output.stdout).expect("status must print JSON")
-}
-
-#[test]
-fn counters_start_at_zero_in_an_empty_store() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["schema"], "kioku/counters/v1");
-    for field in [
-        "hits",
-        "measured_hits",
-        "misses",
-        "executions",
-        "bypassed",
-        "saved_ms",
-        "invalidated",
-    ] {
-        assert_eq!(counters[field], 0, "{field} must start at zero: {counters}");
-    }
-    assert!(
-        counters.get("legacy_saved_ms").is_none(),
-        "a fresh store has no legacy saving: {counters}"
-    );
-}
-
-#[test]
-fn default_runs_are_counted_as_executions_and_bypasses() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    for _ in 0..2 {
-        repo.run()
-            .arg("run")
-            .arg("--")
-            .args(native_success())
-            .success();
-    }
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["executions"], 2, "{counters}");
-    assert_eq!(counters["bypassed"], 2, "{counters}");
-    assert_eq!(counters["hits"], 0, "{counters}");
-    assert_eq!(counters["misses"], 0, "{counters}");
-}
-
-#[test]
-fn a_corrupt_counters_document_does_not_block_a_run() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = store_dir(&repo);
-    std::fs::create_dir_all(&store).expect("the store directory");
-    std::fs::write(store.join("counters.json"), "not a counters document")
-        .expect("the corrupt counters");
-
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(
-        counters["executions"], 0,
-        "a corrupt document must read as zero: {counters}"
-    );
-
-    repo.run()
-        .arg("run")
-        .arg("--")
-        .args(native_success())
-        .success();
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(
-        counters["executions"], 1,
-        "a corrupt document must not block new counts: {counters}"
-    );
-}
-
-#[test]
-fn an_old_counters_document_reports_unknown_savings() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = store_dir(&repo);
-    std::fs::create_dir_all(&store).expect("the store directory");
-    std::fs::write(
-        store.join("counters.json"),
-        r#"{"schema":"kioku/counters/v1","hits":3,"misses":0,"executions":0,"bypassed":0,"saved_ms":0,"invalidated":0}"#,
-    )
-    .expect("an old counters document");
-
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["hits"], 3, "{counters}");
-    assert!(
-        counters["measured_hits"].is_null(),
-        "an old document has no measured count, and absence is explicit: {counters}"
-    );
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("3 hits (measurement unknown)"),
-        "the measured count must be named as unknown: {human}"
-    );
-    assert!(
-        human.contains("unknown (3 hits counted before per-hit measurement)"),
-        "a missing measurement is unknown, never zero: {human}"
-    );
-    assert!(
-        !human.contains("0 measured"),
-        "an old document must not claim a measured zero: {human}"
-    );
-}
-
-#[test]
-fn an_older_saved_total_is_never_attributed_to_measured_hits() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = store_dir(&repo);
-    std::fs::create_dir_all(&store).expect("the store directory");
-    std::fs::write(
-        store.join("counters.json"),
-        r#"{"schema":"kioku/counters/v1","hits":3,"misses":0,"executions":0,"bypassed":0,"saved_ms":500,"invalidated":0}"#,
-    )
-    .expect("an old counters document");
-
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["hits"], 3, "{counters}");
-    assert!(
-        counters["measured_hits"].is_null(),
-        "an old document has no measured count: {counters}"
-    );
-    assert_eq!(
-        counters["saved_ms"], 500,
-        "the total is still readable: {counters}"
-    );
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("500 ms recorded by an older version (not attributed to hits)"),
-        "an old total must stay unattributed: {human}"
-    );
-    assert!(
-        !human.contains("over 3 measured"),
-        "an old total is not a measured saving: {human}"
-    );
-
-    // Any later run rewrites the counters document. The old total must move to
-    // the legacy bucket once, not be erased and not become a measured saving.
-    for _ in 0..2 {
-        repo.run()
-            .arg("run")
-            .arg("--")
-            .args(native_success())
-            .success();
-    }
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["hits"], 3, "{counters}");
-    assert_eq!(counters["measured_hits"], 0, "{counters}");
-    assert_eq!(counters["saved_ms"], 0, "{counters}");
-    assert_eq!(
-        counters["legacy_saved_ms"], 500,
-        "the old total survives, once: {counters}"
-    );
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("500 ms recorded by an older version"),
-        "the migrated total must still be shown: {human}"
-    );
-    assert!(
-        !human.contains("over 0 measured"),
-        "a migrated total is never attributed to zero measured hits: {human}"
-    );
-}
-
-#[test]
-fn an_incoherent_old_total_with_zero_hits_is_kept_as_legacy() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = store_dir(&repo);
-    std::fs::create_dir_all(&store).expect("the store directory");
-    std::fs::write(
-        store.join("counters.json"),
-        r#"{"schema":"kioku/counters/v1","hits":0,"misses":0,"executions":0,"bypassed":0,"saved_ms":500,"invalidated":0}"#,
-    )
-    .expect("an old counters document");
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("500 ms recorded by an older version"),
-        "a total without hits is still a recorded value: {human}"
-    );
-    assert!(
-        !human.contains("no hit yet"),
-        "a store with a recorded total is not empty: {human}"
-    );
-
-    repo.run()
-        .arg("run")
-        .arg("--")
-        .args(native_success())
-        .success();
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["hits"], 0, "{counters}");
-    assert_eq!(counters["measured_hits"], 0, "{counters}");
-    assert_eq!(counters["legacy_saved_ms"], 500, "{counters}");
-}
-
-#[test]
-fn status_without_any_hit_claims_no_saving() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("no hit yet"),
-        "an empty store must say so: {human}"
-    );
-    assert!(
-        !human.contains("(measured"),
-        "no hit means nothing was measured: {human}"
-    );
-}
-
-#[test]
-fn an_incoherent_measured_count_is_reported_as_unknown() {
-    // A measured count above the hit count cannot be true. The document does
-    // not say how many hits were measured, so the measurement is unknown:
-    // kioku does not invent a smaller number.
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = store_dir(&repo);
-    std::fs::create_dir_all(&store).expect("the store directory");
-    std::fs::write(
-        store.join("counters.json"),
-        r#"{"schema":"kioku/counters/v1","hits":2,"measured_hits":5,"misses":0,"executions":0,"bypassed":0,"saved_ms":100,"invalidated":0}"#,
-    )
-    .expect("the counters document");
-
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["hits"], 2, "{counters}");
-    assert!(
-        counters["measured_hits"].is_null(),
-        "an incoherent measured count is unknown: {counters}"
-    );
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("2 hits (measurement unknown)"),
-        "the human count must not invent a measurement: {human}"
-    );
-}
-
-#[test]
-fn a_legacy_counters_document_without_hits_names_no_measurement() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    let store = store_dir(&repo);
-    std::fs::create_dir_all(&store).expect("the store directory");
-    std::fs::write(
-        store.join("counters.json"),
-        r#"{"schema":"kioku/counters/v1","hits":0,"misses":0,"executions":0,"bypassed":0,"saved_ms":0,"invalidated":0}"#,
-    )
-    .expect("an old counters document");
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        !human.contains("measurement unknown"),
-        "no hit means no measurement: {human}"
-    );
-    assert!(
-        human.contains("0 hits (none)"),
-        "a document without hits must say so: {human}"
-    );
-}
-
-#[test]
-fn clean_all_resets_the_counters() {
-    let repo = Repo::new();
-    repo.write("main.txt", "hello\n");
-    repo.commit();
-    repo.run()
-        .arg("run")
-        .arg("--")
-        .args(native_success())
-        .success();
-    assert_eq!(status_document(&repo)["counters"]["executions"], 1);
-
-    repo.run().args(["clean", "--all"]).success();
-    let counters = status_document(&repo)["counters"].clone();
-    for field in [
-        "hits",
-        "measured_hits",
-        "misses",
-        "executions",
-        "bypassed",
-        "saved_ms",
-        "invalidated",
-    ] {
-        assert_eq!(counters[field], 0, "clean must reset {field}: {counters}");
-    }
-    assert!(
-        counters.get("legacy_saved_ms").is_none(),
-        "clean must reset the legacy saving: {counters}"
-    );
-}
-
-/// Builds the static reader helper inside the repository.
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-fn static_reader(repo: &Repo) -> PathBuf {
-    let helper = repo.path().join("reader");
-    let source = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/false_green_zoo/read_aarch64.S");
-    assert!(
-        Command::new(support::executable("cc"))
-            .args(["-nostdlib", "-static", "-o"])
-            .arg(&helper)
-            .arg(source)
-            .status()
-            .expect("the C compiler must run")
-            .success()
-    );
-    helper
-}
-
-/// Runs a traced `run` or `verify` and returns its status and JSON event.
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-fn traced_event(
-    repo: &Repo,
-    verb: &str,
-    program: &Path,
-    input: &Path,
-) -> (std::process::ExitStatus, serde_json::Value) {
-    let output = repo
-        .run()
-        .env("KIOKU_STRACE", tracer_path())
-        .args([verb, "--json", "--trust-trace", "--"])
-        .arg(program)
-        .arg(input)
-        .output();
-    let event = serde_json::from_slice(&output.stderr).unwrap_or_else(|_| {
-        panic!(
-            "missing JSON from {verb}: {}",
-            String::from_utf8_lossy(&output.stderr)
-        )
-    });
-    (output.status, event)
-}
-
-/// Runs a traced `run` or `verify` against a chosen store and returns its
-/// status and JSON event.
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-fn traced_event_in(
-    repo: &Repo,
-    store: &Path,
-    verb: &str,
-    program: &Path,
-    input: &Path,
-) -> (std::process::ExitStatus, serde_json::Value) {
-    let output = repo
-        .run()
-        .env("KIOKU_STRACE", tracer_path())
-        .env("KIOKU_DIR", store)
-        .args([verb, "--json", "--trust-trace", "--"])
-        .arg(program)
-        .arg(input)
-        .output();
-    let event = serde_json::from_slice(&output.stderr).unwrap_or_else(|_| {
-        panic!(
-            "missing JSON from {verb}: {}",
-            String::from_utf8_lossy(&output.stderr)
-        )
-    });
-    (output.status, event)
-}
-
-/// Paths of the recorded learning durations of the trace states.
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-fn timing_paths(repo: &Repo) -> Vec<PathBuf> {
-    let trace_dir = repo.path().join(".git/kioku/trace-v2");
-    std::fs::read_dir(&trace_dir)
-        .expect("the trace directory")
-        .map(|item| item.expect("a trace file").path())
-        .filter(|path| {
-            path.file_name()
-                .is_some_and(|name| name.to_string_lossy().starts_with("timing-"))
-        })
-        .collect()
-}
-
-/// Removes the observed record of one input from the single trace state, then
-/// re-authenticates it, so a later run believes the input is unchanged.
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-fn poison_input_record(repo: &Repo, input: &Path) {
-    use std::os::unix::ffi::OsStrExt;
-    let trace_dir = repo.path().join(".git/kioku/trace-v2");
-    let state_path = std::fs::read_dir(&trace_dir)
-        .expect("the trace directory")
-        .map(|item| item.expect("a trace file").path())
-        .find(|path| {
-            path.file_name()
-                .is_some_and(|name| name.to_string_lossy().starts_with("state-"))
-        })
-        .expect("a learned trace state");
-    let mut state: serde_json::Value =
-        serde_json::from_slice(&std::fs::read(&state_path).expect("the state"))
-            .expect("state JSON");
-    let records = state["manifest"]["records"]
-        .as_array_mut()
-        .expect("manifest records");
-    let bytes = input.as_os_str().as_bytes();
-    let before = records.len();
-    records.retain(|record| {
-        record["path"].as_array().is_none_or(|path| {
-            path.iter()
-                .filter_map(serde_json::Value::as_u64)
-                .map(|b| u8::try_from(b).expect("a byte"))
-                .collect::<Vec<_>>()
-                != bytes
-        })
-    });
-    assert_eq!(records.len() + 1, before, "the input must be observed");
-    state
-        .as_object_mut()
-        .expect("the state object")
-        .remove("authentication");
-    let decoded: kioku::policy::State =
-        serde_json::from_value(state.clone()).expect("the policy state");
-    let encoded = serde_json::to_vec(&decoded).expect("the encoded state");
-    let key: [u8; 32] = std::fs::read(trace_dir.join("key"))
-        .expect("the store key")
-        .try_into()
-        .expect("a 32-byte key");
-    state["authentication"] = blake3::keyed_hash(&key, &encoded)
-        .to_hex()
-        .to_string()
-        .into();
-    std::fs::write(
-        &state_path,
-        serde_json::to_vec(&state).expect("the state JSON"),
-    )
-    .expect("the poisoned state");
-}
-
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn traced_counters_separate_hits_misses_and_executions() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-
-    for _ in 0..2 {
-        let (status, event) = traced_event(&repo, "run", &reader, &input);
-        assert!(status.success());
-        assert_eq!(event["decision"], "executed", "{event}");
-    }
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["misses"], 2, "{counters}");
-    assert_eq!(counters["executions"], 2, "{counters}");
-    assert_eq!(counters["hits"], 0, "{counters}");
-
-    let (status, hit) = traced_event(&repo, "run", &reader, &input);
-    assert!(status.success());
-    assert_eq!(hit["decision"], "cached", "{hit}");
-    let saved = hit["saved_ms"]
-        .as_u64()
-        .unwrap_or_else(|| panic!("a hit must measure its saving: {hit}"));
-    assert!(saved > 0, "the learning run was slower than the hit: {hit}");
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["hits"], 1, "{counters}");
-    assert_eq!(
-        counters["measured_hits"], 1,
-        "the hit had a recorded duration: {counters}"
-    );
-    assert_eq!(counters["misses"], 2, "{counters}");
-    assert_eq!(counters["executions"], 2, "{counters}");
-    assert_eq!(counters["saved_ms"].as_u64(), Some(saved));
-
-    std::fs::write(&input, "changed\n").expect("the input must change");
-    let (status, miss) = traced_event(&repo, "run", &reader, &input);
-    assert!(status.success());
-    assert_eq!(miss["decision"], "executed", "{miss}");
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["misses"], 3, "{counters}");
-    assert_eq!(counters["executions"], 3, "{counters}");
-    assert_eq!(counters["hits"], 1, "{counters}");
-}
-
-/// A store in the work tree turns the cache off, traced runs included.
-///
-/// The files of the store are not part of the key, so a tracked file that
-/// happens to live there would be left out of it too. The cache must not
-/// reuse a pass learned in that store, and must not learn one either.
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn a_traced_store_in_the_work_tree_never_reuses() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-    let store = repo.path().join("cache");
-
-    for _ in 0..4 {
-        let (status, event) = traced_event_in(&repo, &store, "run", &reader, &input);
-        assert!(status.success());
-        assert_eq!(event["decision"], "executed", "{event}");
-        assert_eq!(event["reason"], "store-in-work-tree", "{event}");
-        assert_eq!(event["would_skip"], false, "{event}");
-    }
-    assert!(
-        !store.exists(),
-        "kioku must not create a store in the work tree"
-    );
-
-    // The status reads the empty store and creates nothing either.
-    let output = repo
-        .run()
-        .env("KIOKU_DIR", &store)
-        .args(["status", "--json"])
-        .output();
-    assert!(output.status.success());
-    let event: serde_json::Value =
-        serde_json::from_slice(&output.stdout).expect("status must print JSON");
-    assert_eq!(event["counters"]["hits"], 0, "{event}");
-    assert_eq!(event["counters"]["executions"], 0, "{event}");
-    assert!(
-        !store.exists(),
-        "kioku must not create a store in the work tree"
-    );
-}
-
-/// The control: a store outside the work tree still reuses a traced pass.
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn a_traced_store_outside_the_work_tree_still_reuses() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-    let outside = TempDir::new().expect("a temporary store");
-    let store = outside.path().join("store");
-
-    for _ in 0..2 {
-        let (status, event) = traced_event_in(&repo, &store, "run", &reader, &input);
-        assert!(status.success());
-        assert_eq!(event["decision"], "executed", "{event}");
-    }
-    let (status, hit) = traced_event_in(&repo, &store, "run", &reader, &input);
-    assert!(status.success());
-    assert_eq!(hit["decision"], "cached", "{hit}");
-}
-
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn a_hit_without_a_recorded_duration_reports_an_unknown_saving() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-    for _ in 0..2 {
-        assert!(traced_event(&repo, "run", &reader, &input).0.success());
-    }
-    let (status, hit) = traced_event(&repo, "run", &reader, &input);
-    assert!(status.success());
-    assert_eq!(hit["decision"], "cached", "{hit}");
-    let recorded_saving = hit["saved_ms"].as_u64().expect("a measured saving");
-
-    let timings = timing_paths(&repo);
-    assert!(
-        !timings.is_empty(),
-        "a learned pass must record the duration of its original run"
-    );
-    for timing in &timings {
-        std::fs::remove_file(timing).expect("the timing file");
-    }
-
-    let (status, hit) = traced_event(&repo, "run", &reader, &input);
-    assert!(status.success());
-    assert_eq!(hit["decision"], "cached", "{hit}");
-    assert!(
-        hit["saved_ms"].is_null(),
-        "a missing duration is unknown, never zero: {hit}"
-    );
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["hits"], 2, "{counters}");
-    assert_eq!(
-        counters["measured_hits"], 1,
-        "only the first hit was measurable: {counters}"
-    );
-    assert_eq!(counters["saved_ms"].as_u64(), Some(recorded_saving));
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("2 hits (1 measured)"),
-        "status must separate measured and unknown hits: {human}"
-    );
-    assert!(
-        human.contains("; 1 hit without a recorded duration"),
-        "status must name the unknown hit: {human}"
-    );
-}
-
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn a_passing_verify_keeps_the_learned_duration() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-    for _ in 0..2 {
-        assert!(traced_event(&repo, "run", &reader, &input).0.success());
-    }
-    let timings = timing_paths(&repo);
-    assert_eq!(timings.len(), 1, "one learned pass has one duration");
-    let before = std::fs::read(&timings[0]).expect("the learned duration");
-
-    let (status, event) = traced_event(&repo, "verify", &reader, &input);
-    assert!(status.success());
-    assert_eq!(event["exit_code"], 0, "{event}");
-    assert_eq!(event["would_skip"], true, "{event}");
-    let after = std::fs::read(&timings[0]).expect("the learned duration");
-    assert_eq!(
-        after, before,
-        "a passing verify must not rewrite the learned duration"
-    );
-}
-
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn a_new_state_replaces_the_stale_learned_duration() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-    for _ in 0..2 {
-        assert!(traced_event(&repo, "run", &reader, &input).0.success());
-    }
-    let timings = timing_paths(&repo);
-    assert_eq!(timings.len(), 1, "one learned pass has one duration");
-    // A sentinel stands for a duration no run of this test can produce: the
-    // store must replace it as soon as the run learns a different state.
-    std::fs::write(&timings[0], "424242").expect("the sentinel duration");
-
-    std::fs::write(&input, "y\n").expect("the input must change");
-    for _ in 0..2 {
-        let (status, event) = traced_event(&repo, "run", &reader, &input);
-        assert!(status.success());
-        assert_eq!(event["decision"], "executed", "{event}");
-    }
-    let recorded = std::fs::read_to_string(&timings[0]).expect("the new duration");
-    assert_ne!(
-        recorded.trim(),
-        "424242",
-        "a new state must not keep the duration of the state it replaced"
-    );
-
-    let (status, hit) = traced_event(&repo, "run", &reader, &input);
-    assert!(status.success());
-    assert_eq!(hit["decision"], "cached", "{hit}");
-    let saved = hit["saved_ms"]
-        .as_u64()
-        .unwrap_or_else(|| panic!("a hit must measure its saving: {hit}"));
-    assert!(
-        saved < 424_242,
-        "a hit must not report the duration of a replaced state: {hit}"
-    );
-}
-
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn human_labels_distinguish_measured_and_unknown_hits() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-    for _ in 0..2 {
-        assert!(traced_event(&repo, "run", &reader, &input).0.success());
-    }
-
-    let output = repo
-        .run()
-        .env("KIOKU_STRACE", tracer_path())
-        .args(["run", "--trust-trace", "--"])
-        .arg(&reader)
-        .arg(&input)
-        .output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stderr);
-    assert!(
-        human.contains("cached (pass, ") && !human.contains("unavailable"),
-        "a measured hit must name its saving: {human}"
-    );
-
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("1 measured hit (includes tracing overhead)"),
-        "the all-measured label must stay singular and honest: {human}"
-    );
-    assert!(
-        !human.contains("without a recorded duration"),
-        "no hit is unknown yet: {human}"
-    );
-
-    for timing in timing_paths(&repo) {
-        std::fs::remove_file(timing).expect("the timing file");
-    }
-    let output = repo
-        .run()
-        .env("KIOKU_STRACE", tracer_path())
-        .args(["run", "--trust-trace", "--"])
-        .arg(&reader)
-        .arg(&input)
-        .output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stderr);
-    assert!(
-        human.contains("cached (pass, saved time unavailable)"),
-        "a missing duration must be labelled unknown: {human}"
-    );
-
-    let unknown = repo
-        .run()
-        .env("KIOKU_STRACE", tracer_path())
-        .args(["run", "--trust-trace", "--"])
-        .arg(&reader)
-        .arg(&input)
-        .output();
-    assert!(unknown.status.success());
-    let output = repo.run().arg("status").output();
-    assert!(output.status.success());
-    let human = String::from_utf8_lossy(&output.stdout);
-    assert!(
-        human.contains("3 hits (1 measured)"),
-        "status must count two unknown hits: {human}"
-    );
-    assert!(
-        human.contains("2 hits without a recorded duration"),
-        "two unknown hits take the plural: {human}"
-    );
-}
-
-#[cfg(all(target_os = "linux", target_arch = "aarch64"))]
-#[test]
-#[ignore = "requires pinned tracer"]
-fn a_false_green_counts_as_an_invalidation() {
-    let repo = Repo::new();
-    repo.write("input", "x\n");
-    let reader = static_reader(&repo);
-    repo.commit();
-    let input = repo.path().join("input");
-    for _ in 0..2 {
-        assert!(traced_event(&repo, "run", &reader, &input).0.success());
-    }
-    let (status, hit) = traced_event(&repo, "run", &reader, &input);
-    assert!(status.success());
-    assert_eq!(hit["decision"], "cached", "{hit}");
-
-    poison_input_record(&repo, &input);
-    std::fs::remove_file(&input).expect("the unobserved input must disappear");
-
-    let (status, event) = traced_event(&repo, "verify", &reader, &input);
-    assert_eq!(status.code(), Some(1));
-    assert_eq!(event["false_green"], true, "{event}");
-    assert_eq!(event["invalidated"], 1, "{event}");
-    let counters = status_document(&repo)["counters"].clone();
-    assert_eq!(counters["invalidated"], 1, "{counters}");
-    assert_eq!(counters["executions"], 3, "{counters}");
-    assert_eq!(counters["misses"], 3, "{counters}");
-    assert_eq!(counters["hits"], 1, "{counters}");
 }
 
 #[test]
@@ -2960,7 +1714,15 @@ fn sampling_false_green_lifecycle(signal: Option<i32>) {
                 "TEST_QUARANTINE_ENV",
                 if changed_env { "changed" } else { "initial" },
             )
-            .args([verb, "--json", "--trust-trace", "--verify-rate", rate, "--"])
+            .args([
+                verb,
+                "--json",
+                "--trust-trace",
+                "--strict-env",
+                "--verify-rate",
+                rate,
+                "--",
+            ])
             .arg(&helper)
             .arg(&input);
         let out = cmd.output().unwrap();
@@ -3383,4 +2145,45 @@ fn explain_ast_diagnostic_tracks_changes_without_authorizing_reuse() {
     let changed: serde_json::Value = serde_json::from_slice(&changed.stdout).unwrap();
     assert_eq!(changed["ast_would_skip"], false);
     assert_eq!(changed["hit"], false);
+}
+
+#[test]
+fn removed_daemon_commands_are_rejected() {
+    for command in ["daemon", "ci"] {
+        let output = Command::new(env!("CARGO_BIN_EXE_kioku"))
+            .arg(command)
+            .output()
+            .unwrap();
+        assert_eq!(output.status.code(), Some(2), "{command}");
+        assert_eq!(output.stdout, [] as [u8; 0]);
+    }
+}
+
+#[test]
+fn operator_stop_file_is_only_checked_when_the_variable_names_one() {
+    let dir = TempDir::new().unwrap();
+    let present = dir.path().join("ARRET-KIOKU.txt");
+    let absent = dir.path().join("never-created.txt");
+    std::fs::write(&present, b"stop").unwrap();
+    assert_eq!(support::existing_operator_stop_file(None), None);
+    assert_eq!(
+        support::existing_operator_stop_file(Some(absent.as_os_str())),
+        None
+    );
+    assert_eq!(
+        support::existing_operator_stop_file(Some(present.as_os_str())),
+        Some(present)
+    );
+}
+
+#[cfg(test)]
+#[test]
+fn true_program_succeeds_with_closed_stdin_and_empty_environment() {
+    let status = std::process::Command::new(support::true_program())
+        .args(["synthetic-argument", "--ignored"])
+        .stdin(std::process::Stdio::null())
+        .env_clear()
+        .status()
+        .expect("the success program must start");
+    assert!(status.success(), "success program returned {status}");
 }

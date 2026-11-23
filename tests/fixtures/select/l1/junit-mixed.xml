@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="nextest-run" tests="4" skipped="1" failures="1" errors="0" uuid="00000000-0000-0000-0000-000000000000" timestamp="2026-11-15T14:15:50.096+00:00" time="0.5">
+    <!-- fixture dérivée du format nextest : un échec, un instable, un ignoré, un vert, un absent -->
+    <testsuite name="kdw-kioku" tests="1" skipped="0" errors="0" failures="1">
+        <testcase name="ci2::domain::strict_json::tests::duplicate_inside_array_object_is_rejected_before_value_normalization" classname="kdw-kioku" timestamp="2026-11-15T14:15:50.097+00:00" time="0.004">
+            <failure message="test failure" type="test failure with exit code 101"><![CDATA[thread 'x' panicked: assertion failed: a < b && c]]></failure>
+            <system-err><![CDATA[stderr with <tags> & ampersands]]></system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="kdw-kioku::cli" tests="1" skipped="0" errors="0" failures="0">
+        <testcase name="a_command_that_reads_the_standard_input_is_never_cached" classname="kdw-kioku::cli" timestamp="2026-11-15T14:15:50.097+00:00" time="1.250">
+            <flakyFailure timestamp="2026-11-15T14:15:49.000+00:00" time="0.100" message="test failure" type="test failure with exit code 101"><![CDATA[first attempt failed]]></flakyFailure>
+        </testcase>
+    </testsuite>
+    <testsuite name="kdw-kioku::bin/kioku" tests="1" skipped="1" errors="0" failures="0">
+        <testcase name="tests::formats_sizes_and_durations" classname="kdw-kioku::bin/kioku" timestamp="2026-11-15T14:15:50.097+00:00" time="0.000">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="kdw-kioku::v2_r14_schema" tests="1" skipped="0" errors="0" failures="0">
+        <testcase name="origin_claim_variant_refuses_an_undeclared_field" classname="kdw-kioku::v2_r14_schema" timestamp="2026-11-15T14:15:50.097+00:00" time="0.003"/>
+    </testsuite>
+</testsuites>

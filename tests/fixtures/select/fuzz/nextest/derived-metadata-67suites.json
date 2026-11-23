@@ -1,0 +1,479 @@
+{
+ "workspace_root": "/w/repo",
+ "packages": [
+  {
+   "name": "kdw-kioku",
+   "targets": [
+    {
+     "name": "kioku",
+     "kind": [
+      "lib"
+     ],
+     "src_path": "/w/repo/src/lib.rs"
+    },
+    {
+     "name": "cli",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/cli.rs"
+    },
+    {
+     "name": "config_r14b",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/config_r14b.rs"
+    },
+    {
+     "name": "false_green_zoo",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/false_green_zoo.rs"
+    },
+    {
+     "name": "fingerprint_properties",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/fingerprint_properties.rs"
+    },
+    {
+     "name": "key_env_r15ds",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/key_env_r15ds.rs"
+    },
+    {
+     "name": "legacy_key_r14b",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/legacy_key_r14b.rs"
+    },
+    {
+     "name": "policy",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/policy.rs"
+    },
+    {
+     "name": "store_r14b",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/store_r14b.rs"
+    },
+    {
+     "name": "tools_r14b",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/tools_r14b.rs"
+    },
+    {
+     "name": "trace",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/trace.rs"
+    },
+    {
+     "name": "v2_a10_all_runs_bound",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_a10_all_runs_bound.rs"
+    },
+    {
+     "name": "v2_a11_input_bounds",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_a11_input_bounds.rs"
+    },
+    {
+     "name": "v2_a9_native_possession",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_a9_native_possession.rs"
+    },
+    {
+     "name": "v2_admission_c",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_admission_c.rs"
+    },
+    {
+     "name": "v2_adversarial",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_adversarial.rs"
+    },
+    {
+     "name": "v2_contracts",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_contracts.rs"
+    },
+    {
+     "name": "v2_coordinator",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_coordinator.rs"
+    },
+    {
+     "name": "v2_crash_idempotence",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_crash_idempotence.rs"
+    },
+    {
+     "name": "v2_custody_negative",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_custody_negative.rs"
+    },
+    {
+     "name": "v2_d1",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_d1.rs"
+    },
+    {
+     "name": "v2_ds_checkpoint_reader",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_ds_checkpoint_reader.rs"
+    },
+    {
+     "name": "v2_environments",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_environments.rs"
+    },
+    {
+     "name": "v2_input_boundary",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_input_boundary.rs"
+    },
+    {
+     "name": "v2_inputs",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_inputs.rs"
+    },
+    {
+     "name": "v2_journal_permissions",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_journal_permissions.rs"
+    },
+    {
+     "name": "v2_multi_task_c",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_multi_task_c.rs"
+    },
+    {
+     "name": "v2_native",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_native.rs"
+    },
+    {
+     "name": "v2_profile_paths",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_profile_paths.rs"
+    },
+    {
+     "name": "v2_r14_artifact",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r14_artifact.rs"
+    },
+    {
+     "name": "v2_r14_environments",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r14_environments.rs"
+    },
+    {
+     "name": "v2_r14_reports",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r14_reports.rs"
+    },
+    {
+     "name": "v2_r14_schema",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r14_schema.rs"
+    },
+    {
+     "name": "v2_r15ds_config",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r15ds_config.rs"
+    },
+    {
+     "name": "v2_r15ds_paths",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r15ds_paths.rs"
+    },
+    {
+     "name": "v2_r15ds_refs",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r15ds_refs.rs"
+    },
+    {
+     "name": "v2_r16_admission",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r16_admission.rs"
+    },
+    {
+     "name": "v2_r16_server_restart",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r16_server_restart.rs"
+    },
+    {
+     "name": "v2_r17_scheduler_release",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r17_scheduler_release.rs"
+    },
+    {
+     "name": "v2_r18_runtime_drain",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r18_runtime_drain.rs"
+    },
+    {
+     "name": "v2_r18_snapshot_roots",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r18_snapshot_roots.rs"
+    },
+    {
+     "name": "v2_r19_local_default",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r19_local_default.rs"
+    },
+    {
+     "name": "v2_r20_persistent_bootstrap",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r20_persistent_bootstrap.rs"
+    },
+    {
+     "name": "v2_r21_absence_shape",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r21_absence_shape.rs"
+    },
+    {
+     "name": "v2_r21_native_validation",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r21_native_validation.rs"
+    },
+    {
+     "name": "v2_r21_request_selection",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r21_request_selection.rs"
+    },
+    {
+     "name": "v2_r25_log_budget",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r25_log_budget.rs"
+    },
+    {
+     "name": "v2_r26_journal_capacity",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r26_journal_capacity.rs"
+    },
+    {
+     "name": "v2_r26_monitor_error",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r26_monitor_error.rs"
+    },
+    {
+     "name": "v2_r26_wait_timeout",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r26_wait_timeout.rs"
+    },
+    {
+     "name": "v2_r28_global_stop",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r28_global_stop.rs"
+    },
+    {
+     "name": "v2_r28_private_native_concrete",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r28_private_native_concrete.rs"
+    },
+    {
+     "name": "v2_r28_run",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r28_run.rs"
+    },
+    {
+     "name": "v2_r29_linked_libtest",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r29_linked_libtest.rs"
+    },
+    {
+     "name": "v2_r29_native_binding",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r29_native_binding.rs"
+    },
+    {
+     "name": "v2_r29_native_outcome",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r29_native_outcome.rs"
+    },
+    {
+     "name": "v2_r29_report_contracts",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r29_report_contracts.rs"
+    },
+    {
+     "name": "v2_r30_incremental_private",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_r30_incremental_private.rs"
+    },
+    {
+     "name": "v2_real_libtest",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_real_libtest.rs"
+    },
+    {
+     "name": "v2_reports",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_reports.rs"
+    },
+    {
+     "name": "v2_required_outputs",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_required_outputs.rs"
+    },
+    {
+     "name": "v2_runtime",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_runtime.rs"
+    },
+    {
+     "name": "v2_scheduler",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_scheduler.rs"
+    },
+    {
+     "name": "v2_schema_contracts_extra",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_schema_contracts_extra.rs"
+    },
+    {
+     "name": "v2_store",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_store.rs"
+    },
+    {
+     "name": "v2_transport_bootstrap",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/v2_transport_bootstrap.rs"
+    },
+    {
+     "name": "kioku",
+     "kind": [
+      "bin"
+     ],
+     "src_path": "/w/repo/src/main.rs"
+    }
+   ]
+  }
+ ]
+}

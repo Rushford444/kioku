@@ -17,12 +17,13 @@ Rust stable, edition 2024. The MSRV is declared in `Cargo.toml`.
 ```sh
 cargo fmt --check
 cargo clippy --all-targets --all-features -- -D warnings -W clippy::pedantic
+cargo clippy --all-targets -- -D warnings -W clippy::pedantic
 cargo nextest run --all-features
 cargo test --doc
 cargo deny check
 ```
 
-For a change in the fingerprint, the key or the trace policy, also run:
+For a change in the fingerprint, the key or the profiles, also run:
 
 ```sh
 cargo mutants
@@ -37,8 +38,8 @@ Report survivors with a written justification.
 - Failures are never memorized.
 - Nothing ambiguous is cached: a parse error, an unreadable file, a changed
   source state during the run, a concurrent write.
-- No `unwrap()` or `expect()` outside tests, no `unsafe`, typed errors
-  (`thiserror`) in the library and in the binary.
+- No `unwrap()` or `expect()` outside tests, no `unsafe`, typed errors in the
+  library (`thiserror`), `anyhow` only in the binary.
 - Public API changes need a decision recorded in the changelog.
 - Legacy fingerprint and key tests do not establish portability of traced
   entries. Traced entries are local and bound to the canonical repository.
@@ -53,15 +54,14 @@ Report survivors with a written justification.
 
 Platform-specific test cases and helpers are gated individually where needed.
 Windows does not exercise Unix-only shell cases. A cross-platform pass does not
-replace Linux tracing evidence on aarch64 or x86_64.
+replace Linux/aarch64 tracing evidence.
 
-## Pinned tracer tests (Linux)
+## Pinned tracer tests (Linux/aarch64)
 
 Tracer-dependent tests are explicitly ignored by default. The default
-`cargo nextest run` does not establish tracing coverage. The recipe below is the
-aarch64 tracing gate; CI also runs one traced x86_64 static helper. Obtain the
-Debian bookworm arm64 `strace` 6.1-0.1 package, verify both the archive and
-extracted executable, and run all tests including ignored tests:
+`cargo nextest run` does not establish tracing coverage. For the tracing gate,
+obtain the Debian bookworm arm64 `strace` 6.1-0.1 package, verify both the
+archive and extracted executable, and run all tests including ignored tests:
 
 ```sh
 mkdir -p target/tracer
@@ -85,9 +85,9 @@ cargo nextest run --run-ignored all --no-fail-fast --test-threads 1
 The temporary directory is retained for inspection; test fixtures may need permission repair before removal.
 
 Stop if either checksum fails. Downloading requires network access; normal
-kioku operation does not. The tracing gate requires a Linux aarch64 or x86_64
-host that permits tracing, and the approved executable for that architecture.
-Other platforms do not provide this tracing evidence.
+kioku operation does not. The tracing gate requires a Linux/aarch64 host that
+permits tracing, and the approved executable. Other platforms do not provide
+this tracing evidence.
 
 ## Packaging
 
@@ -95,8 +95,16 @@ Other platforms do not provide this tracing evidence.
 scripts/package.sh dist
 ```
 
-Builds the release binary and writes the archives locally. Nothing is
-published: no release, no registry, no identity.
+Builds the release binary and writes the archives locally. Cargo defaults to
+offline mode; dependencies and target toolchains must already be available.
+Set `CARGO_NET_OFFLINE=false` explicitly if network access is authorized. Each
+archive has its own `.sha256` file; existing output files are not overwritten.
+Aggregate and verify checksums separately for a multi-target release.
+
+Inspect the crate list with `cargo package --offline --locked --list` and audit
+both crate and binary archive contents, links, licenses and secrets on the final
+candidate before any distribution. Packaging is not publication approval.
+Nothing is published: no release, no registry, no identity.
 
 ## Commit messages
 

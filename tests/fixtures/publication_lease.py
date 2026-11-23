@@ -14,12 +14,8 @@ os.mkdir(home)
 env = {"PATH": "/usr/bin:/bin", "HOME": home, "LANG": "C.UTF-8",
        "KIOKU_SENTINEL_SECRET": "sk-test-SENTINEL", "KIOKU_STRACE": tracer}
 subprocess.run(["git", "init", "--quiet", repo], env=env, check=True, timeout=20)
-# Keep the leased input out of the AST diagnostic snapshot, which reads every
-# git-visible file before tracing and would break the lease too early.
-with open(os.path.join(repo, ".gitignore"), "w", encoding="ascii") as ignore:
-    ignore.write("input\n")
 input_path = os.path.join(repo, "input")
-args = [kioku, "run", "--json", "--trust-trace", "--", helper, input_path]
+args = [kioku, "run", "--json", "--trust-trace", "--inputs", "*", "--", helper, input_path]
 state_glob = os.path.join(repo, ".git/kioku/trace-v2/state-*.json")
 first = subprocess.run(args, cwd=repo, env=env, stdin=subprocess.DEVNULL,
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=30, check=True)

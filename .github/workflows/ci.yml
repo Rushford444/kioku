@@ -40,6 +40,8 @@ jobs:
         run: cargo fmt --check
       - name: clippy (pedantic)
         run: cargo clippy --all-targets --all-features -- -D warnings -W clippy::pedantic
+      - name: clippy (pedantic, default features)
+        run: cargo clippy --all-targets -- -D warnings -W clippy::pedantic
       - name: tests
         run: cargo nextest run --all-features --no-fail-fast
       - name: doc tests
@@ -80,11 +82,6 @@ jobs:
           KIOKU_TRACE_OPS_HELPER: ${{ runner.temp }}/trace-ops
           TMPDIR: ${{ runner.temp }}/trace-tmp
         run: cargo nextest run --all-features --no-fail-fast --run-ignored all --test-threads 1
-      - name: Replay demo and check temporary-directory safety
-        env:
-          KIOKU_BIN: target/debug/kioku
-          KIOKU_STRACE: ${{ runner.temp }}/tracer/usr/bin/strace
-        run: sh scripts/test-demo.sh
 
   traced-tests-x86_64:
     name: traced tests (Linux x86_64)

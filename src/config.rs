@@ -39,11 +39,16 @@ enum ConfigMode {
 /// # Errors
 /// Returns an error when configuration is unreadable, invalid, or ambiguous.
 pub fn mode(root: &Path, argv: &[String]) -> Result<Option<Mode>, Error> {
-    let text = match std::fs::read_to_string(root.join("kioku.toml")) {
-        Ok(text) => text,
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+    let path = root.join("kioku.toml");
+    match std::fs::symlink_metadata(&path) {
+        Ok(_) => {}
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+            std::fs::read_dir(root)?;
+            return Ok(None);
+        }
         Err(error) => return Err(error.into()),
-    };
+    }
+    let text = std::fs::read_to_string(path)?;
     let config: Config = toml::from_str(&text)?;
     let mut matched = config
         .commands

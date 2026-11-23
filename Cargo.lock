@@ -62,6 +62,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "anyhow"
+version = "1.0.104"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
+
+[[package]]
 name = "arrayvec"
 version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -386,14 +392,16 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "kdw-kioku"
-version = "0.1.0"
+version = "0.4.0"
 dependencies = [
+ "anyhow",
  "assert_cmd",
  "blake3",
  "clap",
  "fs4",
  "getrandom 0.3.4",
  "globset",
+ "libc",
  "proptest",
  "serde",
  "serde_json",

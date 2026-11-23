@@ -1,0 +1,82 @@
+{
+ "packages": [
+  {
+   "name": "kdw-kioku",
+   "targets": [
+    {
+     "crate_types": [
+      "lib"
+     ],
+     "doc": true,
+     "doctest": true,
+     "edition": "2024",
+     "kind": [
+      "lib"
+     ],
+     "name": "kioku",
+     "src_path": "/home/node/work/kioku-optA-m2/src/lib.rs",
+     "test": true
+    },
+    {
+     "crate_types": [
+      "bin"
+     ],
+     "doc": true,
+     "doctest": false,
+     "edition": "2024",
+     "kind": [
+      "bin"
+     ],
+     "name": "kioku",
+     "src_path": "/home/node/work/kioku-optA-m2/src/main.rs",
+     "test": true
+    },
+    {
+     "crate_types": [
+      "bin"
+     ],
+     "doc": false,
+     "doctest": false,
+     "edition": "2024",
+     "kind": [
+      "example"
+     ],
+     "name": "ci2_resolve_cost",
+     "src_path": "/home/node/work/kioku-optA-m2/examples/ci2_resolve_cost.rs",
+     "test": false
+    },
+    {
+     "crate_types": [
+      "bin"
+     ],
+     "doc": false,
+     "doctest": false,
+     "edition": "2024",
+     "kind": [
+      "test"
+     ],
+     "name": "cli",
+     "src_path": "/home/node/work/kioku-optA-m2/tests/cli.rs",
+     "test": true
+    },
+    {
+     "crate_types": [
+      "bin"
+     ],
+     "doc": false,
+     "doctest": false,
+     "edition": "2024",
+     "kind": [
+      "test"
+     ],
+     "name": "v2_r14_schema",
+     "src_path": "/home/node/work/kioku-optA-m2/tests/v2_r14_schema.rs",
+     "test": true
+    }
+   ],
+   "version": "0.3.1"
+  }
+ ],
+ "version": 1,
+ "workspace_root": "/home/node/work/kioku-optA-m2"
+}

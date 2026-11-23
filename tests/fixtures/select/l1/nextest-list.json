@@ -1,0 +1,111 @@
+{
+ "rust-build-meta": {
+  "target-directory": "/home/node/work/kioku-optA-m2/target"
+ },
+ "rust-suites": {
+  "kdw-kioku": {
+   "binary-id": "kdw-kioku",
+   "binary-name": "kioku",
+   "binary-path": "/home/node/work/kioku-optA-m2/target/debug/deps/kioku",
+   "build-platform": "target",
+   "cwd": "/home/node/work/kioku-optA-m2",
+   "kind": "lib",
+   "package-id": "path+file:///home/node/work/kioku-optA-m2#kdw-kioku@0.3.1",
+   "package-name": "kdw-kioku",
+   "status": "listed",
+   "testcases": {
+    "ci2::domain::strict_json::tests::duplicate_inside_array_object_is_rejected_before_value_normalization": {
+     "filter-match": {
+      "status": "matches"
+     },
+     "ignored": false,
+     "kind": "test"
+    },
+    "ci2::storage::unix::tests::state_view_local_benchmark": {
+     "filter-match": {
+      "reason": "ignored",
+      "status": "mismatch"
+     },
+     "ignored": true,
+     "kind": "test"
+    }
+   }
+  },
+  "kdw-kioku::bin/kioku": {
+   "binary-id": "kdw-kioku::bin/kioku",
+   "binary-name": "kioku",
+   "binary-path": "/home/node/work/kioku-optA-m2/target/debug/deps/kioku",
+   "build-platform": "target",
+   "cwd": "/home/node/work/kioku-optA-m2",
+   "kind": "bin",
+   "package-id": "path+file:///home/node/work/kioku-optA-m2#kdw-kioku@0.3.1",
+   "package-name": "kdw-kioku",
+   "status": "listed",
+   "testcases": {
+    "tests::formats_sizes_and_durations": {
+     "filter-match": {
+      "status": "matches"
+     },
+     "ignored": false,
+     "kind": "test"
+    }
+   }
+  },
+  "kdw-kioku::cli": {
+   "binary-id": "kdw-kioku::cli",
+   "binary-name": "cli",
+   "binary-path": "/home/node/work/kioku-optA-m2/target/debug/deps/cli",
+   "build-platform": "target",
+   "cwd": "/home/node/work/kioku-optA-m2",
+   "kind": "test",
+   "package-id": "path+file:///home/node/work/kioku-optA-m2#kdw-kioku@0.3.1",
+   "package-name": "kdw-kioku",
+   "status": "listed",
+   "testcases": {
+    "a_command_that_reads_the_standard_input_is_never_cached": {
+     "filter-match": {
+      "status": "matches"
+     },
+     "ignored": false,
+     "kind": "test"
+    },
+    "concurrent_clean_cannot_be_overwritten_by_late_publication": {
+     "filter-match": {
+      "reason": "ignored",
+      "status": "mismatch"
+     },
+     "ignored": true,
+     "kind": "test"
+    }
+   }
+  },
+  "kdw-kioku::v2_r14_schema": {
+   "binary-id": "kdw-kioku::v2_r14_schema",
+   "binary-name": "v2_r14_schema",
+   "binary-path": "/home/node/work/kioku-optA-m2/target/debug/deps/v2_r14_schema",
+   "build-platform": "target",
+   "cwd": "/home/node/work/kioku-optA-m2",
+   "kind": "test",
+   "package-id": "path+file:///home/node/work/kioku-optA-m2#kdw-kioku@0.3.1",
+   "package-name": "kdw-kioku",
+   "status": "listed",
+   "testcases": {
+    "input_selector_variant_refuses_an_undeclared_field": {
+     "filter-match": {
+      "status": "matches"
+     },
+     "ignored": false,
+     "kind": "test"
+    },
+    "origin_claim_variant_refuses_an_undeclared_field": {
+     "filter-match": {
+      "status": "matches"
+     },
+     "ignored": false,
+     "kind": "test"
+    }
+   }
+  }
+ },
+ "test-count": 7
+}

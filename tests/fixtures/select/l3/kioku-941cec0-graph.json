@@ -1,0 +1,2613 @@
+{
+"edges": {
+"examples/ci2_resolve_cost.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"src/ci2/cli.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/reports/mod.rs",
+"src/ci2/storage/mod.rs",
+"src/ci2/transport.rs"
+],
+"src/ci2/config.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs"
+],
+"src/ci2/coordinator.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/environments/mod.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/private_targets.rs",
+"src/ci2/reports/mod.rs",
+"src/ci2/reports/native_binding.rs",
+"src/ci2/reports/native_outcome.rs",
+"src/ci2/snapshot/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"src/ci2/domain/artifact.rs": [
+"src/ci2/domain/primitives.rs"
+],
+"src/ci2/domain/ports.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs"
+],
+"src/ci2/domain/schema.rs": [
+"src/ci2/domain/primitives.rs"
+],
+"src/ci2/domain/strict_json.rs": [
+"src/ci2/domain/primitives.rs"
+],
+"src/ci2/domain/validate.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs"
+],
+"src/ci2/environments/mod.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"src/ci2/native/mod.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs"
+],
+"src/ci2/private_targets.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/environments/mod.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/snapshot/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"src/ci2/reports/d1.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs"
+],
+"src/ci2/reports/mod.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"src/ci2/reports/native_binding.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/reports/mod.rs",
+"src/ci2/snapshot/mod.rs"
+],
+"src/ci2/reports/native_outcome.rs": [
+"src/ci2/domain/schema.rs",
+"src/ci2/reports/mod.rs"
+],
+"src/ci2/runtime/mod.rs": [
+"src/ci2/domain/ports.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"src/ci2/scheduler/mod.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs"
+],
+"src/ci2/server.rs": [
+"src/ci2/config.rs",
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/private_targets.rs",
+"src/ci2/scheduler/mod.rs",
+"src/ci2/storage/mod.rs",
+"src/ci2/transport.rs"
+],
+"src/ci2/storage/mod.rs": [
+"src/ci2/domain/ports.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/native/mod.rs"
+],
+"src/ci2/transport.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs"
+],
+"src/config.rs": [
+"src/fingerprint.rs"
+],
+"src/key.rs": [
+"src/fingerprint.rs",
+"src/lib.rs",
+"src/store.rs",
+"src/tools.rs"
+],
+"src/key_tests.rs": [
+"src/fingerprint.rs",
+"src/key.rs",
+"src/lib.rs",
+"src/tools.rs"
+],
+"src/lib.rs": [
+"src/fingerprint.rs",
+"src/key.rs",
+"src/store.rs"
+],
+"src/main.rs": [
+"src/ci2/cli.rs",
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/server.rs",
+"src/ci2/transport.rs",
+"src/config.rs",
+"src/fingerprint.rs",
+"src/key.rs",
+"src/lib.rs",
+"src/policy.rs",
+"src/runner.rs",
+"src/store.rs"
+],
+"src/profiles.rs": [
+"src/fingerprint.rs"
+],
+"src/runner.rs": [
+"src/config.rs",
+"src/fingerprint.rs",
+"src/key.rs",
+"src/lib.rs",
+"src/policy.rs",
+"src/store.rs",
+"src/trace.rs"
+],
+"src/store.rs": [
+"src/policy.rs"
+],
+"src/tools.rs": [
+"src/lib.rs"
+],
+"src/tools_tests.rs": [
+"src/lib.rs",
+"src/tools.rs"
+],
+"src/trace.rs": [
+"src/policy.rs"
+],
+"tests/cli.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/storage/mod.rs",
+"src/lib.rs",
+"src/policy.rs",
+"tests/support/mod.rs"
+],
+"tests/config_r14b.rs": [
+"src/config.rs"
+],
+"tests/false_green_zoo.rs": [
+"tests/support/mod.rs"
+],
+"tests/fingerprint_properties.rs": [
+"src/fingerprint.rs"
+],
+"tests/key_env_r15ds.rs": [
+"src/fingerprint.rs",
+"src/key.rs"
+],
+"tests/legacy_key_r14b.rs": [
+"src/fingerprint.rs",
+"src/key.rs"
+],
+"tests/policy.rs": [
+"src/policy.rs",
+"src/runner.rs",
+"tests/support/mod.rs"
+],
+"tests/store_r14b.rs": [
+"src/store.rs"
+],
+"tests/tools_r14b.rs": [
+"src/tools.rs"
+],
+"tests/trace.rs": [
+"src/policy.rs",
+"src/trace.rs",
+"tests/support/mod.rs"
+],
+"tests/v2_a10_all_runs_bound.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_a11_input_bounds.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/transport.rs"
+],
+"tests/v2_a9_native_possession.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/native/mod.rs"
+],
+"tests/v2_admission_c.rs": [
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs",
+"src/ci2/transport.rs"
+],
+"tests/v2_adversarial.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_contracts.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_coordinator.rs": [
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs",
+"src/ci2/transport.rs"
+],
+"tests/v2_crash_idempotence.rs": [
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs",
+"src/ci2/transport.rs"
+],
+"tests/v2_custody_negative.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_d1.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/reports/d1.rs"
+],
+"tests/v2_ds_checkpoint_reader.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_environments.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/environments/mod.rs"
+],
+"tests/v2_input_boundary.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/transport.rs"
+],
+"tests/v2_inputs.rs": [
+"src/ci2/snapshot/mod.rs",
+"src/ci2/taskkey/mod.rs"
+],
+"tests/v2_journal_permissions.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_multi_task_c.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_native.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_profile_paths.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_r14_artifact.rs": [
+"src/ci2/domain/artifact.rs"
+],
+"tests/v2_r14_environments.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/environments/mod.rs"
+],
+"tests/v2_r14_reports.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/reports/mod.rs"
+],
+"tests/v2_r14_schema.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs"
+],
+"tests/v2_r15ds_config.rs": [
+"src/ci2/config.rs"
+],
+"tests/v2_r15ds_paths.rs": [
+"src/ci2/domain/primitives.rs"
+],
+"tests/v2_r15ds_refs.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_r16_admission.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_r16_server_restart.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/server.rs",
+"src/ci2/transport.rs"
+],
+"tests/v2_r17_scheduler_release.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/scheduler/mod.rs"
+],
+"tests/v2_r18_runtime_drain.rs": [
+"src/ci2/domain/ports.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/runtime/mod.rs"
+],
+"tests/v2_r18_snapshot_roots.rs": [
+"src/ci2/snapshot/mod.rs"
+],
+"tests/v2_r19_local_default.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_r20_persistent_bootstrap.rs": [
+"src/ci2/config.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_r21_absence_shape.rs": [
+"src/ci2/domain/schema.rs",
+"src/ci2/native/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_r21_native_validation.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/reports/mod.rs"
+],
+"tests/v2_r21_request_selection.rs": [
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_r25_log_budget.rs": [
+"src/ci2/cli.rs",
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/server.rs",
+"src/ci2/storage/mod.rs",
+"src/ci2/transport.rs"
+],
+"tests/v2_r26_journal_capacity.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_r26_monitor_error.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/native/mod.rs"
+],
+"tests/v2_r26_wait_timeout.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_r28_global_stop.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_r28_private_native_concrete.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/environments/mod.rs",
+"src/ci2/native/mod.rs"
+],
+"tests/v2_r28_run.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_r29_linked_libtest.rs": [
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/reports/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_r29_native_binding.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/reports/mod.rs",
+"src/ci2/reports/native_binding.rs",
+"src/ci2/snapshot/mod.rs"
+],
+"tests/v2_r29_native_outcome.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/reports/mod.rs",
+"src/ci2/reports/native_outcome.rs"
+],
+"tests/v2_r29_report_contracts.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/reports/mod.rs"
+],
+"tests/v2_r30_incremental_private.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_real_libtest.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs",
+"src/ci2/reports/mod.rs"
+],
+"tests/v2_reports.rs": [
+"src/ci2/coordinator.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/reports/mod.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_required_outputs.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/validate.rs"
+],
+"tests/v2_runtime.rs": [
+"src/ci2/domain/ports.rs",
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/runtime/mod.rs"
+],
+"tests/v2_scheduler.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/scheduler/mod.rs"
+],
+"tests/v2_schema_contracts_extra.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs"
+],
+"tests/v2_store.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/domain/strict_json.rs",
+"src/ci2/storage/mod.rs"
+],
+"tests/v2_transport_bootstrap.rs": [
+"src/ci2/domain/primitives.rs",
+"src/ci2/domain/schema.rs",
+"src/ci2/transport.rs"
+]
+},
+"test_roots": {
+"kdw-kioku ci2::coordinator::tests::cancellation_also_wins_a_delayed_refusal_without_overwriting_the_result": [
+"src/ci2/coordinator.rs"
+],
+"kdw-kioku ci2::coordinator::tests::cancellation_wins_the_final_start_lock_without_poisoning_another_run": [
+"src/ci2/coordinator.rs"
+],
+"kdw-kioku ci2::coordinator::tests::interrupted_replay_never_reexecutes_or_releases_unknown_custody": [
+"src/ci2/coordinator.rs"
+],
+"kdw-kioku ci2::coordinator::tests::preparation_panic_has_no_native_ownership_or_fabricated_observation": [
+"src/ci2/coordinator.rs"
+],
+"kdw-kioku ci2::domain::strict_json::tests::duplicate_inside_array_object_is_rejected_before_value_normalization": [
+"src/ci2/domain/strict_json.rs"
+],
+"kdw-kioku ci2::domain::strict_json::tests::field_names_may_repeat_in_distinct_objects": [
+"src/ci2/domain/strict_json.rs"
+],
+"kdw-kioku ci2::domain::strict_json::tests::nested_object_duplicate_is_rejected_before_value_normalization": [
+"src/ci2/domain/strict_json.rs"
+],
+"kdw-kioku ci2::server::tests::a10_active_capturing_cancel_marks_without_claiming_completion": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a10_active_queued_cancel_is_durable_before_capture_release": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a10_active_running_cancel_keeps_unresolved_ownership": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a11_cancel_distinguishes_storage_failure_from_missing_request": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a11_replay_preflight_reports_journal_poison_before_disconnect": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a11_replay_preflight_reports_mutex_poison_before_disconnect": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a9_distinct_pending_ids_survive_half_closed_ack": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a9_show_healthy_missing_keeps_not_found_wire_status": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a9_show_healthy_record_replays_all_wire_fields": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::a9_show_poison_precedes_missing_and_preserves_storage_failure": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::capture_is_shared_with_admission_and_stop_unblocks_a_native_waiter": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::capture_poison_fails_closed_and_does_not_invent_a_free_permit": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::child_panic_still_sends_a_completion_and_preserves_unknown_native_ownership": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::commit_replays_a_concurrent_acceptance_before_unknown_ownership_guard": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::disconnected_response_after_capture_wait_preserves_listener_and_pending_run": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::mutation_after_durable_acceptance_does_not_lose_the_pending_run_or_replay": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::native_refresh_never_releases_active_or_unproven_completed_reservations": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::ownership_becoming_unknown_during_capture_wait_blocks_durable_acceptance": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::pending_admission_limit_is_bounded_and_creates_no_durable_run": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::replay_preserves_global_request_identity_and_earliest_admission": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::service_reservations_bound_capture_heavy_and_light_and_obey_stop": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::socket_admission_waits_while_show_cancel_and_replay_remain_responsive": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::socket_fixture_works_with_long_temp_root": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::stop_before_durable_commit_refuses_new_cross_client_admission": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::server::tests::unknown_interrupted_execution_blocks_new_requests_but_not_original_replay": [
+"src/ci2/server.rs"
+],
+"kdw-kioku ci2::snapshot::bounded_tests::ancestor_replacement_is_not_a_matching_capture": [
+"src/ci2/snapshot/mod.rs"
+],
+"kdw-kioku ci2::snapshot::bounded_tests::complete_hundred_file_inventory_is_stable": [
+"src/ci2/snapshot/mod.rs"
+],
+"kdw-kioku ci2::snapshot::bounded_tests::final_revalidation_refuses_replacement_and_symlink": [
+"src/ci2/snapshot/mod.rs"
+],
+"kdw-kioku ci2::snapshot::bounded_tests::identity_and_depth_limits_fail_closed": [
+"src/ci2/snapshot/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::a9_ledger_native_incomplete_preserves_exact_closure_and_history": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::a9_ledger_same_task_across_runs_cannot_exchange_native_proofs": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::actual_native_proof_durably_reconciles_without_rewriting_history": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::all_runs_matches_durable_prefix_and_preserves_poison": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::all_task_closures_survive_restart_and_tampered_lease_is_rejected": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::custody_queries_preserve_legacy_states_and_error_precedence": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::global_request_lookup_preserves_acceptance_order_and_poison": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::interrupted_runs_match_durable_filter_in_accepted_order": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::native_binding_keeps_exact_lease_across_restart": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::second_task_intent_without_header_cannot_reuse_first_task_closure": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::state_view_matches_owned_read_without_mutating_evidence": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku ci2::storage::unix::tests::state_view_preserves_missing_and_poison_precedence": [
+"src/ci2/storage/mod.rs"
+],
+"kdw-kioku fingerprint::depth_tests::valid_tree_depth_and_siblings": [
+"src/fingerprint.rs"
+],
+"kdw-kioku key::tests::a_changed_command_line_changes_the_key": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_changed_file_changes_the_key": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_dangling_symlink_is_captured": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_declared_variable_that_is_not_set_is_captured_as_absent": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_deleted_tracked_file_invalidates_the_key_without_failing": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_dirty_submodule_disables_capture": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_file_in_an_unreadable_directory_fails_the_capture": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_file_that_changed_between_two_reads_is_detected": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_linked_worktree_has_its_own_git_directory": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_missing_environment_variable_is_not_an_empty_one": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_path_that_is_not_utf8_fails_the_capture": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_store_in_the_work_tree_refuses_to_cache": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_symlink_loop_fails_the_capture": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::a_symlink_to_a_directory_fails_the_capture": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::an_input_glob_restricts_the_captured_files": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::an_invalid_glob_fails_the_capture": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::an_unreadable_file_fails_the_capture": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::an_untracked_file_is_captured_and_an_ignored_file_is_not": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::changed_command_executable_changes_the_key_even_with_same_version": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::command_identity_distinguishes_relative_paths_from_path_lookup": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::invalid_glob_is_checked_before_repository_access": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::invalid_glob_is_rejected_by_matcher": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_ast_mode_ignores_the_whitespace_and_the_ordinary_comments": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_ast_mode_sees_a_meaningful_comment": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_ast_mode_sees_a_token_change": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_bytes_mode_sees_the_whitespace": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_default_variables_are_captured_even_when_they_are_not_set": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_exclude_file_of_the_repository_is_honoured": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_guard_moves_when_a_file_is_touched_even_though_the_key_does_not": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_guard_sees_a_content_change_that_keeps_the_size_and_the_timestamp": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_lockfiles_are_captured_even_when_the_inputs_are_restricted": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_mode_of_a_captured_file_is_its_kind_and_its_permissions": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_mode_of_a_file_is_part_of_the_key": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_repository_holds_the_root_and_the_git_directory": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_states_of_a_file_have_different_digests": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_target_of_a_symlink_is_part_of_the_key": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_tools_of_the_lockfiles_are_captured": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_two_modes_have_two_keys": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_two_modes_have_two_keys_even_without_any_file": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::the_working_directory_is_relative_to_the_root_of_the_repository": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::two_command_lines_have_two_keys": [
+"src/key_tests.rs"
+],
+"kdw-kioku key::tests::two_identical_repositories_have_the_same_key": [
+"src/key_tests.rs"
+],
+"kdw-kioku profiles::tests::explicit_mode_wins": [
+"src/profiles.rs"
+],
+"kdw-kioku profiles::tests::lint_and_format_commands_force_bytes": [
+"src/profiles.rs"
+],
+"kdw-kioku profiles::tests::other_commands_use_bytes": [
+"src/profiles.rs"
+],
+"kdw-kioku runner::sampling_tests::deterministic_sampling_boundaries": [
+"src/runner.rs"
+],
+"kdw-kioku runner::sampling_tests::quarantine_between_prepare_and_hit_blocks_authorization": [
+"src/runner.rs"
+],
+"kdw-kioku runner::tests::a_difference_without_any_change_is_empty": [
+"src/runner.rs"
+],
+"kdw-kioku runner::tests::the_length_of_a_difference_counts_every_change": [
+"src/runner.rs"
+],
+"kdw-kioku store::tests::a_changed_input_is_a_miss": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::a_document_with_another_schema_is_never_a_hit": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::a_failure_invalidates_the_passes_of_the_command": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::a_malformed_document_is_not_a_hit": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::a_matching_entry_is_a_hit": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::an_entry_survives_a_write_and_a_read": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::another_repository_is_a_miss_unless_the_entry_is_portable": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::clean_keeps_the_lock_file": [
+"src/store.rs"
+],
+"kdw-kioku store::tests::store_operations_fail_when_lock_cannot_be_opened": [
+"src/store.rs"
+],
+"kdw-kioku store::trace_store_tests::quarantine_prevents_a_prepared_hit_at_authorization": [
+"src/store.rs"
+],
+"kdw-kioku store::trace_store_tests::quarantine_survives_reopen_and_clean_and_reset_is_explicit": [
+"src/store.rs"
+],
+"kdw-kioku tools::tests::a_file_that_cannot_be_run_is_not_a_tool": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::a_tool_of_the_path_is_found": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::a_tool_that_cannot_be_run_fails_the_probe": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::a_tool_that_does_not_answer_fails_the_probe": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::a_tool_that_fails_fails_the_probe": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::every_lockfile_names_its_tools": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::go_probe_uses_version_subcommand_and_handles_absence": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_cache_of_the_versions_separates_two_directories": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_entire_first_version_line_is_preserved": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_executable_keeps_the_name_of_the_tool": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_first_line_that_holds_something_is_the_version": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_path_of_a_tool_is_absolute": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_selected_tool_is_read_when_the_executable_is_a_proxy": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_tool_is_run_in_the_directory_of_the_command": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_tool_is_run_under_the_name_it_is_called_with": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::the_version_of_a_tool_is_the_first_line_it_prints": [
+"src/tools_tests.rs"
+],
+"kdw-kioku tools::tests::version_cache_is_shared_between_calls": [
+"src/tools_tests.rs"
+],
+"kdw-kioku trace::status_tests::elf_gate_accepts_static_and_rejects_invalid_headers_and_interpreter": [
+"src/trace.rs"
+],
+"kdw-kioku trace::status_tests::old_path_semantics_require_new_trace_learning": [
+"src/trace.rs"
+],
+"kdw-kioku trace::status_tests::realtime_signal_requires_known_spelling_and_matching_wrapper": [
+"src/trace.rs"
+],
+"kdw-kioku trace::status_tests::reconstructs_only_unique_agreeing_root_status": [
+"src/trace.rs"
+],
+"kdw-kioku trace::status_tests::status_rejects_malformed_exit_mismatched_wrapper_and_unknown_signal": [
+"src/trace.rs"
+],
+"kdw-kioku::bin/kioku tests::formats_sizes_and_durations": [
+"src/main.rs"
+],
+"kdw-kioku::bin/kioku tests::parses_the_documented_durations": [
+"src/main.rs"
+],
+"kdw-kioku::bin/kioku tests::rejects_a_broken_duration": [
+"src/main.rs"
+],
+"kdw-kioku::cli a_command_that_reads_the_standard_input_is_never_cached": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_declared_environment_variable_changes_the_key": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_document_that_does_not_describe_its_key_is_not_an_entry": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_malformed_legacy_entry_is_never_a_hit": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_missing_command_reports_127": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_modified_lockfile_changes_the_key": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_relative_store_is_resolved_against_the_root_of_a_worktree": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_relative_store_is_resolved_against_the_working_directory": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_same_size_change_with_a_restored_timestamp_is_not_memorized": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_source_change_during_the_command_prevents_memorizing": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_store_inside_the_work_tree_disables_the_cache": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_store_that_overlaps_a_source_directory_never_hides_a_change": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_store_that_shadows_a_source_directory_does_not_hide_a_change": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_store_with_restricted_inputs_is_not_shared_between_repositories": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_tampered_legacy_manifest_is_never_a_hit": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli a_usage_error_is_reported_as_json": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli an_external_store_does_not_leak_between_different_repositories": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli an_untracked_file_changes_the_key": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli ast_opt_in_reports_its_contract": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli cache_disable_values_are_interpreted_individually": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli ci_show_unknown_run_reports_not_found_without_writer": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli clean_needs_a_duration_or_all": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli clean_rejects_a_broken_duration": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli configured_ast_and_cli_bytes_both_use_bytes_in_v2": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli deeply_nested_javascript_executes_in_default_and_ast_modes": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli default_bytes_detects_self_read_source_change": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli default_execution_observes_ignored_file_change": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli default_success_executes_again_instead_of_reusing_v1": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli default_success_then_failure_preserves_actual_exit": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli explain_after_change_reports_execute_only_policy": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli explain_after_permissions_change_does_not_claim_default_hit": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli explain_after_whitespace_change_does_not_offer_ast_reuse": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli explain_ast_diagnostic_tracks_changes_without_authorizing_reuse": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli explain_has_no_closest_entry_after_default_runs": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli explain_reports_requested_trace_contract_and_effective_bytes": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli external_store_does_not_enable_default_reuse_between_repositories": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli git_errors_do_not_repeat_the_git_prefix": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli invalid_config_is_visible_and_never_executes_command": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli json_disabled_cache_reason_is_json_only": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli json_does_not_echo_command_arguments": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli native_command_executes_each_time_without_trace_consent": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli never_caches_a_failure": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli status_and_clean_answer_in_json": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli status_and_clean_outside_a_repository_succeed_with_a_message": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli status_reports_the_store_in_json": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli support::true_program_succeeds_with_closed_stdin_and_empty_environment": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli the_cache_can_be_disabled": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli the_child_inherits_stdin": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli the_child_keeps_stdout_and_kioku_writes_its_event_on_stderr": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli the_help_lists_the_commands_and_the_examples": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli the_key_does_not_depend_on_the_absolute_path": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli the_version_is_printed": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli traced_realtime_signal_exit_is_reported_without_child_retry": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli traced_signal_exit_is_reported_without_child_retry": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli transmits_the_exit_code_of_the_command": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli two_agents_can_run_at_the_same_time": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli v02_default_executes_even_after_success": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli v02_rejects_invalid_verify_rates_and_reports_ast_effective_bytes": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli verify_exposes_a_false_green_and_invalidates_the_pass": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::cli verify_reports_the_actual_exit_and_no_default_hit": [
+"src/main.rs",
+"tests/cli.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::config_r14b dangling_config_symlink_is_an_io_error": [
+"tests/config_r14b.rs"
+],
+"kdw-kioku::config_r14b only_a_missing_config_in_an_existing_root_is_optional": [
+"tests/config_r14b.rs"
+],
+"kdw-kioku::false_green_zoo default_executes_twice_and_reflects_ignored_input_change": [
+"src/main.rs",
+"tests/false_green_zoo.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::false_green_zoo default_observes_created_previously_absent_path": [
+"src/main.rs",
+"tests/false_green_zoo.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::false_green_zoo default_observes_symlink_retargeting": [
+"src/main.rs",
+"tests/false_green_zoo.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::false_green_zoo source_text_change_cannot_reuse_a_default_result": [
+"src/main.rs",
+"tests/false_green_zoo.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::false_green_zoo support::true_program_succeeds_with_closed_stdin_and_empty_environment": [
+"src/main.rs",
+"tests/false_green_zoo.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::fingerprint_properties an_ordinary_keyword_is_not_marked": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties arrow_before_newline_is_not_the_same_source": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties ast_ignores_ordinary_comment_payload": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties ast_ignores_ordinary_comments": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties ast_ignores_whitespace": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties ast_sees_literal_changes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties ast_sees_meaningful_comments": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties ast_sees_token_changes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties async_before_newline_is_not_the_same_source": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties bytes_mode_sees_every_byte": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties deeply_nested_source_falls_back_to_bytes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties depth_limit_has_exact_boundary_and_handles_siblings": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties directive_files_fall_back_to_bytes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties fingerprint_is_path_independent": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties increment_before_newline_is_not_the_same_source": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties javascript_callable_source_is_significant": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties javascript_callable_source_is_significant_across_files": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties jsx_text_keeps_spaces": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties modes_use_separate_domains": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties ordinary_comments_are_dropped": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties oversized_sources_fall_back_to_bytes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties return_before_newline_is_not_the_same_source": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_attributed_items_do_not_hide_the_rest_of_the_file": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_attributed_items_keep_their_punctuation": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_block_doc_comments_are_kept": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_doc_comments_are_kept": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_inner_doc_comments_are_kept": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_macro_comment_does_not_join_tokens": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_macro_files_fall_back_to_bytes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_macro_spacing_changes_the_fingerprint": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_macro_token_boundaries_matter": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_position_macros_fall_back_to_bytes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties rust_type_adjacency_is_part_of_the_fingerprint": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties shebang_is_kept": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties supported_languages_are_parsed": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties the_size_limit_is_exact": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties throw_after_newline_is_not_the_same_source": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties top_level_constants_ignore_trivia": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties typescript_ambient_declarations_fall_back_to_bytes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties typescript_declaration_headers_stay_on_one_line": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties unknown_directives_are_opaque": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::fingerprint_properties unreadable_sources_fall_back_to_bytes": [
+"tests/fingerprint_properties.rs"
+],
+"kdw-kioku::key_env_r15ds legacy_snapshot_key_still_depends_on_the_declared_value": [
+"tests/key_env_r15ds.rs"
+],
+"kdw-kioku::key_env_r15ds legacy_snapshot_payload_carries_no_environment_value": [
+"tests/key_env_r15ds.rs"
+],
+"kdw-kioku::legacy_key_r14b trailing_newline_in_repository_root_preserves_portable_key": [
+"tests/legacy_key_r14b.rs"
+],
+"kdw-kioku::legacy_key_r14b trailing_space_in_repository_root_preserves_portable_key": [
+"tests/legacy_key_r14b.rs"
+],
+"kdw-kioku::policy changed_identity_and_new_dependencies_restart_learning": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy discovery_learning_eligible_requires_identical_evidence": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy environment_digest_preserves_order_and_rejects_duplicates": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy file_and_absence_are_revalidated": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy invalid_verify_rate_is_rejected_by_library_before_execution": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy metadata_records_are_invalidated_by_a_timestamp_change_only": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy observe_rejects_each_invalid_input_and_never_promotes_mismatches": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy public_state_reports_learning_identity_and_dependency_changes": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy support::true_program_succeeds_with_closed_stdin_and_empty_environment": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy symlink_depth_limit_accepts_forty_and_denies_forty_one": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy symlink_parent_components_and_missing_paths_fail_closed": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy symlink_target_and_retarget_change_manifest_even_with_equal_bytes": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy symlinks_into_pseudo_filesystems_are_denied": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy unresolved_terminal_root_is_denied": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy verification_journal_reports_quarantine_for_both_reasons": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::policy wrong_dependency_kind_is_unsupported_not_an_io_error": [
+"tests/policy.rs",
+"tests/support/mod.rs"
+],
+"kdw-kioku::store_r14b conflicting_digests_for_one_input_path_are_not_readable_entries": [
+"tests/store_r14b.rs"
+],
+"kdw-kioku::store_r14b entry_documents_reject_ambiguity_but_preserve_valid_legacy_entries": [
+"tests/store_r14b.rs"
+],
+"kdw-kioku::store_r14b malformed_counters_never_reset_existing_history": [
+"tests/store_r14b.rs"
+],
+"kdw-kioku::tools_r14b proxy_version_cache_tracks_its_own_manager_selection": [
+"tests/tools_r14b.rs"
+],
+"kdw-kioku::trace absence_with_errno_parentheses_is_recorded": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace accepted_open_metadata_flags_do_not_deny": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace architecture_diagnostics_are_stable": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace chdir_and_openat_directory_fd_preserve_context_across_fork": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace completed_second_exec_after_open_is_denied": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace denial_codes_are_stable": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace denied_trace_never_exposes_synthetic_buffer_in_event_or_error": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace detects_reader_and_child_dependencies": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace exec_redacted_env_requires_complete_shape": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace initial_exec_must_match_requested_executable": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace invalid_metadata_records_are_denied": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace lifecycle_wait_signal_and_exit_reject_inconsistent_records": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace malformed_clone_records_report_the_correct_line": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace metadata_directory_and_mapping_grammar_rejects_each_invalid_field": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace metadata_directory_and_private_mapping_are_dependencies": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace orphan_exec_resume_and_unfinished_initial_exec_are_rejected": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace overlong_line_limit_is_unsupported_not_a_parse_error": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace parse_absolute_argument_contract": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace parse_for_rejects_each_noncanonical_input_independently": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace parser_accepts_exact_byte_limit_and_rejects_next_byte": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace parser_accepts_exact_line_limit_and_rejects_next_byte": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace parser_rejects_nonabsolute_executable_without_rejecting_valid_control": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace parser_requires_initial_exec_and_root_completion": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace pending_wait_rejects_mismatched_resume_duplicate_and_eof": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace quoted_paths_preserve_parent_traversal_and_reject_escape_and_control_bytes": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace read_from_an_unopened_descriptor_is_denied": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace reasons_distinguish_denied_nondeterministic_operations": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace rejects_records_after_exit_and_unknown_tasks": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace rejects_unknown_incomplete_and_forged_exit": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace resolve_relative_normalizes_empty_and_dot_components": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace support::true_program_succeeds_with_closed_stdin_and_empty_environment": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace symlink_parent_traversal_never_hides_the_file_actually_read": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace unfinished_child_exec_is_completed_only_on_successful_resume": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace unfinished_clone_binds_child_only_from_matching_parent_resume": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace unfinished_directory_open_preserves_metadata_and_dirfd": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace unfinished_exec_requires_initial_exec_and_no_open_descriptors": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace unfinished_open_is_paired_per_task_and_orphans_are_rejected": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace write_records_keep_stdout_allowed_and_every_other_shape_denied": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace x86_64_legacy_syscalls_use_the_x86_64_grammar": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::trace x86_64_write_open_is_a_write_denial": [
+"src/main.rs",
+"tests/support/mod.rs",
+"tests/trace.rs"
+],
+"kdw-kioku::v2_a10_all_runs_bound readonly_all_runs_keeps_oldest_complete_owned_records": [
+"tests/v2_a10_all_runs_bound.rs"
+],
+"kdw-kioku::v2_a10_all_runs_bound readonly_all_runs_retains_large_observation_groups_and_rejects_poison": [
+"tests/v2_a10_all_runs_bound.rs"
+],
+"kdw-kioku::v2_a11_input_bounds bootstrap_rejects_duplicate_nested_authority_fields": [
+"tests/v2_a11_input_bounds.rs"
+],
+"kdw-kioku::v2_a11_input_bounds oversized_request_header_is_rejected_without_body": [
+"tests/v2_a11_input_bounds.rs"
+],
+"kdw-kioku::v2_a11_input_bounds oversized_response_is_rejected_without_writing_header": [
+"tests/v2_a11_input_bounds.rs"
+],
+"kdw-kioku::v2_a11_input_bounds truncated_and_malformed_requests_preserve_error_categories": [
+"tests/v2_a11_input_bounds.rs"
+],
+"kdw-kioku::v2_a9_native_possession nonzero_monitor_never_accepts_even_a_valid_terminal_record": [
+"tests/v2_a9_native_possession.rs"
+],
+"kdw-kioku::v2_a9_native_possession structured_native_unknown_is_observable_without_absence_proof": [
+"tests/v2_a9_native_possession.rs"
+],
+"kdw-kioku::v2_admission_c healthy_native_closure_survives_restart_and_old_request_never_reexecutes": [
+"src/main.rs",
+"tests/v2_admission_c.rs"
+],
+"kdw-kioku::v2_admission_c healthy_stop_drain_closure_admits_new_request_after_restart": [
+"src/main.rs",
+"tests/v2_admission_c.rs"
+],
+"kdw-kioku::v2_admission_c legacy_unbound_running_request_remains_busy_without_new_durable_admission": [
+"src/main.rs",
+"tests/v2_admission_c.rs"
+],
+"kdw-kioku::v2_admission_c malformed_redundant_native_receipts_cannot_release_admission_after_restart": [
+"src/main.rs",
+"tests/v2_admission_c.rs"
+],
+"kdw-kioku::v2_adversarial v64_manifest_symlink_escape_is_rejected_even_if_digest_approved": [
+"src/main.rs",
+"tests/v2_adversarial.rs"
+],
+"kdw-kioku::v2_adversarial v64_unregistered_root_and_manifest_mismatch_are_refused": [
+"src/main.rs",
+"tests/v2_adversarial.rs"
+],
+"kdw-kioku::v2_adversarial v65_test_contract_cannot_pass_as_opaque_native_exit": [
+"src/main.rs",
+"tests/v2_adversarial.rs"
+],
+"kdw-kioku::v2_adversarial v69_default_escapes_controls_raw_requires_explicit_file": [
+"src/main.rs",
+"tests/v2_adversarial.rs"
+],
+"kdw-kioku::v2_adversarial v70_private_stop_prevents_service_and_any_spawn": [
+"src/main.rs",
+"tests/v2_adversarial.rs"
+],
+"kdw-kioku::v2_contracts approved_manifest_refuses_links_protected_paths_and_wrong_pin": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts bootstrap_admits_only_cooperative_existing_operator_shape_not_secret": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts duplicate_json_and_float_or_deep_wire_are_never_tolerated": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts ids_are_ascii_and_paths_do_not_depend_on_process_cwd": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts manifest_checks_graph_and_no_invented_caches": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts manifest_rejects_self_and_cycle_and_unknown_parent_and_duplicate_ids": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts portable_id_digest_paths_odds_validate": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts request_strict_digest_have_modes_and_stable_schema": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts secret_capability_manifest_refused_on_read": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts unsupported_bootstrap_auth_reference_is_refused": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_contracts valid_dag_binds_an_existing_required_output": [
+"tests/v2_contracts.rs"
+],
+"kdw-kioku::v2_coordinator cancelled_queued_runs_do_not_exhaust_service_admission": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator cooperative_distinguishes_access_and_missing_socket": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator disconnected_submitter_does_not_cancel_durable_requests_or_stop_other_runs": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator earlier_native_failure_survives_a_later_unknown_drain": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator explicit_stop_interrupts_group_and_keeps_postmortem_evidence": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator failed_native_task_never_becomes_green": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator full_observers_do_not_execute_and_independent_full_requests_do_not_join": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator interruption_requires_an_active_phase_and_a_verified_report": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator light_native_runs_while_heavy_is_occupied": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator long_native_show_wait_preserves_single_execution": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator main_full_new_requests_execute_only_required_closure_even_after_success": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator queued_request_can_be_cancelled_without_affecting_current_job": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator queued_source_failure_after_restart_does_not_disable_other_registered_roots": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator real_process_inbox_roundtrip_and_postmortem_show": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator running_request_replay_is_idempotent_and_divergence_is_refused": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator source_revalidation_failure_is_terminal_for_that_run_while_another_lane_continues": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator startup_interruption_retains_legacy_and_bound_resource_ownership": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator supervisor_drain_failure_is_persisted_incomplete_with_native_evidence": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_coordinator three_distinct_requests_execute_once_each": [
+"src/main.rs",
+"tests/v2_coordinator.rs"
+],
+"kdw-kioku::v2_crash_idempotence crash_after_native_binding_recovers_closed_group_and_admits_new_request": [
+"src/main.rs",
+"tests/v2_crash_idempotence.rs"
+],
+"kdw-kioku::v2_crash_idempotence healthy_native_drain_survives_reopen_and_new_request_executes_once": [
+"src/main.rs",
+"tests/v2_crash_idempotence.rs"
+],
+"kdw-kioku::v2_crash_idempotence unbound_legacy_execution_stays_blocked_even_after_owned_child_is_waited": [
+"src/main.rs",
+"tests/v2_crash_idempotence.rs"
+],
+"kdw-kioku::v2_custody_negative foreign_checkpoint_evidence_refuses_fresh_admission": [
+"src/main.rs",
+"tests/v2_custody_negative.rs"
+],
+"kdw-kioku::v2_custody_negative incomplete_checkpoint_refuses_fresh_admission": [
+"src/main.rs",
+"tests/v2_custody_negative.rs"
+],
+"kdw-kioku::v2_custody_negative missing_checkpoint_refuses_fresh_admission": [
+"src/main.rs",
+"tests/v2_custody_negative.rs"
+],
+"kdw-kioku::v2_custody_negative one_native_incarnation_cannot_close_another_task_or_run": [
+"src/main.rs",
+"tests/v2_custody_negative.rs"
+],
+"kdw-kioku::v2_custody_negative truncated_checkpoint_refuses_fresh_admission": [
+"src/main.rs",
+"tests/v2_custody_negative.rs"
+],
+"kdw-kioku::v2_d1 actual_child_stream_is_discarded_before_persistence": [
+"tests/v2_d1.rs"
+],
+"kdw-kioku::v2_d1 decision_is_log_only_without_training_or_inference": [
+"tests/v2_d1.rs"
+],
+"kdw-kioku::v2_d1 outcome_never_invents_gold_or_action": [
+"tests/v2_d1.rs"
+],
+"kdw-kioku::v2_d1 rejects_future_history_and_invalid_timing": [
+"tests/v2_d1.rs"
+],
+"kdw-kioku::v2_d1 timeout_and_undrained_do_not_look_successful": [
+"tests/v2_d1.rs"
+],
+"kdw-kioku::v2_ds_checkpoint_reader forged_checkpoint_bytes_are_rejected_without_rewriting_the_file": [
+"tests/v2_ds_checkpoint_reader.rs"
+],
+"kdw-kioku::v2_environments abc_real_target_and_late_parasite_force_cold": [
+"tests/v2_environments.rs"
+],
+"kdw-kioku::v2_environments cadence_and_identity_require_cold": [
+"tests/v2_environments.rs"
+],
+"kdw-kioku::v2_environments hardlinked_post_run_artifact_cannot_become_warm_private_state": [
+"tests/v2_environments.rs"
+],
+"kdw-kioku::v2_environments serial_slot_requires_registration_and_source_reconciliation": [
+"tests/v2_environments.rs"
+],
+"kdw-kioku::v2_input_boundary absent_declaration_rejects_an_existing_path_before_execution": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_input_boundary dangling_symlink_counts_as_present_for_an_absent_declaration": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_input_boundary explicit_request_selection_executes_only_the_requested_task": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_input_boundary missing_declared_file_is_refused_before_any_native_child": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_input_boundary missing_input_after_healthy_run_stays_refused_on_duplicate_and_replay": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_input_boundary present_declared_file_still_executes_and_counts_each_selected_identity_once": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_input_boundary symlinked_declared_file_fails_closed_before_execution": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_input_boundary unreadable_absence_is_not_treated_as_absence": [
+"src/main.rs",
+"tests/v2_input_boundary.rs"
+],
+"kdw-kioku::v2_inputs captures_multiple_inputs_and_content_changes_with_mtime_restored": [
+"tests/v2_inputs.rs"
+],
+"kdw-kioku::v2_inputs detects_rename_remove_config_and_empty_directories": [
+"tests/v2_inputs.rs"
+],
+"kdw-kioku::v2_inputs generated_and_tool_files_are_explicit_inputs": [
+"tests/v2_inputs.rs"
+],
+"kdw-kioku::v2_inputs key_is_stable_sensitive_and_rejects_ambiguity": [
+"tests/v2_inputs.rs"
+],
+"kdw-kioku::v2_inputs rejects_missing_secret_overlap_and_symlink_escape": [
+"tests/v2_inputs.rs"
+],
+"kdw-kioku::v2_journal_permissions bootstrap_creates_only_private_paths_under_the_state_root": [
+"tests/v2_journal_permissions.rs"
+],
+"kdw-kioku::v2_journal_permissions preexisting_public_state_root_is_refused": [
+"tests/v2_journal_permissions.rs"
+],
+"kdw-kioku::v2_journal_permissions preexisting_symlinked_or_public_journal_file_is_refused": [
+"tests/v2_journal_permissions.rs"
+],
+"kdw-kioku::v2_journal_permissions public_result_or_blob_paths_are_refused": [
+"tests/v2_journal_permissions.rs"
+],
+"kdw-kioku::v2_journal_permissions read_only_replay_never_creates_or_mutates_paths": [
+"tests/v2_journal_permissions.rs"
+],
+"kdw-kioku::v2_journal_permissions symlinked_or_non_directory_state_root_is_refused": [
+"tests/v2_journal_permissions.rs"
+],
+"kdw-kioku::v2_journal_permissions task_and_channel_names_cannot_select_an_arbitrary_path": [
+"tests/v2_journal_permissions.rs"
+],
+"kdw-kioku::v2_multi_task_c first_task_closure_does_not_release_a_later_incomplete_native_family": [
+"src/main.rs",
+"tests/v2_multi_task_c.rs"
+],
+"kdw-kioku::v2_native absent_malformed_and_crashed_monitor_fail_closed": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native cancellation_during_execution_records_evidence_and_allows_fresh_independent_work": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native cancellation_term_reports_observed_signal_without_escalation": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native closure_reader_refuses_incomplete_mismatched_and_untrusted_checkpoints": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native direct_adoption_before_member_scan_persistent_identity_faults_remain_unknown": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native direct_adoption_between_group_snapshots_retains_complete_custody": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native direct_adoption_does_not_accept_missing_or_changed_process_identity": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native direct_adoption_during_live_ancestry_check_retains_complete_custody": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native fd_closed_living_descendant_is_seen_and_killed_before_structured_incomplete": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native fd_closed_zombie_is_reaped_not_misclassified_as_live": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native malformed_error_and_missing_optional_fields_preserve_v1_contract": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native normal_and_red_preserve_streams_status_and_resources": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_callback_failure_cleans_owned_child_without_global_stop_or_retry": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_callback_runs_once_before_monitor_reaps_and_retains_evidence": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_drains_adopted_original_group_on_timeout": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_header_deadline_stops_only_the_owned_monitor": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_monitor_checkpoint_failure_has_safe_diagnostic_and_no_proof": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_monitor_rejects_unbounded_or_unstructured_diagnostics": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_rejects_missing_malformed_and_oversized_headers_without_callback": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_rejects_wrong_boot_parent_group_and_ticks_then_drains": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native possession_waits_for_adopted_child_outside_original_group": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native proc_stat_read_after_real_exit_is_absent_but_permission_failure_is_not": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native public_value_probe::public_value_reaches_one_real_native_request": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native public_value_probe::reserved_home_is_refused_before_native_execution": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_native timeout_requires_grace_then_group_kill_and_retains_timed_out_status": [
+"src/main.rs",
+"tests/v2_native.rs"
+],
+"kdw-kioku::v2_profile_paths bootstrap_profile_shape_is_one_and_one": [
+"tests/v2_profile_paths.rs"
+],
+"kdw-kioku::v2_profile_paths capability_profile_wire_names_are_closed": [
+"tests/v2_profile_paths.rs"
+],
+"kdw-kioku::v2_profile_paths profile_document_toml_is_closed": [
+"tests/v2_profile_paths.rs"
+],
+"kdw-kioku::v2_profile_paths profile_identifier_is_a_wire_stable_id": [
+"tests/v2_profile_paths.rs"
+],
+"kdw-kioku::v2_profile_paths profile_paths_reject_os_specific_shapes": [
+"tests/v2_profile_paths.rs"
+],
+"kdw-kioku::v2_r14_artifact absent_artifact_directory_is_created_private": [
+"tests/v2_r14_artifact.rs"
+],
+"kdw-kioku::v2_r14_artifact created_intermediate_directory_is_private": [
+"tests/v2_r14_artifact.rs"
+],
+"kdw-kioku::v2_r14_artifact symlinked_parent_and_existing_path_fail_closed": [
+"tests/v2_r14_artifact.rs"
+],
+"kdw-kioku::v2_r14_environments reservation_directory_is_private_0700": [
+"tests/v2_r14_environments.rs"
+],
+"kdw-kioku::v2_r14_reports diagnostics_never_forge_a_line_start_directive": [
+"tests/v2_r14_reports.rs"
+],
+"kdw-kioku::v2_r14_reports pass_requires_a_complete_drained_zero_exit_closure": [
+"tests/v2_r14_reports.rs"
+],
+"kdw-kioku::v2_r14_schema input_selector_variant_refuses_an_undeclared_field": [
+"tests/v2_r14_schema.rs"
+],
+"kdw-kioku::v2_r14_schema origin_claim_variant_refuses_an_undeclared_field": [
+"tests/v2_r14_schema.rs"
+],
+"kdw-kioku::v2_r15ds_config declared_protected_ref_shape_rejects_names_git_cannot_address": [
+"tests/v2_r15ds_config.rs"
+],
+"kdw-kioku::v2_r15ds_paths relative_path_refuses_control_characters": [
+"tests/v2_r15ds_paths.rs"
+],
+"kdw-kioku::v2_r15ds_refs protected_refs_accept_canonical_names_and_hashes": [
+"tests/v2_r15ds_refs.rs"
+],
+"kdw-kioku::v2_r15ds_refs protected_refs_reject_malformed_full_refs": [
+"tests/v2_r15ds_refs.rs"
+],
+"kdw-kioku::v2_r16_admission matching_producer_selector_remains_admitted": [
+"tests/v2_r16_admission.rs"
+],
+"kdw-kioku::v2_r16_admission producer_selector_requires_a_matching_dependency_output": [
+"tests/v2_r16_admission.rs"
+],
+"kdw-kioku::v2_r16_server_restart clean_shutdown_allows_same_identity_socket_restart": [
+"tests/v2_r16_server_restart.rs"
+],
+"kdw-kioku::v2_r17_scheduler_release ordinary_release_preserves_capacity_and_queue_ownership": [
+"tests/v2_r17_scheduler_release.rs"
+],
+"kdw-kioku::v2_r17_scheduler_release release_callback_can_cancel_without_deadlocking_or_exposing_native_work": [
+"tests/v2_r17_scheduler_release.rs"
+],
+"kdw-kioku::v2_r18_runtime_drain invalid_env_names_are_configuration_errors_before_stop": [
+"tests/v2_r18_runtime_drain.rs"
+],
+"kdw-kioku::v2_r18_runtime_drain valid_closed_env_name_reaches_stop_without_spawn": [
+"tests/v2_r18_runtime_drain.rs"
+],
+"kdw-kioku::v2_r18_snapshot_roots root_path_transition_during_capture_is_rejected": [
+"tests/v2_r18_snapshot_roots.rs"
+],
+"kdw-kioku::v2_r19_local_default local_default_creates_and_reuses_regular_same_bytes_file": [
+"tests/v2_r19_local_default.rs"
+],
+"kdw-kioku::v2_r19_local_default local_default_rejects_same_bytes_symlink_without_chmod": [
+"tests/v2_r19_local_default.rs"
+],
+"kdw-kioku::v2_r20_persistent_bootstrap durable_bootstrap_rejects_same_bytes_symlink_and_reuses_regular_file": [
+"tests/v2_r20_persistent_bootstrap.rs"
+],
+"kdw-kioku::v2_r21_absence_shape monitor_cannot_appear_in_its_own_reaped_children": [
+"tests/v2_r21_absence_shape.rs"
+],
+"kdw-kioku::v2_r21_absence_shape valid_reader_fixture_keeps_the_exact_absence_scope": [
+"tests/v2_r21_absence_shape.rs"
+],
+"kdw-kioku::v2_r21_native_validation exclusive_native_outcomes_remain_observations_not_test_success": [
+"tests/v2_r21_native_validation.rs"
+],
+"kdw-kioku::v2_r21_native_validation exit_and_signal_cannot_both_describe_the_leader": [
+"tests/v2_r21_native_validation.rs"
+],
+"kdw-kioku::v2_r21_native_validation missing_leader_status_remains_admissible_but_incomplete": [
+"tests/v2_r21_native_validation.rs"
+],
+"kdw-kioku::v2_r21_request_selection full_closed_selection_is_accepted_for_both_manifests": [
+"tests/v2_r21_request_selection.rs"
+],
+"kdw-kioku::v2_r21_request_selection full_modes_refuse_partial_required_selection_without_new_admission": [
+"tests/v2_r21_request_selection.rs"
+],
+"kdw-kioku::v2_r21_request_selection independent_partial_selection_preserves_request_and_required_registry": [
+"tests/v2_r21_request_selection.rs"
+],
+"kdw-kioku::v2_r21_request_selection omitted_optional_producer_is_refused_before_journaling": [
+"tests/v2_r21_request_selection.rs"
+],
+"kdw-kioku::v2_r25_log_budget direct_log_fallback_applies_the_same_encoded_budget": [
+"tests/v2_r25_log_budget.rs"
+],
+"kdw-kioku::v2_r25_log_budget fitting_binary_and_ascii_logs_preserve_exact_content": [
+"tests/v2_r25_log_budget.rs"
+],
+"kdw-kioku::v2_r25_log_budget served_log_refuses_json_expansion_before_response_emission": [
+"tests/v2_r25_log_budget.rs"
+],
+"kdw-kioku::v2_r26_journal_capacity capacity_refuses_admission_and_transition_without_overwriting_history": [
+"tests/v2_r26_journal_capacity.rs"
+],
+"kdw-kioku::v2_r26_journal_capacity capacity_refuses_finalization_without_publishing_a_report": [
+"tests/v2_r26_journal_capacity.rs"
+],
+"kdw-kioku::v2_r26_journal_capacity capacity_refuses_observation_without_truncating_the_tail": [
+"tests/v2_r26_journal_capacity.rs"
+],
+"kdw-kioku::v2_r26_monitor_error nonzero_possession_monitor_reports_exit_code_and_stays_a_source_failure": [
+"tests/v2_r26_monitor_error.rs"
+],
+"kdw-kioku::v2_r26_monitor_error signaled_possession_monitor_reports_signal_and_stays_a_source_failure": [
+"tests/v2_r26_monitor_error.rs"
+],
+"kdw-kioku::v2_r26_wait_timeout client_wait_timeout_preserves_run_and_pending_native_finishes_once": [
+"src/main.rs",
+"tests/v2_r26_wait_timeout.rs"
+],
+"kdw-kioku::v2_r28_global_stop global_stop_drains_active_work_cancels_queued_work_and_wakes_other_cli_clients": [
+"src/main.rs",
+"tests/v2_r28_global_stop.rs"
+],
+"kdw-kioku::v2_r28_private_native_concrete actual_private_target_is_reused_only_after_native_closure": [
+"tests/v2_r28_private_native_concrete.rs"
+],
+"kdw-kioku::v2_r28_private_native_concrete failed_native_child_is_suspect_not_warm": [
+"tests/v2_r28_private_native_concrete.rs"
+],
+"kdw-kioku::v2_r28_private_native_concrete live_descendant_keeps_reservation_owned_and_cpu_unknown": [
+"tests/v2_r28_private_native_concrete.rs"
+],
+"kdw-kioku::v2_r28_private_native_concrete mismatched_qualification_and_private_target_override_never_reserve": [
+"tests/v2_r28_private_native_concrete.rs"
+],
+"kdw-kioku::v2_r28_private_native_concrete native_success_does_not_invent_external_cold_audit": [
+"tests/v2_r28_private_native_concrete.rs"
+],
+"kdw-kioku::v2_r28_private_native_concrete reused_work_cannot_overwrite_native_control_evidence": [
+"tests/v2_r28_private_native_concrete.rs"
+],
+"kdw-kioku::v2_r28_private_native_concrete source_mismatch_after_real_native_closure_invalidates_the_private_slot": [
+"tests/v2_r28_private_native_concrete.rs"
+],
+"kdw-kioku::v2_r28_run real_cli_lifecycle_preserves_identity_and_exactly_once_execution": [
+"src/main.rs",
+"tests/v2_r28_run.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest failed_inventory_producer_cannot_make_nonempty_results_green": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest failing_test_cases_are_failed_without_changing_native_evidence": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest linked_real_libtest_cli_passes_with_bound_cases": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest missing_inventory_link_is_incomplete": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest native_failure_and_drain_survive_a_declared_source_change": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest report_file_must_equal_its_own_durable_stdout": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest swapped_output_kinds_are_incomplete": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest symlinked_report_parent_cannot_escape_the_source": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest vanished_declared_source_makes_success_incomplete_but_keeps_native_evidence": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_linked_libtest wrong_execution_recipe_is_incomplete": [
+"src/main.rs",
+"tests/v2_r29_linked_libtest.rs"
+],
+"kdw-kioku::v2_r29_native_binding commands_tool_cwd_environment_and_resources_cannot_drift": [
+"tests/v2_r29_native_binding.rs"
+],
+"kdw-kioku::v2_r29_native_binding evaluation_requires_verified_streams_and_external_health_then_normalizes_cases": [
+"tests/v2_r29_native_binding.rs"
+],
+"kdw-kioku::v2_r29_native_binding extra_reports_dependencies_producers_and_unhealthy_inventory_reject": [
+"tests/v2_r29_native_binding.rs"
+],
+"kdw-kioku::v2_r29_native_binding identity_normalization_reporter_and_skips_must_match_the_supported_rule": [
+"tests/v2_r29_native_binding.rs"
+],
+"kdw-kioku::v2_r29_native_binding real_pair_accepts_but_missing_or_inverted_producer_rejects": [
+"tests/v2_r29_native_binding.rs"
+],
+"kdw-kioku::v2_r29_native_binding recipes_bind_exact_command_json_digest_size_and_media_type": [
+"tests/v2_r29_native_binding.rs"
+],
+"kdw-kioku::v2_r29_native_binding unknown_or_different_input_declarations_and_snapshot_reject": [
+"tests/v2_r29_native_binding.rs"
+],
+"kdw-kioku::v2_r29_native_outcome cancellation_requires_drain_and_cpu_closure": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_native_outcome existing_classifier_detects_failure_even_in_a_contradictory_report": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_native_outcome native_failures_and_complete_timeouts_are_not_success": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_native_outcome parsed_paired_output_still_requires_complete_native_accounting": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_native_outcome report_verdicts_are_not_upgraded_to_success": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_native_outcome selected_output_errors_and_run_collection_errors_prevent_pass": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_native_outcome test_success_requires_a_passed_report_and_complete_native_observation": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_native_outcome unknown_or_partial_native_closure_never_passes": [
+"tests/v2_r29_native_outcome.rs"
+],
+"kdw-kioku::v2_r29_report_contracts libtest_pair_with_report_files_and_separate_streams_round_trips": [
+"tests/v2_r29_report_contracts.rs"
+],
+"kdw-kioku::v2_r29_report_contracts named_reports_cannot_reinterpret_a_pathless_native_stream": [
+"tests/v2_r29_report_contracts.rs"
+],
+"kdw-kioku::v2_r29_report_contracts producer_binding_requires_the_exact_declared_dependency_output": [
+"tests/v2_r29_report_contracts.rs"
+],
+"kdw-kioku::v2_r29_report_contracts test_contract_requires_inventory_and_matching_task_adapter": [
+"tests/v2_r29_report_contracts.rs"
+],
+"kdw-kioku::v2_r30_incremental_private changed_source_keeps_failed_native_observation_without_qualifying_parent": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_r30_incremental_private deleted_declared_file_is_rejected_before_a_second_native_execution": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_r30_incremental_private edited_existing_file_is_warm_only_from_own_durable_parent": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_r30_incremental_private failed_native_is_not_a_parent_and_restart_does_not_adopt_disk": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_r30_incremental_private parent_target_tampering_never_releases_a_warm_execution": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_r30_incremental_private sidecar_publication_failure_does_not_install_a_warm_parent": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_r30_incremental_private successful_native_disappearance_preserves_evidence_but_is_incomplete": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_r30_incremental_private successful_native_mutation_preserves_evidence_but_is_incomplete": [
+"src/main.rs",
+"tests/v2_r30_incremental_private.rs"
+],
+"kdw-kioku::v2_real_libtest real_libtest_inventory_and_results_green_red_and_unknown": [
+"tests/v2_real_libtest.rs"
+],
+"kdw-kioku::v2_reports case_identity_is_unambiguous_and_does_not_contain_raw_names": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports empty_and_unrecognized_setup_teardown_and_terse_execution_fail_closed": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports explicit_project_context_and_collection_status_are_honoured": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports failure_classification_never_promotes_unknown": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports ignored_and_unsafe_output_do_not_create_false_green": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports local_task_result_retains_named_report_and_raw_observation": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports malformed_or_duplicate_summaries_are_not_success": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports native_status_and_inventory_are_both_required": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports non_test_and_opaque_never_fabricate_counts": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports real_terse_inventory_and_verbose_results_are_qualified": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports test_contract_without_inventory_recipe_cannot_pass": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_reports workflow_commands_never_begin_a_rendered_line": [
+"tests/v2_reports.rs"
+],
+"kdw-kioku::v2_required_outputs artifact_is_checked_relative_to_native_cwd": [
+"src/main.rs",
+"tests/v2_required_outputs.rs"
+],
+"kdw-kioku::v2_required_outputs missing_artifact_makes_healthy_native_incomplete": [
+"src/main.rs",
+"tests/v2_required_outputs.rs"
+],
+"kdw-kioku::v2_required_outputs native_failure_remains_failed": [
+"src/main.rs",
+"tests/v2_required_outputs.rs"
+],
+"kdw-kioku::v2_required_outputs required_artifact_rejects_nonfiles_and_escape": [
+"src/main.rs",
+"tests/v2_required_outputs.rs"
+],
+"kdw-kioku::v2_runtime failing_child_is_not_rewritten_to_success": [
+"tests/v2_runtime.rs"
+],
+"kdw-kioku::v2_runtime inherited_stream_is_bounded_after_direct_exit": [
+"tests/v2_runtime.rs"
+],
+"kdw-kioku::v2_runtime native_exit_and_streams_are_observed_without_asserting_cpu_or_tree_completeness": [
+"tests/v2_runtime.rs"
+],
+"kdw-kioku::v2_runtime stop_prevents_spawn_and_stream_limit_is_fail_closed": [
+"tests/v2_runtime.rs"
+],
+"kdw-kioku::v2_runtime timeout_is_an_observed_native_result": [
+"tests/v2_runtime.rs"
+],
+"kdw-kioku::v2_scheduler a_ready_job_cannot_overtake_its_capturing_lane_predecessor": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler a_ready_main_job_is_not_blocked_by_an_older_agent_in_its_lane": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler an_aged_agent_keeps_fifo_with_a_human_in_its_lane": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler cancellation_does_not_release_an_active_capture_early": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler capture_is_bounded_and_drop_preserves_work": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler capture_rotation_does_not_change_native_rotation": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler concurrent_capture_permits_are_bounded_before_native": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler discarded_work_does_not_consume_a_capture_or_native_slot": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler final_validation_never_holds_capture_while_waiting_for_heavy": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler impossible_requests_refused_and_heavy_busy_does_not_block_light": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler light_service_does_not_reset_heavy_lane_rotation": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler ranking_with_large_queue_and_fixed_clock": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_scheduler round_robin_fifo_and_aging": [
+"tests/v2_scheduler.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra b3_digest_of_zero_length_input_is_well_formed_and_distinct": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra b3_digest_shape_is_bounded_and_lowercase": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra bounded_decode_accepts_the_small_valid_record": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra bounded_decode_refuses_bodies_over_the_size_cap": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra bounded_decode_refuses_duplicate_fields": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra bounded_decode_refuses_nul_bytes_outside_valid_text": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra bounded_decode_refuses_trailing_content_but_allows_trailing_whitespace": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra bounded_decode_refuses_unknown_fields": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra bounded_decode_refuses_zero_length_input": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra request_digest_is_order_independent_and_refuses_bad_numbers": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra wire_depth_is_bounded": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_schema_contracts_extra wire_field_names_reject_control_characters": [
+"tests/v2_schema_contracts_extra.rs"
+],
+"kdw-kioku::v2_store admission_survives_reopen_and_conflicts_fail_closed": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store corrupt_interruption_terminal_or_report_is_rejected_on_replay": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store corrupt_refusal_event_is_rejected_on_replay": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store evidence_and_terminal_report_survive_reopen": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store failure_and_timeout_never_pass": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store interruption_rejects_invalid_terminal_and_missing_report_without_append": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store interruption_terminal_replays_and_blocks_new_native_start": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store legacy_interruption_omits_terminal_and_replays_incomplete": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store one_successful_task_cannot_pass_a_two_task_selection": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store orphan_binding_is_durable_and_never_released_without_proof": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store phases_and_cancellation_survive_reopen": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store pre_execution_refusal_is_terminal_zero_observation_and_replays": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store pre_execution_refusal_rejects_active_or_unknown_runs_and_bad_reports": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store readonly_snapshot_replays_complete_incomplete_and_rejects_writes": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store terminal_and_reversed_phases_are_rejected": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store timeout_without_drain_cannot_finalize_failed": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_store truncated_journal_and_unauthorized_identity_are_rejected": [
+"tests/v2_store.rs"
+],
+"kdw-kioku::v2_transport_bootstrap competing_daemon_does_not_publish_socket_before_state_ownership": [
+"src/main.rs",
+"tests/v2_transport_bootstrap.rs"
+]
+}
+}

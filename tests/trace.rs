@@ -1089,7 +1089,7 @@ fn resolve_relative_normalizes_empty_and_dot_components() {
 }
 
 #[test]
-fn quoted_paths_normalize_lexically_and_reject_escape_and_control_bytes() {
+fn quoted_paths_preserve_parent_traversal_and_reject_escape_and_control_bytes() {
     use kioku::trace::DenyReason;
     let check = |path: &str| {
         let trace = format!(
@@ -1102,11 +1102,11 @@ fn quoted_paths_normalize_lexically_and_reject_escape_and_control_bytes() {
         ("/work/file", "/work/file"),
         ("/work/./file", "/work/file"),
         ("/work//file", "/work/file"),
-        ("/work/../file", "/file"),
+        ("/work/../file", "/work/../file"),
         ("./file", "/work/file"),
-        ("../file", "/file"),
+        ("../file", "/work/../file"),
         ("a//b", "/work/a/b"),
-        ("a/../b", "/work/b"),
+        ("a/../b", "/work/a/../b"),
     ] {
         assert!(
             check(path).unwrap().contains(&ObservedPath {
@@ -1119,4 +1119,42 @@ fn quoted_paths_normalize_lexically_and_reject_escape_and_control_bytes() {
     for path in ["", r"bad\name", "../../file", "../../../file"] {
         assert_eq!(check(path), Err(DenyReason::Unsupported), "path: {path:?}");
     }
+}
+
+#[test]
+fn symlink_parent_traversal_never_hides_the_file_actually_read() {
+    use kioku::policy::Manifest;
+    use std::fs;
+    use std::os::unix::fs::symlink;
+
+    let dir = tempfile::tempdir().unwrap();
+    let work = dir.path().join("work");
+    let external = dir.path().join("external");
+    fs::create_dir(&work).unwrap();
+    fs::create_dir_all(external.join("nested")).unwrap();
+    symlink(external.join("nested"), work.join("link")).unwrap();
+    let executable = work.join("helper");
+    fs::write(&executable, b"synthetic executable identity").unwrap();
+    fs::write(work.join("input"), b"decoy").unwrap();
+    let actual = external.join("input");
+    fs::write(&actual, b"original").unwrap();
+    let observed = work.join("link/../input");
+    assert_eq!(fs::read(&observed).unwrap(), b"original");
+    let trace = format!(
+        "100 execve(\"{}\", [...], NULL) = 0\n\
+100 openat(AT_FDCWD, \"link/../input\", O_RDONLY) = 3\n\
+100 close(3) = 0\n\
+100 exit_group(0) = ?\n\
+100 +++ exited with 0 +++\n",
+        executable.display()
+    );
+    let dependencies = parse_for(Arch::Aarch64, &trace, &work, &executable).unwrap();
+    let manifest = Manifest::capture(&dependencies).unwrap();
+    assert!(manifest.revalidate().unwrap());
+    fs::write(&actual, b"changed dependency").unwrap();
+    assert_eq!(fs::read(&observed).unwrap(), b"changed dependency");
+    assert!(
+        !manifest.revalidate().unwrap(),
+        "a changed input reached through symlink/.. must invalidate reuse"
+    );
 }

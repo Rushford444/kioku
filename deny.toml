@@ -1,11 +1,11 @@
 # cargo-deny configuration.
-# Only permissive licenses are accepted. MPL-2.0 is tolerated for the
-# dependencies that need it (recorded, not silently accepted).
+# Only the licenses listed below are accepted; MPL-2.0 is not on the allowlist.
 
 [graph]
 all-features = true
 targets = [
     "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
     "x86_64-apple-darwin",
     "x86_64-pc-windows-msvc",
 ]

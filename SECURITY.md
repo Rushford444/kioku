@@ -9,7 +9,7 @@ before a fix is available.
 ## Trust boundary
 
 A cached result is an exit status only. Hits do not restore output or files.
-The default is execute-only; traced reuse requires explicit caller opt-in
+The v0.2 default is execute-only; traced reuse requires explicit caller opt-in
 and the [traced-reuse assumptions](README.md#traced-reuse-assumptions). Unknown observations, unavailable
 tracing or incomplete evidence must prevent reuse. Linux tracing is not a
 promise of traced caching on other operating systems. Commands themselves can
@@ -17,8 +17,8 @@ access the network, alter files, or expose data; kioku is not a sandbox.
 
 Treat the store as sensitive. Trace-v2 identity uses digests for command
 arguments and environment values; its manifest contains paths and digests.
-Entries written by earlier builds may contain command arguments and paths.
-Never put credentials in command arguments. The tracer must
+Older v0.1 entries may contain command arguments and paths. Never put
+credentials in command arguments. The tracer must
 never emit or persist exec environment values or raw trace records. Diagnostic
 outputs must not contain secrets.
 

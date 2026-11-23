@@ -1,18 +1,30 @@
-tracer sha256: 0e69fa123b3d9732645ce1ac8c89819d100f83cdc9e52a80565d9ad8e7d8cf28
+# Real terminal session: execute-only default
+# Linux/aarch64, release build of v0.3.1; all commands exited 0.
+# Prepare a disposable example (kioku must be in PATH):
+mkdir -p /tmp/kioku-showcase-v031
+cd /tmp/kioku-showcase-v031
+git init -q
+printf '#!/bin/sh\nprintf "checks passed\\n"\n' > check.sh
+chmod +x check.sh
+export KIOKU_DIR=/tmp/kioku-showcase-v031/cache
+
 $ kioku --version
-kioku 0.1.0
-$ kioku run --trust-trace -- ./check input.txt
-kioku: trace-v2 assumes deterministic behavior and stable inputs; exit status only, output not replayed; effective mode: bytes
-executed (exit 0, 157 ms)
-$ kioku run --trust-trace -- ./check input.txt
-kioku: trace-v2 assumes deterministic behavior and stable inputs; exit status only, output not replayed; effective mode: bytes
-executed (exit 0, 189 ms)
-$ kioku run --trust-trace -- ./check input.txt
-kioku: trace-v2 assumes deterministic behavior and stable inputs; exit status only, output not replayed; effective mode: bytes
-cached (pass, 189 ms saved)
+kioku 0.3.1
+$ kioku run -- ./check.sh
+checks passed
+kioku: execute-only (execute-only); effective mode: bytes
+executed (exit 0, 0 ms)
+$ kioku run -- ./check.sh
+checks passed
+kioku: execute-only (execute-only); effective mode: bytes
+executed (exit 0, 0 ms)
 $ kioku status
-kioku: 1 trace states, 0 quarantines, 0 legacy entries
-  counters: 1 hits (1 measured), 2 misses, 2 executions, 0 bypassed, 0 invalidated
-  saved: 189 ms over 1 measured hit (includes tracing overhead)
-  store: /tmp/kioku-demo.EtJuXMT8i5/cache
-synthetic environment secret: absent from the demo directory
+kioku: 0 trace states, 0 quarantines, 0 legacy entries
+  legacy: 0 B, 0 ms legacy saved
+  store: /tmp/kioku-showcase-v031/cache
+  legacy hits: 0, misses: 0, executions: 0, invalidated: 0
+
+# stdout/stderr combined here; timing varies. No hit is claimed.
+# A shell script has no static ELF body, so the traced path would deny it
+# (`executable-format`). Trace reuse needs `--trust-trace` and the pinned
+# tracer described in README.md, section "Pinned tracer".

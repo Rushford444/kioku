@@ -9,6 +9,7 @@ const HASH_AARCH64: &str = "0e69fa123b3d9732645ce1ac8c89819d100f83cdc9e52a80565d
 const HASH_X86_64: &str = "aebaf212ce84a12208c5fa25f08c892029e6f6949b778da55e071ac145404a1e";
 const RAW: &str = "raw=execveat,read,readv,pread64,preadv,preadv2,write,writev,pwrite64,pwritev,pwritev2,getrandom,recvfrom,recvmsg,sendto,sendmsg";
 const MAX_TRACE: usize = 16 * 1024 * 1024;
+const TRACE_SCHEMA: &str = "trace-v3";
 
 /// Linux architecture whose syscall grammar is used.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -165,10 +166,6 @@ impl DenyReason {
         }
     }
 }
-/// Identifier of the trace contract: the policy name every trace event reports
-/// and the grammar version of the supported tracer.
-pub const CONTRACT: &str = "trace-v2";
-
 /// Trace classification independent of child exit.
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum TraceObservation {
@@ -207,7 +204,7 @@ pub fn identity() -> Result<TracerIdentity, DenyReason> {
     }
     Ok(TracerIdentity {
         sha256: arch.sha256().into(),
-        schema: CONTRACT.into(),
+        schema: TRACE_SCHEMA.into(),
         version: arch.version().into(),
         flags: TRACE_FLAGS.iter().map(|flag| (*flag).to_string()).collect(),
         arch,
@@ -939,7 +936,10 @@ fn pair_clones(trace: &str) -> Result<Vec<Option<String>>, DenyReason> {
 fn quoted_path(input: &str, cwd: &Path) -> Result<PathBuf, DenyReason> {
     let input = input.strip_prefix('"').ok_or(DenyReason::Unsupported)?;
     let (name, _) = input.split_once('"').ok_or(DenyReason::Unsupported)?;
-    resolve_relative(cwd, name).ok_or(DenyReason::Unsupported)
+    // Validate the spelling, but keep parent traversal for policy's symlink-aware walk.
+    // Lexically collapsing link/../input can fingerprint a different file than the child read.
+    resolve_relative(cwd, name).ok_or(DenyReason::Unsupported)?;
+    Ok(cwd.join(name))
 }
 
 /// Resolve a traced path against a base without touching the filesystem.
@@ -1245,6 +1245,68 @@ mod status_tests {
     use super::tracee_status;
     use std::os::unix::process::ExitStatusExt;
     use std::process::ExitStatus;
+
+    #[test]
+    fn old_path_semantics_require_new_trace_learning() {
+        use crate::policy::{Identity, Manifest, decide, observe};
+
+        // Fixture of prepare_trace's length-framed tracer identity; no tracer is launched.
+        let identity = |schema: &str| {
+            let arch = super::Arch::Aarch64;
+            let mut tracer = blake3::Hasher::new();
+            for part in [arch.sha256(), arch.version(), schema]
+                .into_iter()
+                .chain(super::TRACE_FLAGS.iter().copied())
+            {
+                tracer.update(&(part.len() as u64).to_le_bytes());
+                tracer.update(part.as_bytes());
+            }
+            Identity {
+                repository: "fixture-repo".into(),
+                cwd: "fixture-cwd".into(),
+                argv_digest: [1; 32],
+                environment_digest: [2; 32],
+                tracer_digest: *tracer.finalize().as_bytes(),
+                version: 2,
+            }
+        };
+        let manifest = Manifest::capture(&[]).unwrap();
+        let old = identity("trace-v2");
+        let current = identity(super::TRACE_SCHEMA);
+        let discovery = observe(&old, None, None, &manifest, true, true).unwrap();
+        let eligible = observe(
+            &old,
+            Some(&discovery),
+            Some(&manifest),
+            &manifest,
+            true,
+            true,
+        )
+        .unwrap();
+        assert!(decide(&old, Some(&eligible), &manifest, true, false));
+        assert!(!decide(&current, Some(&eligible), &manifest, true, false));
+        let rediscovered = observe(
+            &current,
+            Some(&eligible),
+            Some(&manifest),
+            &manifest,
+            true,
+            true,
+        )
+        .unwrap();
+        assert!(!rediscovered.is_eligible());
+        let relearned = observe(
+            &current,
+            Some(&rediscovered),
+            Some(&manifest),
+            &manifest,
+            true,
+            true,
+        )
+        .unwrap();
+        assert!(decide(&current, Some(&relearned), &manifest, true, false));
+        assert!(!decide(&current, Some(&relearned), &manifest, false, false));
+    }
 
     #[test]
     fn realtime_signal_requires_known_spelling_and_matching_wrapper() {

@@ -435,6 +435,8 @@ fn invalid_verify_rate_is_rejected_by_library_before_execution() {
         ],
         cwd: dir.path().into(),
         mode: None,
+        inputs: vec![],
+        env: vec![],
     };
     for rate in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY, -0.1, 1.1] {
         let options = TraceOptions {
@@ -531,6 +533,8 @@ fn verification_journal_reports_quarantine_for_both_reasons() {
         argv: vec![support::true_program().to_string_lossy().into_owned()],
         cwd: dir.path().into(),
         mode: None,
+        inputs: vec![],
+        env: vec![],
     };
     let mut outcome = run(&request).unwrap();
     for (false_green, reason) in [
@@ -574,6 +578,8 @@ fn explain_accepts_a_symlinked_absolute_executable() {
         argv: vec![executable.to_str().unwrap().into()],
         cwd: dir.path().into(),
         mode: None,
+        inputs: vec![],
+        env: vec![],
     };
     let options = TraceOptions {
         trust_trace: true,
@@ -607,6 +613,8 @@ fn explain_and_reset_reject_non_utf8_working_directory() {
         argv: vec![executable.to_str().unwrap().into()],
         cwd,
         mode: None,
+        inputs: vec![],
+        env: vec![],
     };
     let explanation = explain_with_options(
         &request,

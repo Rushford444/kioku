@@ -1,0 +1,8 @@
+[package]
+name = "minicov"
+version = "0.0.1"
+edition = "2024"
+publish = false
+
+# Racine de workspace propre : cette fixture n'appartient pas au workspace de kioku.
+[workspace]

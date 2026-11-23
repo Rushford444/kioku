@@ -1,0 +1,5419 @@
+{
+ "rust-build-meta": {
+  "target-directory": "/w/repo/target",
+  "build-directory": "/w/repo/target",
+  "base-output-directories": [
+   "debug"
+  ],
+  "non-test-binaries": {
+   "path+file:///w/repo#kdw-kioku@0.3.1": [
+    {
+     "name": "kioku",
+     "kind": "bin-exe",
+     "path": "debug/kioku",
+     "build-platform": "target"
+    }
+   ]
+  },
+  "build-script-out-dirs": {},
+  "build-script-info": {},
+  "linked-paths": [
+   "debug/build/blake3-a1a74ae7922e34e4/out",
+   "debug/build/tree-sitter-8f6db308c0e19df2/out",
+   "debug/build/tree-sitter-javascript-b7ee153e217b348b/out",
+   "debug/build/tree-sitter-rust-0723eec986528753/out",
+   "debug/build/tree-sitter-typescript-b2830b024dfd7e60/out"
+  ],
+  "platforms": {
+   "host": {
+    "platform": {
+     "triple": "aarch64-unknown-linux-gnu",
+     "target-features": "unknown"
+    },
+    "libdir": {
+     "status": "available",
+     "path": "/w/rustup/toolchains/stable-aarch64-unknown-linux-gnu/lib/rustlib/aarch64-unknown-linux-gnu/lib"
+    }
+   },
+   "targets": []
+  },
+  "target-platforms": [
+   {
+    "triple": "aarch64-unknown-linux-gnu",
+    "target-features": "unknown"
+   }
+  ],
+  "target-platform": null
+ },
+ "test-count": 634,
+ "rust-suites": {
+  "kdw-kioku": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku",
+   "binary-name": "kioku",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "lib",
+   "binary-path": "/w/repo/target/debug/deps/kioku-245467078e7b98c2",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "ci2::coordinator::tests::cancellation_also_wins_a_delayed_refusal_without_overwriting_the_result": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::coordinator::tests::cancellation_wins_the_final_start_lock_without_poisoning_another_run": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::coordinator::tests::interrupted_replay_never_reexecutes_or_releases_unknown_custody": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::coordinator::tests::preparation_panic_has_no_native_ownership_or_fabricated_observation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::domain::strict_json::tests::duplicate_inside_array_object_is_rejected_before_value_normalization": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::domain::strict_json::tests::field_names_may_repeat_in_distinct_objects": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::domain::strict_json::tests::nested_object_duplicate_is_rejected_before_value_normalization": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a10_active_capturing_cancel_marks_without_claiming_completion": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a10_active_queued_cancel_is_durable_before_capture_release": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a10_active_running_cancel_keeps_unresolved_ownership": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a11_cancel_distinguishes_storage_failure_from_missing_request": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a11_replay_preflight_reports_journal_poison_before_disconnect": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a11_replay_preflight_reports_mutex_poison_before_disconnect": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a9_distinct_pending_ids_survive_half_closed_ack": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a9_show_healthy_missing_keeps_not_found_wire_status": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a9_show_healthy_record_replays_all_wire_fields": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::a9_show_poison_precedes_missing_and_preserves_storage_failure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::capture_is_shared_with_admission_and_stop_unblocks_a_native_waiter": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::capture_poison_fails_closed_and_does_not_invent_a_free_permit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::child_panic_still_sends_a_completion_and_preserves_unknown_native_ownership": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::commit_replays_a_concurrent_acceptance_before_unknown_ownership_guard": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::disconnected_response_after_capture_wait_preserves_listener_and_pending_run": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::mutation_after_durable_acceptance_does_not_lose_the_pending_run_or_replay": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::native_refresh_never_releases_active_or_unproven_completed_reservations": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::ownership_becoming_unknown_during_capture_wait_blocks_durable_acceptance": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::pending_admission_limit_is_bounded_and_creates_no_durable_run": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::replay_preserves_global_request_identity_and_earliest_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::service_reservations_bound_capture_heavy_and_light_and_obey_stop": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::socket_admission_waits_while_show_cancel_and_replay_remain_responsive": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::socket_fixture_works_with_long_temp_root": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::stop_before_durable_commit_refuses_new_cross_client_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::server::tests::unknown_interrupted_execution_blocks_new_requests_but_not_original_replay": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::snapshot::bounded_tests::ancestor_replacement_is_not_a_matching_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::snapshot::bounded_tests::complete_hundred_file_inventory_is_stable": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::snapshot::bounded_tests::final_revalidation_refuses_replacement_and_symlink": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::snapshot::bounded_tests::identity_and_depth_limits_fail_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::a9_ledger_native_incomplete_preserves_exact_closure_and_history": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::a9_ledger_same_task_across_runs_cannot_exchange_native_proofs": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::actual_native_proof_durably_reconciles_without_rewriting_history": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::all_runs_matches_durable_prefix_and_preserves_poison": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::all_task_closures_survive_restart_and_tampered_lease_is_rejected": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::custody_queries_preserve_legacy_states_and_error_precedence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::global_request_lookup_preserves_acceptance_order_and_poison": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::interrupted_runs_match_durable_filter_in_accepted_order": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::native_binding_keeps_exact_lease_across_restart": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::second_task_intent_without_header_cannot_reuse_first_task_closure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::state_view_local_benchmark": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "ci2::storage::unix::tests::state_view_matches_owned_read_without_mutating_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci2::storage::unix::tests::state_view_preserves_missing_and_poison_precedence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "fingerprint::depth_tests::valid_tree_depth_and_siblings": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_changed_command_line_changes_the_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_changed_file_changes_the_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_dangling_symlink_is_captured": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_declared_variable_that_is_not_set_is_captured_as_absent": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_deleted_tracked_file_invalidates_the_key_without_failing": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_dirty_submodule_disables_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_file_in_an_unreadable_directory_fails_the_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_file_that_changed_between_two_reads_is_detected": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_linked_worktree_has_its_own_git_directory": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_missing_environment_variable_is_not_an_empty_one": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_path_that_is_not_utf8_fails_the_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_store_in_the_work_tree_refuses_to_cache": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_symlink_loop_fails_the_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::a_symlink_to_a_directory_fails_the_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::an_input_glob_restricts_the_captured_files": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::an_invalid_glob_fails_the_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::an_unreadable_file_fails_the_capture": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::an_untracked_file_is_captured_and_an_ignored_file_is_not": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::changed_command_executable_changes_the_key_even_with_same_version": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::command_identity_distinguishes_relative_paths_from_path_lookup": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::invalid_glob_is_checked_before_repository_access": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::invalid_glob_is_rejected_by_matcher": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_ast_mode_ignores_the_whitespace_and_the_ordinary_comments": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_ast_mode_sees_a_meaningful_comment": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_ast_mode_sees_a_token_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_bytes_mode_sees_the_whitespace": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_default_variables_are_captured_even_when_they_are_not_set": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_exclude_file_of_the_repository_is_honoured": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_guard_moves_when_a_file_is_touched_even_though_the_key_does_not": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_guard_sees_a_content_change_that_keeps_the_size_and_the_timestamp": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_lockfiles_are_captured_even_when_the_inputs_are_restricted": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_mode_of_a_captured_file_is_its_kind_and_its_permissions": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_mode_of_a_file_is_part_of_the_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_repository_holds_the_root_and_the_git_directory": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_states_of_a_file_have_different_digests": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_target_of_a_symlink_is_part_of_the_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_tools_of_the_lockfiles_are_captured": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_two_modes_have_two_keys": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_two_modes_have_two_keys_even_without_any_file": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::the_working_directory_is_relative_to_the_root_of_the_repository": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::two_command_lines_have_two_keys": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key::tests::two_identical_repositories_have_the_same_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "profiles::tests::explicit_mode_wins": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "profiles::tests::lint_and_format_commands_force_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "profiles::tests::other_commands_use_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "runner::sampling_tests::deterministic_sampling_boundaries": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "runner::sampling_tests::quarantine_between_prepare_and_hit_blocks_authorization": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "runner::tests::a_difference_without_any_change_is_empty": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "runner::tests::the_length_of_a_difference_counts_every_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::a_changed_input_is_a_miss": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::a_document_with_another_schema_is_never_a_hit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::a_failure_invalidates_the_passes_of_the_command": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::a_malformed_document_is_not_a_hit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::a_matching_entry_is_a_hit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::an_entry_survives_a_write_and_a_read": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::another_repository_is_a_miss_unless_the_entry_is_portable": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::clean_keeps_the_lock_file": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::tests::store_operations_fail_when_lock_cannot_be_opened": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::trace_store_tests::quarantine_prevents_a_prepared_hit_at_authorization": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "store::trace_store_tests::quarantine_survives_reopen_and_clean_and_reset_is_explicit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::a_file_that_cannot_be_run_is_not_a_tool": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::a_tool_of_the_path_is_found": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::a_tool_that_cannot_be_run_fails_the_probe": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::a_tool_that_does_not_answer_fails_the_probe": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::a_tool_that_fails_fails_the_probe": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::every_lockfile_names_its_tools": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::go_probe_uses_version_subcommand_and_handles_absence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_cache_of_the_versions_separates_two_directories": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_entire_first_version_line_is_preserved": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_executable_keeps_the_name_of_the_tool": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_first_line_that_holds_something_is_the_version": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_path_of_a_tool_is_absolute": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_selected_tool_is_read_when_the_executable_is_a_proxy": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_tool_is_run_in_the_directory_of_the_command": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_tool_is_run_under_the_name_it_is_called_with": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::the_version_of_a_tool_is_the_first_line_it_prints": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tools::tests::version_cache_is_shared_between_calls": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "trace::status_tests::elf_gate_accepts_static_and_rejects_invalid_headers_and_interpreter": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "trace::status_tests::old_path_semantics_require_new_trace_learning": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "trace::status_tests::realtime_signal_requires_known_spelling_and_matching_wrapper": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "trace::status_tests::reconstructs_only_unique_agreeing_root_status": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "trace::status_tests::status_rejects_malformed_exit_mismatched_wrapper_and_unknown_signal": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::cli": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::cli",
+   "binary-name": "cli",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/cli-87b4ce37e93c5137",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "a_command_that_reads_the_standard_input_is_never_cached": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_declared_environment_variable_changes_the_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_document_that_does_not_describe_its_key_is_not_an_entry": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_malformed_legacy_entry_is_never_a_hit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_missing_command_reports_127": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_modified_lockfile_changes_the_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_relative_store_is_resolved_against_the_root_of_a_worktree": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_relative_store_is_resolved_against_the_working_directory": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_same_size_change_with_a_restored_timestamp_is_not_memorized": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_source_change_during_the_command_prevents_memorizing": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_store_inside_the_work_tree_disables_the_cache": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_store_that_overlaps_a_source_directory_never_hides_a_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_store_that_shadows_a_source_directory_does_not_hide_a_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_store_with_restricted_inputs_is_not_shared_between_repositories": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_tampered_legacy_manifest_is_never_a_hit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_usage_error_is_reported_as_json": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "an_external_store_does_not_leak_between_different_repositories": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "an_untracked_file_changes_the_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ast_opt_in_reports_its_contract": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "cache_disable_values_are_interpreted_individually": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ci_show_unknown_run_reports_not_found_without_writer": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "clean_needs_a_duration_or_all": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "clean_rejects_a_broken_duration": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "concurrent_clean_cannot_be_overwritten_by_late_publication": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "configured_ast_and_cli_bytes_both_use_bytes_in_v2": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "deeply_nested_javascript_executes_in_default_and_ast_modes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "default_bytes_detects_self_read_source_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "default_execution_observes_ignored_file_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "default_success_executes_again_instead_of_reusing_v1": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "default_success_then_failure_preserves_actual_exit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explain_after_change_reports_execute_only_policy": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explain_after_permissions_change_does_not_claim_default_hit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explain_after_whitespace_change_does_not_offer_ast_reuse": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explain_ast_diagnostic_tracks_changes_without_authorizing_reuse": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explain_has_no_closest_entry_after_default_runs": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explain_reports_requested_trace_contract_and_effective_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "external_store_does_not_enable_default_reuse_between_repositories": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "git_errors_do_not_repeat_the_git_prefix": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "invalid_config_is_visible_and_never_executes_command": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "json_disabled_cache_reason_is_json_only": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "json_does_not_echo_command_arguments": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "learned_commands_keep_distinct_identities_and_manifest_evidence": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "native_command_executes_each_time_without_trace_consent": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "never_caches_a_failure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "path_program_key_uses_the_resolved_executable": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "piped_stdin_never_reuses_an_eligible_trace": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "status_and_clean_answer_in_json": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "status_and_clean_outside_a_repository_succeed_with_a_message": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "status_reports_the_store_in_json": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "support::true_program_succeeds_with_closed_stdin_and_empty_environment": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "the_cache_can_be_disabled": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "the_child_inherits_stdin": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "the_child_keeps_stdout_and_kioku_writes_its_event_on_stderr": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "the_help_lists_the_commands_and_the_examples": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "the_key_does_not_depend_on_the_absolute_path": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "the_version_is_printed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "trace_refuses_non_utf8_repository_identity": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_dynamic_binary_reports_executable_format": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_realtime_signal_exit_is_reported_without_child_retry": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "traced_relative_symlink_and_path_programs_are_cached": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_sampling_false_green_quarantine_clean_and_reset": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_sampling_realtime_signal_quarantines_without_retry": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_sampling_signal_quarantines_without_retry": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_signal_exit_is_reported_without_child_retry": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "transmits_the_exit_code_of_the_command": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "two_agents_can_run_at_the_same_time": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "v02_default_executes_even_after_success": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "v02_rejects_invalid_verify_rates_and_reports_ast_effective_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "verify_exposes_a_false_green_and_invalidates_the_pass": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "verify_reports_the_actual_exit_and_no_default_hit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::config_r14b": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::config_r14b",
+   "binary-name": "config_r14b",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/config_r14b-f0f7661d8814a00d",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "dangling_config_symlink_is_an_io_error": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "only_a_missing_config_in_an_existing_root_is_optional": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::false_green_zoo": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::false_green_zoo",
+   "binary-name": "false_green_zoo",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/false_green_zoo-243ba13365fb8041",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "default_executes_twice_and_reflects_ignored_input_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "default_observes_created_previously_absent_path": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "default_observes_symlink_retargeting": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "source_text_change_cannot_reuse_a_default_result": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "support::true_program_succeeds_with_closed_stdin_and_empty_environment": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "traced_readers::case_sensitive_path": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::changed_child_executable": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::changed_executable_image": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_clock": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_inherited_fd_read": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_io_uring": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_network": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_proc": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_proc_through_symlink": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_random": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_read_write_alias": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_shared_writable_mapping": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_stdin": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::deny_unknown_syscall": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::descendant_file": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::directory_enumeration": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::dotenv_file": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::external_file": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::file_deleted_after_hit": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::file_metadata": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::full_environment_change": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::ignored_file": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::line_endings": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::poisoned_manifest_and_result_never_authorize_hit": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::previously_absent_lockfile": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::previously_absent_path": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::private_file_mapping": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::relative_open_after_chdir": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::relative_open_via_dirfd": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::required_output_always_executes": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::source_bytes": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::stat_metadata_query": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::submodule_tracked_content": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::symlink_retarget": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::symlink_retarget_must_never_hit": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "traced_readers::symlink_target_content": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    }
+   }
+  },
+  "kdw-kioku::fingerprint_properties": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::fingerprint_properties",
+   "binary-name": "fingerprint_properties",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/fingerprint_properties-304b199c752c2f00",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "an_ordinary_keyword_is_not_marked": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "arrow_before_newline_is_not_the_same_source": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ast_ignores_ordinary_comment_payload": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ast_ignores_ordinary_comments": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ast_ignores_whitespace": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ast_sees_literal_changes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ast_sees_meaningful_comments": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ast_sees_token_changes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "async_before_newline_is_not_the_same_source": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bytes_mode_sees_every_byte": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "deeply_nested_source_falls_back_to_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "depth_limit_has_exact_boundary_and_handles_siblings": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "directive_files_fall_back_to_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "fingerprint_is_path_independent": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "increment_before_newline_is_not_the_same_source": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "javascript_callable_source_is_significant": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "javascript_callable_source_is_significant_across_files": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "jsx_text_keeps_spaces": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "modes_use_separate_domains": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ordinary_comments_are_dropped": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "oversized_sources_fall_back_to_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "return_before_newline_is_not_the_same_source": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_attributed_items_do_not_hide_the_rest_of_the_file": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_attributed_items_keep_their_punctuation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_block_doc_comments_are_kept": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_doc_comments_are_kept": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_inner_doc_comments_are_kept": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_macro_comment_does_not_join_tokens": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_macro_files_fall_back_to_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_macro_spacing_changes_the_fingerprint": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_macro_token_boundaries_matter": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_position_macros_fall_back_to_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rust_type_adjacency_is_part_of_the_fingerprint": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "shebang_is_kept": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "supported_languages_are_parsed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "the_size_limit_is_exact": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "throw_after_newline_is_not_the_same_source": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "top_level_constants_ignore_trivia": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "typescript_ambient_declarations_fall_back_to_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "typescript_declaration_headers_stay_on_one_line": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unknown_directives_are_opaque": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unreadable_sources_fall_back_to_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::key_env_r15ds": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::key_env_r15ds",
+   "binary-name": "key_env_r15ds",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/key_env_r15ds-b50d02c628613bbf",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "legacy_snapshot_key_still_depends_on_the_declared_value": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "legacy_snapshot_payload_carries_no_environment_value": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::legacy_key_r14b": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::legacy_key_r14b",
+   "binary-name": "legacy_key_r14b",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/legacy_key_r14b-3377894258c78a42",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "trailing_newline_in_repository_root_preserves_portable_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "trailing_space_in_repository_root_preserves_portable_key": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::policy": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::policy",
+   "binary-name": "policy",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/policy-7605c01556a6f496",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "changed_identity_and_new_dependencies_restart_learning": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "discovery_learning_eligible_requires_identical_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "environment_digest_preserves_order_and_rejects_duplicates": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explain_accepts_a_symlinked_absolute_executable": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "explain_and_reset_reject_non_utf8_working_directory": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "file_and_absence_are_revalidated": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "invalid_verify_rate_is_rejected_by_library_before_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "metadata_records_are_invalidated_by_a_timestamp_change_only": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "observe_rejects_each_invalid_input_and_never_promotes_mismatches": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "public_state_reports_learning_identity_and_dependency_changes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "support::true_program_succeeds_with_closed_stdin_and_empty_environment": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlink_depth_limit_accepts_forty_and_denies_forty_one": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlink_parent_components_and_missing_paths_fail_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlink_target_and_retarget_change_manifest_even_with_equal_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlinks_into_pseudo_filesystems_are_denied": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unresolved_terminal_root_is_denied": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "verification_journal_reports_quarantine_for_both_reasons": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "wrong_dependency_kind_is_unsupported_not_an_io_error": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::store_r14b": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::store_r14b",
+   "binary-name": "store_r14b",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/store_r14b-6611223e53837023",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "conflicting_digests_for_one_input_path_are_not_readable_entries": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "entry_documents_reject_ambiguity_but_preserve_valid_legacy_entries": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "malformed_counters_never_reset_existing_history": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::tools_r14b": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::tools_r14b",
+   "binary-name": "tools_r14b",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/tools_r14b-34f3d829d69e8b19",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "proxy_version_cache_tracks_its_own_manager_selection": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::trace": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::trace",
+   "binary-name": "trace",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/trace-eaed65be5fda3bfd",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "a_trace_larger_than_the_pipe_is_not_truncated_after_child_exit": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "absence_with_errno_parentheses_is_recorded": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "accepted_open_metadata_flags_do_not_deny": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "architecture_diagnostics_are_stable": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "chdir_and_openat_directory_fd_preserve_context_across_fork": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "completed_second_exec_after_open_is_denied": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "denial_codes_are_stable": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "denied_trace_never_exposes_synthetic_buffer_in_event_or_error": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "detects_reader_and_child_dependencies": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "dynamic_executable_is_denied_after_successful_execution": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "exec_redacted_env_requires_complete_shape": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "initial_exec_must_match_requested_executable": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "invalid_metadata_records_are_denied": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "lifecycle_wait_signal_and_exit_reject_inconsistent_records": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "malformed_clone_records_report_the_correct_line": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "metadata_directory_and_mapping_grammar_rejects_each_invalid_field": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "metadata_directory_and_private_mapping_are_dependencies": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "orphan_exec_resume_and_unfinished_initial_exec_are_rejected": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "overlong_line_limit_is_unsupported_not_a_parse_error": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parse_absolute_argument_contract": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parse_for_rejects_each_noncanonical_input_independently": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parser_accepts_exact_byte_limit_and_rejects_next_byte": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parser_accepts_exact_line_limit_and_rejects_next_byte": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parser_rejects_nonabsolute_executable_without_rejecting_valid_control": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parser_requires_initial_exec_and_root_completion": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "pending_wait_rejects_mismatched_resume_duplicate_and_eof": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "quoted_paths_preserve_parent_traversal_and_reject_escape_and_control_bytes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "read_from_an_unopened_descriptor_is_denied": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "real_child_exec_captures_executable_and_input": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "real_fifo_is_removed_after_tracing": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "real_operations_are_modeled": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "real_static_parent_and_fork_child_are_observed": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "reasons_distinguish_denied_nondeterministic_operations": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rejects_records_after_exit_and_unknown_tasks": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rejects_unknown_incomplete_and_forged_exit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "resolve_relative_normalizes_empty_and_dot_components": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "run_rejects_noncanonical_inputs_before_spawning": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "support::true_program_succeeds_with_closed_stdin_and_empty_environment": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlink_parent_traversal_never_hides_the_file_actually_read": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tracer_identity_reports_exact_spawn_flags": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "unfinished_child_exec_is_completed_only_on_successful_resume": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unfinished_clone_binds_child_only_from_matching_parent_resume": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unfinished_directory_open_preserves_metadata_and_dirfd": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unfinished_exec_requires_initial_exec_and_no_open_descriptors": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unfinished_open_is_paired_per_task_and_orphans_are_rejected": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "write_records_keep_stdout_allowed_and_every_other_shape_denied": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "x86_64_legacy_syscalls_use_the_x86_64_grammar": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "x86_64_static_helper_is_traced": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "x86_64_write_open_is_a_write_denial": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_a10_all_runs_bound": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_a10_all_runs_bound",
+   "binary-name": "v2_a10_all_runs_bound",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_a10_all_runs_bound-e0373d20f6c39a66",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "all_runs_component_measurement": {
+     "kind": "test",
+     "ignored": true,
+     "filter-match": {
+      "status": "mismatch",
+      "reason": "ignored"
+     }
+    },
+    "readonly_all_runs_keeps_oldest_complete_owned_records": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "readonly_all_runs_retains_large_observation_groups_and_rejects_poison": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_a11_input_bounds": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_a11_input_bounds",
+   "binary-name": "v2_a11_input_bounds",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_a11_input_bounds-1826b69e03ee2fee",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "bootstrap_rejects_duplicate_nested_authority_fields": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "oversized_request_header_is_rejected_without_body": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "oversized_response_is_rejected_without_writing_header": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "truncated_and_malformed_requests_preserve_error_categories": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_a9_native_possession": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_a9_native_possession",
+   "binary-name": "v2_a9_native_possession",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_a9_native_possession-255c43199c70b007",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "nonzero_monitor_never_accepts_even_a_valid_terminal_record": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "structured_native_unknown_is_observable_without_absence_proof": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_admission_c": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_admission_c",
+   "binary-name": "v2_admission_c",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_admission_c-d4a149ca956e14a9",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "healthy_native_closure_survives_restart_and_old_request_never_reexecutes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "healthy_stop_drain_closure_admits_new_request_after_restart": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "legacy_unbound_running_request_remains_busy_without_new_durable_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "malformed_redundant_native_receipts_cannot_release_admission_after_restart": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_adversarial": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_adversarial",
+   "binary-name": "v2_adversarial",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_adversarial-2c314f5d65e75dea",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "v64_manifest_symlink_escape_is_rejected_even_if_digest_approved": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "v64_unregistered_root_and_manifest_mismatch_are_refused": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "v65_test_contract_cannot_pass_as_opaque_native_exit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "v69_default_escapes_controls_raw_requires_explicit_file": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "v70_private_stop_prevents_service_and_any_spawn": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_contracts": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_contracts",
+   "binary-name": "v2_contracts",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_contracts-f67b8e91c102fe89",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "approved_manifest_refuses_links_protected_paths_and_wrong_pin": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bootstrap_admits_only_cooperative_existing_operator_shape_not_secret": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "duplicate_json_and_float_or_deep_wire_are_never_tolerated": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ids_are_ascii_and_paths_do_not_depend_on_process_cwd": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "manifest_checks_graph_and_no_invented_caches": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "manifest_rejects_self_and_cycle_and_unknown_parent_and_duplicate_ids": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "portable_id_digest_paths_odds_validate": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "request_strict_digest_have_modes_and_stable_schema": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "secret_capability_manifest_refused_on_read": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unsupported_bootstrap_auth_reference_is_refused": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "valid_dag_binds_an_existing_required_output": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_coordinator": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_coordinator",
+   "binary-name": "v2_coordinator",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_coordinator-eaa6a6baf4445858",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "cancelled_queued_runs_do_not_exhaust_service_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "cooperative_distinguishes_access_and_missing_socket": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "disconnected_submitter_does_not_cancel_durable_requests_or_stop_other_runs": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "earlier_native_failure_survives_a_later_unknown_drain": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explicit_stop_interrupts_group_and_keeps_postmortem_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "failed_native_task_never_becomes_green": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "full_observers_do_not_execute_and_independent_full_requests_do_not_join": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "interruption_requires_an_active_phase_and_a_verified_report": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "light_native_runs_while_heavy_is_occupied": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "long_native_show_wait_preserves_single_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "main_full_new_requests_execute_only_required_closure_even_after_success": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "queued_request_can_be_cancelled_without_affecting_current_job": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "queued_source_failure_after_restart_does_not_disable_other_registered_roots": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "real_process_inbox_roundtrip_and_postmortem_show": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "running_request_replay_is_idempotent_and_divergence_is_refused": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "source_revalidation_failure_is_terminal_for_that_run_while_another_lane_continues": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "startup_interruption_retains_legacy_and_bound_resource_ownership": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "supervisor_drain_failure_is_persisted_incomplete_with_native_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "three_distinct_requests_execute_once_each": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_crash_idempotence": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_crash_idempotence",
+   "binary-name": "v2_crash_idempotence",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_crash_idempotence-4f4764d4715f0743",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "crash_after_native_binding_recovers_closed_group_and_admits_new_request": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "healthy_native_drain_survives_reopen_and_new_request_executes_once": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unbound_legacy_execution_stays_blocked_even_after_owned_child_is_waited": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_custody_negative": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_custody_negative",
+   "binary-name": "v2_custody_negative",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_custody_negative-60d672a119a23337",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "foreign_checkpoint_evidence_refuses_fresh_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "incomplete_checkpoint_refuses_fresh_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "missing_checkpoint_refuses_fresh_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "one_native_incarnation_cannot_close_another_task_or_run": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "truncated_checkpoint_refuses_fresh_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_d1": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_d1",
+   "binary-name": "v2_d1",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_d1-3e7679b4b5c1df6b",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "actual_child_stream_is_discarded_before_persistence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "decision_is_log_only_without_training_or_inference": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "outcome_never_invents_gold_or_action": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rejects_future_history_and_invalid_timing": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "timeout_and_undrained_do_not_look_successful": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_ds_checkpoint_reader": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_ds_checkpoint_reader",
+   "binary-name": "v2_ds_checkpoint_reader",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_ds_checkpoint_reader-01efb98fcd9d5208",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "forged_checkpoint_bytes_are_rejected_without_rewriting_the_file": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_environments": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_environments",
+   "binary-name": "v2_environments",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_environments-cb453174e85a0cc4",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "abc_real_target_and_late_parasite_force_cold": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "cadence_and_identity_require_cold": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "hardlinked_post_run_artifact_cannot_become_warm_private_state": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "serial_slot_requires_registration_and_source_reconciliation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_input_boundary": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_input_boundary",
+   "binary-name": "v2_input_boundary",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_input_boundary-7c273669d529bc0e",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "absent_declaration_rejects_an_existing_path_before_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "dangling_symlink_counts_as_present_for_an_absent_declaration": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explicit_request_selection_executes_only_the_requested_task": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "missing_declared_file_is_refused_before_any_native_child": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "missing_input_after_healthy_run_stays_refused_on_duplicate_and_replay": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "present_declared_file_still_executes_and_counts_each_selected_identity_once": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlinked_declared_file_fails_closed_before_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unreadable_absence_is_not_treated_as_absence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_inputs": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_inputs",
+   "binary-name": "v2_inputs",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_inputs-5d63cf0a680e045b",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "captures_multiple_inputs_and_content_changes_with_mtime_restored": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "detects_rename_remove_config_and_empty_directories": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "generated_and_tool_files_are_explicit_inputs": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "key_is_stable_sensitive_and_rejects_ambiguity": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "rejects_missing_secret_overlap_and_symlink_escape": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_journal_permissions": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_journal_permissions",
+   "binary-name": "v2_journal_permissions",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_journal_permissions-54363868ab6ed733",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "bootstrap_creates_only_private_paths_under_the_state_root": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "preexisting_public_state_root_is_refused": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "preexisting_symlinked_or_public_journal_file_is_refused": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "public_result_or_blob_paths_are_refused": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "read_only_replay_never_creates_or_mutates_paths": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlinked_or_non_directory_state_root_is_refused": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "task_and_channel_names_cannot_select_an_arbitrary_path": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_multi_task_c": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_multi_task_c",
+   "binary-name": "v2_multi_task_c",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_multi_task_c-203d6c29ca1ea2db",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "first_task_closure_does_not_release_a_later_incomplete_native_family": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_native": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_native",
+   "binary-name": "v2_native",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_native-ab4d91e0392205f5",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "absent_malformed_and_crashed_monitor_fail_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "cancellation_during_execution_records_evidence_and_allows_fresh_independent_work": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "cancellation_term_reports_observed_signal_without_escalation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "closure_reader_refuses_incomplete_mismatched_and_untrusted_checkpoints": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "direct_adoption_before_member_scan_persistent_identity_faults_remain_unknown": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "direct_adoption_between_group_snapshots_retains_complete_custody": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "direct_adoption_does_not_accept_missing_or_changed_process_identity": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "direct_adoption_during_live_ancestry_check_retains_complete_custody": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "fd_closed_living_descendant_is_seen_and_killed_before_structured_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "fd_closed_zombie_is_reaped_not_misclassified_as_live": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "malformed_error_and_missing_optional_fields_preserve_v1_contract": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "normal_and_red_preserve_streams_status_and_resources": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_callback_failure_cleans_owned_child_without_global_stop_or_retry": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_callback_runs_once_before_monitor_reaps_and_retains_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_drains_adopted_original_group_on_timeout": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_header_deadline_stops_only_the_owned_monitor": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_monitor_checkpoint_failure_has_safe_diagnostic_and_no_proof": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_monitor_rejects_unbounded_or_unstructured_diagnostics": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_rejects_missing_malformed_and_oversized_headers_without_callback": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_rejects_wrong_boot_parent_group_and_ticks_then_drains": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "possession_waits_for_adopted_child_outside_original_group": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "proc_stat_read_after_real_exit_is_absent_but_permission_failure_is_not": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "public_value_probe::public_value_reaches_one_real_native_request": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "public_value_probe::reserved_home_is_refused_before_native_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "timeout_requires_grace_then_group_kill_and_retains_timed_out_status": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_profile_paths": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_profile_paths",
+   "binary-name": "v2_profile_paths",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_profile_paths-9e1574f7551e6a5a",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "bootstrap_profile_shape_is_one_and_one": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "capability_profile_wire_names_are_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "profile_document_toml_is_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "profile_identifier_is_a_wire_stable_id": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "profile_paths_reject_os_specific_shapes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r14_artifact": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r14_artifact",
+   "binary-name": "v2_r14_artifact",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r14_artifact-7cfc6e52e4396929",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "absent_artifact_directory_is_created_private": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "created_intermediate_directory_is_private": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlinked_parent_and_existing_path_fail_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r14_environments": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r14_environments",
+   "binary-name": "v2_r14_environments",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r14_environments-35fd321d7307e8f8",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "reservation_directory_is_private_0700": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r14_reports": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r14_reports",
+   "binary-name": "v2_r14_reports",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r14_reports-266094922b868f88",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "diagnostics_never_forge_a_line_start_directive": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "pass_requires_a_complete_drained_zero_exit_closure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r14_schema": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r14_schema",
+   "binary-name": "v2_r14_schema",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r14_schema-3cc1cd60248db16b",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "input_selector_variant_refuses_an_undeclared_field": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "origin_claim_variant_refuses_an_undeclared_field": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r15ds_config": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r15ds_config",
+   "binary-name": "v2_r15ds_config",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r15ds_config-267c87d723127d99",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "declared_protected_ref_shape_rejects_names_git_cannot_address": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r15ds_paths": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r15ds_paths",
+   "binary-name": "v2_r15ds_paths",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r15ds_paths-a9cfc63a59c74d91",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "relative_path_refuses_control_characters": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r15ds_refs": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r15ds_refs",
+   "binary-name": "v2_r15ds_refs",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r15ds_refs-b3cc7dd6332ebb0d",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "protected_refs_accept_canonical_names_and_hashes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "protected_refs_reject_malformed_full_refs": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r16_admission": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r16_admission",
+   "binary-name": "v2_r16_admission",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r16_admission-5dc0944fb4621531",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "matching_producer_selector_remains_admitted": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "producer_selector_requires_a_matching_dependency_output": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r16_server_restart": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r16_server_restart",
+   "binary-name": "v2_r16_server_restart",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r16_server_restart-ede16525767b4dbd",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "clean_shutdown_allows_same_identity_socket_restart": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r17_scheduler_release": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r17_scheduler_release",
+   "binary-name": "v2_r17_scheduler_release",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r17_scheduler_release-4c62d1d39a4d3877",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "ordinary_release_preserves_capacity_and_queue_ownership": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "release_callback_can_cancel_without_deadlocking_or_exposing_native_work": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r18_runtime_drain": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r18_runtime_drain",
+   "binary-name": "v2_r18_runtime_drain",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r18_runtime_drain-f4d421c75102fd57",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "invalid_env_names_are_configuration_errors_before_stop": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "valid_closed_env_name_reaches_stop_without_spawn": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r18_snapshot_roots": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r18_snapshot_roots",
+   "binary-name": "v2_r18_snapshot_roots",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r18_snapshot_roots-d04bf3e332800d9d",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "root_path_transition_during_capture_is_rejected": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r19_local_default": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r19_local_default",
+   "binary-name": "v2_r19_local_default",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r19_local_default-283c98007a6959c3",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "local_default_creates_and_reuses_regular_same_bytes_file": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "local_default_rejects_same_bytes_symlink_without_chmod": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r20_persistent_bootstrap": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r20_persistent_bootstrap",
+   "binary-name": "v2_r20_persistent_bootstrap",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r20_persistent_bootstrap-dd04d652ab3cbcb5",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "durable_bootstrap_rejects_same_bytes_symlink_and_reuses_regular_file": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r21_absence_shape": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r21_absence_shape",
+   "binary-name": "v2_r21_absence_shape",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r21_absence_shape-80f39414a80c827b",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "monitor_cannot_appear_in_its_own_reaped_children": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "valid_reader_fixture_keeps_the_exact_absence_scope": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r21_native_validation": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r21_native_validation",
+   "binary-name": "v2_r21_native_validation",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r21_native_validation-268d084d592380a3",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "exclusive_native_outcomes_remain_observations_not_test_success": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "exit_and_signal_cannot_both_describe_the_leader": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "missing_leader_status_remains_admissible_but_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r21_request_selection": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r21_request_selection",
+   "binary-name": "v2_r21_request_selection",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r21_request_selection-2bd3b61c382fd912",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "full_closed_selection_is_accepted_for_both_manifests": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "full_modes_refuse_partial_required_selection_without_new_admission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "independent_partial_selection_preserves_request_and_required_registry": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "omitted_optional_producer_is_refused_before_journaling": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r25_log_budget": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r25_log_budget",
+   "binary-name": "v2_r25_log_budget",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r25_log_budget-e5f6a21d3f388460",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "direct_log_fallback_applies_the_same_encoded_budget": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "fitting_binary_and_ascii_logs_preserve_exact_content": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "served_log_refuses_json_expansion_before_response_emission": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r26_journal_capacity": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r26_journal_capacity",
+   "binary-name": "v2_r26_journal_capacity",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r26_journal_capacity-52a2f5b0d1603d68",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "capacity_refuses_admission_and_transition_without_overwriting_history": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "capacity_refuses_finalization_without_publishing_a_report": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "capacity_refuses_observation_without_truncating_the_tail": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r26_monitor_error": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r26_monitor_error",
+   "binary-name": "v2_r26_monitor_error",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r26_monitor_error-8bede18b5f2648f8",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "nonzero_possession_monitor_reports_exit_code_and_stays_a_source_failure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "signaled_possession_monitor_reports_signal_and_stays_a_source_failure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r26_wait_timeout": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r26_wait_timeout",
+   "binary-name": "v2_r26_wait_timeout",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r26_wait_timeout-18008b8d500a7129",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "client_wait_timeout_preserves_run_and_pending_native_finishes_once": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r28_global_stop": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r28_global_stop",
+   "binary-name": "v2_r28_global_stop",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r28_global_stop-4e9b47f15f5b522d",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "global_stop_drains_active_work_cancels_queued_work_and_wakes_other_cli_clients": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r28_private_native_concrete": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r28_private_native_concrete",
+   "binary-name": "v2_r28_private_native_concrete",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r28_private_native_concrete-e5be36f270d9efb8",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "actual_private_target_is_reused_only_after_native_closure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "failed_native_child_is_suspect_not_warm": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "live_descendant_keeps_reservation_owned_and_cpu_unknown": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "mismatched_qualification_and_private_target_override_never_reserve": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "native_success_does_not_invent_external_cold_audit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "reused_work_cannot_overwrite_native_control_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "source_mismatch_after_real_native_closure_invalidates_the_private_slot": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r28_run": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r28_run",
+   "binary-name": "v2_r28_run",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r28_run-3f5e1e128963a32f",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "real_cli_lifecycle_preserves_identity_and_exactly_once_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r29_linked_libtest": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r29_linked_libtest",
+   "binary-name": "v2_r29_linked_libtest",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r29_linked_libtest-10c2ef0df0e40ef7",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "failed_inventory_producer_cannot_make_nonempty_results_green": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "failing_test_cases_are_failed_without_changing_native_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "linked_real_libtest_cli_passes_with_bound_cases": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "missing_inventory_link_is_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "native_failure_and_drain_survive_a_declared_source_change": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "report_file_must_equal_its_own_durable_stdout": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "swapped_output_kinds_are_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "symlinked_report_parent_cannot_escape_the_source": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "vanished_declared_source_makes_success_incomplete_but_keeps_native_evidence": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "wrong_execution_recipe_is_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r29_native_binding": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r29_native_binding",
+   "binary-name": "v2_r29_native_binding",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r29_native_binding-1d516bcc6f948232",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "commands_tool_cwd_environment_and_resources_cannot_drift": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "evaluation_requires_verified_streams_and_external_health_then_normalizes_cases": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "extra_reports_dependencies_producers_and_unhealthy_inventory_reject": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "identity_normalization_reporter_and_skips_must_match_the_supported_rule": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "real_pair_accepts_but_missing_or_inverted_producer_rejects": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "recipes_bind_exact_command_json_digest_size_and_media_type": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unknown_or_different_input_declarations_and_snapshot_reject": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r29_native_outcome": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r29_native_outcome",
+   "binary-name": "v2_r29_native_outcome",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r29_native_outcome-adb28c6fa2ff9393",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "cancellation_requires_drain_and_cpu_closure": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "existing_classifier_detects_failure_even_in_a_contradictory_report": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "native_failures_and_complete_timeouts_are_not_success": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parsed_paired_output_still_requires_complete_native_accounting": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "report_verdicts_are_not_upgraded_to_success": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "selected_output_errors_and_run_collection_errors_prevent_pass": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "test_success_requires_a_passed_report_and_complete_native_observation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "unknown_or_partial_native_closure_never_passes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r29_report_contracts": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r29_report_contracts",
+   "binary-name": "v2_r29_report_contracts",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r29_report_contracts-e57e074fd331b53b",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "libtest_pair_with_report_files_and_separate_streams_round_trips": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "named_reports_cannot_reinterpret_a_pathless_native_stream": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "producer_binding_requires_the_exact_declared_dependency_output": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "test_contract_requires_inventory_and_matching_task_adapter": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_r30_incremental_private": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_r30_incremental_private",
+   "binary-name": "v2_r30_incremental_private",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_r30_incremental_private-64b18d8e490a6863",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "changed_source_keeps_failed_native_observation_without_qualifying_parent": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "deleted_declared_file_is_rejected_before_a_second_native_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "edited_existing_file_is_warm_only_from_own_durable_parent": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "failed_native_is_not_a_parent_and_restart_does_not_adopt_disk": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "parent_target_tampering_never_releases_a_warm_execution": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "sidecar_publication_failure_does_not_install_a_warm_parent": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "successful_native_disappearance_preserves_evidence_but_is_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "successful_native_mutation_preserves_evidence_but_is_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_real_libtest": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_real_libtest",
+   "binary-name": "v2_real_libtest",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_real_libtest-7be9f08436b3e03a",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "real_libtest_inventory_and_results_green_red_and_unknown": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_reports": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_reports",
+   "binary-name": "v2_reports",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_reports-10be0b40e96c51d3",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "case_identity_is_unambiguous_and_does_not_contain_raw_names": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "empty_and_unrecognized_setup_teardown_and_terse_execution_fail_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "explicit_project_context_and_collection_status_are_honoured": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "failure_classification_never_promotes_unknown": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ignored_and_unsafe_output_do_not_create_false_green": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "local_task_result_retains_named_report_and_raw_observation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "malformed_or_duplicate_summaries_are_not_success": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "native_status_and_inventory_are_both_required": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "non_test_and_opaque_never_fabricate_counts": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "real_terse_inventory_and_verbose_results_are_qualified": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "test_contract_without_inventory_recipe_cannot_pass": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "workflow_commands_never_begin_a_rendered_line": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_required_outputs": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_required_outputs",
+   "binary-name": "v2_required_outputs",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_required_outputs-eab4ee8114baea81",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "artifact_is_checked_relative_to_native_cwd": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "missing_artifact_makes_healthy_native_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "native_failure_remains_failed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "required_artifact_rejects_nonfiles_and_escape": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_runtime": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_runtime",
+   "binary-name": "v2_runtime",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_runtime-83a680c2463e8352",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "failing_child_is_not_rewritten_to_success": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "inherited_stream_is_bounded_after_direct_exit": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "native_exit_and_streams_are_observed_without_asserting_cpu_or_tree_completeness": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "stop_prevents_spawn_and_stream_limit_is_fail_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "timeout_is_an_observed_native_result": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_scheduler": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_scheduler",
+   "binary-name": "v2_scheduler",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_scheduler-626764f8a7e1932e",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "a_ready_job_cannot_overtake_its_capturing_lane_predecessor": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "a_ready_main_job_is_not_blocked_by_an_older_agent_in_its_lane": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "an_aged_agent_keeps_fifo_with_a_human_in_its_lane": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "cancellation_does_not_release_an_active_capture_early": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "capture_is_bounded_and_drop_preserves_work": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "capture_rotation_does_not_change_native_rotation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "concurrent_capture_permits_are_bounded_before_native": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "discarded_work_does_not_consume_a_capture_or_native_slot": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "final_validation_never_holds_capture_while_waiting_for_heavy": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "impossible_requests_refused_and_heavy_busy_does_not_block_light": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "light_service_does_not_reset_heavy_lane_rotation": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "ranking_with_large_queue_and_fixed_clock": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "round_robin_fifo_and_aging": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_schema_contracts_extra": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_schema_contracts_extra",
+   "binary-name": "v2_schema_contracts_extra",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_schema_contracts_extra-0893e0bdd79a8782",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "b3_digest_of_zero_length_input_is_well_formed_and_distinct": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "b3_digest_shape_is_bounded_and_lowercase": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bounded_decode_accepts_the_small_valid_record": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bounded_decode_refuses_bodies_over_the_size_cap": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bounded_decode_refuses_duplicate_fields": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bounded_decode_refuses_nul_bytes_outside_valid_text": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bounded_decode_refuses_trailing_content_but_allows_trailing_whitespace": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bounded_decode_refuses_unknown_fields": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "bounded_decode_refuses_zero_length_input": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "request_digest_is_order_independent_and_refuses_bad_numbers": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "wire_depth_is_bounded": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "wire_field_names_reject_control_characters": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_store": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_store",
+   "binary-name": "v2_store",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_store-79c77ea2d214c587",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "admission_survives_reopen_and_conflicts_fail_closed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "corrupt_interruption_terminal_or_report_is_rejected_on_replay": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "corrupt_refusal_event_is_rejected_on_replay": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "evidence_and_terminal_report_survive_reopen": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "failure_and_timeout_never_pass": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "interruption_rejects_invalid_terminal_and_missing_report_without_append": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "interruption_terminal_replays_and_blocks_new_native_start": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "legacy_interruption_omits_terminal_and_replays_incomplete": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "one_successful_task_cannot_pass_a_two_task_selection": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "orphan_binding_is_durable_and_never_released_without_proof": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "phases_and_cancellation_survive_reopen": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "pre_execution_refusal_is_terminal_zero_observation_and_replays": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "pre_execution_refusal_rejects_active_or_unknown_runs_and_bad_reports": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "readonly_snapshot_replays_complete_incomplete_and_rejects_writes": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "terminal_and_reversed_phases_are_rejected": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "timeout_without_drain_cannot_finalize_failed": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "truncated_journal_and_unauthorized_identity_are_rejected": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::v2_transport_bootstrap": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::v2_transport_bootstrap",
+   "binary-name": "v2_transport_bootstrap",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "test",
+   "binary-path": "/w/repo/target/debug/deps/v2_transport_bootstrap-5fb198805ca37b97",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "competing_daemon_does_not_publish_socket_before_state_ownership": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  },
+  "kdw-kioku::bin/kioku": {
+   "package-name": "kdw-kioku",
+   "binary-id": "kdw-kioku::bin/kioku",
+   "binary-name": "kioku",
+   "package-id": "path+file:///w/repo#kdw-kioku@0.3.1",
+   "kind": "bin",
+   "binary-path": "/w/repo/target/debug/deps/kioku-0b44dc07b0b953d3",
+   "build-platform": "target",
+   "cwd": "/w/repo",
+   "status": "listed",
+   "testcases": {
+    "tests::formats_sizes_and_durations": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tests::parses_the_documented_durations": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    },
+    "tests::rejects_a_broken_duration": {
+     "kind": "test",
+     "ignored": false,
+     "filter-match": {
+      "status": "matches"
+     }
+    }
+   }
+  }
+ }
+}

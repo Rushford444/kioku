@@ -1,0 +1,31 @@
+{
+ "workspace_root": "/w/repo",
+ "packages": [
+  {
+   "name": "kdw-kioku",
+   "targets": [
+    {
+     "name": "kioku",
+     "kind": [
+      "lib"
+     ],
+     "src_path": "/w/repo/src/lib.rs"
+    },
+    {
+     "name": "kioku",
+     "kind": [
+      "bin"
+     ],
+     "src_path": "/w/repo/src/main.rs"
+    },
+    {
+     "name": "cli",
+     "kind": [
+      "test"
+     ],
+     "src_path": "/w/repo/tests/cli.rs"
+    }
+   ]
+  }
+ ]
+}

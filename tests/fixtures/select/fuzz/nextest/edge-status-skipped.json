@@ -1,0 +1,1 @@
+{"rust-suites": {"kdw-kioku": {"binary-id": "kdw-kioku", "binary-name": "kioku", "binary-path": "/w/repo/target/debug/deps/x", "build-platform": "target", "cwd": "/w/repo", "kind": "lib", "package-id": "path+file:///w/repo#kdw-kioku@0.3.1", "package-name": "kdw-kioku", "status": "skipped", "testcases": {}}}}

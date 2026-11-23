@@ -10,7 +10,7 @@ use std::time::Instant;
 use crate::config;
 use crate::fingerprint::Mode;
 use crate::key;
-use crate::store::{self, Counters, Store};
+use crate::store::{self, Counters, Entry, Store};
 
 /// Errors raised while running a command.
 #[derive(Debug, thiserror::Error)]
@@ -67,6 +67,10 @@ pub struct Request {
     pub cwd: PathBuf,
     /// Explicit fingerprint mode; when absent the mode is detected from the command.
     pub mode: Option<Mode>,
+    /// Globs restricting the tracked inputs.
+    pub inputs: Vec<String>,
+    /// Environment variables declared as part of the key.
+    pub env: Vec<String>,
 }
 
 /// Result of a run.
@@ -88,16 +92,13 @@ pub struct Outcome {
     pub mode: String,
     /// Exit code of the child process.
     pub exit_code: i32,
-    /// Duration of the run, in milliseconds. A cached run reports the cost of
-    /// the hit itself.
+    /// Duration of the run, in milliseconds.
     pub duration_ms: u64,
-    /// Measured time saved by reusing a cached pass, or `None` when the run
-    /// that learned it did not record its duration.
-    pub saved_ms: Option<u64>,
+    /// Time saved by reusing a cached pass.
+    pub saved_ms: u64,
     /// Whether the result was stored.
     pub stored: bool,
-    /// Number of learned passes this run quarantined because it exposed a
-    /// false green: zero or one.
+    /// Number of stale passes invalidated after a failure.
     pub invalidated: usize,
     /// Whether kioku would have skipped the command.
     pub would_skip: bool,
@@ -123,6 +124,68 @@ pub struct Outcome {
     pub manifest_digest: Option<String>,
 }
 
+/// A file whose content or permissions changed between two states.
+#[derive(Debug, Clone)]
+pub struct Modified {
+    /// Path of the file, relative to the repository root.
+    pub path: String,
+    /// Fingerprint before the change.
+    pub old_digest: String,
+    /// Fingerprint after the change.
+    pub new_digest: String,
+    /// Unix permissions before the change.
+    pub old_mode: u32,
+    /// Unix permissions after the change.
+    pub new_mode: u32,
+}
+
+/// A component whose value changed between two states.
+#[derive(Debug, Clone)]
+pub struct Changed {
+    /// Name of the component.
+    pub name: String,
+    /// Value before the change.
+    pub old: Option<String>,
+    /// Value after the change.
+    pub new: Option<String>,
+}
+
+/// Difference between the current state and a stored entry.
+#[derive(Debug, Clone, Default)]
+pub struct Diff {
+    /// Files that appeared.
+    pub added: Vec<String>,
+    /// Files that disappeared.
+    pub removed: Vec<String>,
+    /// Files whose fingerprint changed.
+    pub modified: Vec<Modified>,
+    /// Environment variables that changed.
+    pub env: Vec<Changed>,
+    /// Lockfiles that changed.
+    pub lockfiles: Vec<Changed>,
+    /// Tools whose version changed.
+    pub tools: Vec<Changed>,
+}
+
+impl Diff {
+    /// Number of differences found.
+    #[must_use]
+    pub fn len(&self) -> usize {
+        self.added.len()
+            + self.removed.len()
+            + self.modified.len()
+            + self.env.len()
+            + self.lockfiles.len()
+            + self.tools.len()
+    }
+
+    /// Whether no difference was found.
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+}
+
 /// Why the command is a hit or a miss.
 #[derive(Debug, Clone)]
 pub struct Explanation {
@@ -142,6 +205,10 @@ pub struct Explanation {
     pub environment_changed: Option<bool>,
     /// Whether the tracer identity changed.
     pub tracer_changed: Option<bool>,
+    /// Closest stored entry for the same command.
+    pub closest: Option<Entry>,
+    /// Difference with the closest entry.
+    pub diff: Option<Diff>,
     /// Machine-readable denial reason, when the command cannot be traced.
     pub denial_reason: Option<String>,
     /// Number of paths recorded in the stored manifest, when one exists.
@@ -169,11 +236,6 @@ pub struct Status {
     pub trace_states: usize,
     /// Number of persistent quarantines.
     pub quarantines: usize,
-    /// Why the cache is off for this store, when it is off.
-    ///
-    /// The counters are empty then: the store is not read, because reading it
-    /// would create it.
-    pub denial_reason: Option<String>,
 }
 
 /// Result of a clean operation.
@@ -185,11 +247,6 @@ pub struct OutcomeClean {
     pub kept: usize,
     /// Freed bytes.
     pub bytes_freed: u64,
-    /// Why the cache is off for this store, when it is off.
-    ///
-    /// Nothing is removed then, and the store is not read: reading it would
-    /// create it.
-    pub denial_reason: Option<String>,
 }
 
 /// Tells whether the cache is disabled by the environment.
@@ -274,7 +331,6 @@ struct PreparedTrace {
     would_skip: bool,
     quarantined: bool,
     manifest_digest: Option<String>,
-    timing: Option<u64>,
 }
 
 fn update_hash(hash: &mut blake3::Hasher, value: &[u8]) {
@@ -312,10 +368,7 @@ pub fn reset_quarantine(request: &Request) -> Result<(), Error> {
     if repo.to_str().is_none() || cwd.to_str().is_none() {
         return Err(Error::UnsupportedIdentityPath);
     }
-    let root = store::store_dir(&cwd, &git_dir);
-    let Some(store) = usable_store(&root, &repo, &git_dir) else {
-        return Ok(());
-    };
+    let store = Store::open(store::store_dir(&cwd, &git_dir));
     store.trace_transaction(|tx| tx.reset_quarantine(&command_key(&repo, &cwd, &request.argv)))?;
     Ok(())
 }
@@ -368,9 +421,6 @@ fn prepare_trace(
         let manifest_digest = before
             .as_ref()
             .and_then(|manifest| manifest_digest(&tx.secret, manifest));
-        // Timing is telemetry: an unreadable record means an unknown saving,
-        // never a failure of the run.
-        let timing = tx.timing(&id).ok().flatten();
         Ok(PreparedTrace {
             identity,
             id,
@@ -379,7 +429,6 @@ fn prepare_trace(
             would_skip,
             quarantined,
             manifest_digest,
-            timing,
         })
     })
 }
@@ -426,6 +475,72 @@ fn sample(rate: f64) -> bool {
 
 fn sample_from_u32(rate: f64, value: u32) -> bool {
     f64::from(value) / 4_294_967_296.0 < rate
+}
+
+#[cfg(test)]
+mod sampling_tests {
+    use super::sample_from_u32;
+    #[cfg(unix)]
+    #[test]
+    fn quarantine_between_prepare_and_hit_blocks_authorization() {
+        use super::{PreparedTrace, authorize_hit};
+        use crate::policy::{Identity, Manifest, ObservedPath, PathKind, observe};
+        use crate::store::Store;
+        let dir = tempfile::tempdir().unwrap();
+        let input = dir.path().join("input");
+        std::fs::write(&input, b"data").unwrap();
+        let manifest = Manifest::capture(&[ObservedPath {
+            path: input,
+            kind: PathKind::File,
+        }])
+        .unwrap();
+        let identity = Identity {
+            repository: "repo".into(),
+            cwd: "cwd".into(),
+            argv_digest: [1; 32],
+            environment_digest: [2; 32],
+            tracer_digest: [3; 32],
+            version: 2,
+        };
+        let first = observe(&identity, None, None, &manifest, true, true).unwrap();
+        let state = observe(
+            &identity,
+            Some(&first),
+            Some(&manifest),
+            &manifest,
+            true,
+            true,
+        )
+        .unwrap();
+        let id = "c".repeat(64);
+        let store = Store::open(dir.path().join("store"));
+        store
+            .trace_transaction(|tx| tx.set_state(&id, &state))
+            .unwrap();
+        let prepared = PreparedTrace {
+            identity,
+            id: id.clone(),
+            previous: Some(state),
+            before: Some(manifest),
+            would_skip: true,
+            quarantined: false,
+            manifest_digest: None,
+        };
+        assert!(authorize_hit(&store, &prepared));
+        let other = Store::open(dir.path().join("store"));
+        std::thread::spawn(move || other.trace_transaction(|tx| tx.quarantine(&id)).unwrap())
+            .join()
+            .unwrap();
+        assert!(!authorize_hit(&store, &prepared));
+    }
+
+    #[test]
+    fn deterministic_sampling_boundaries() {
+        assert!(!sample_from_u32(0.0, 0));
+        assert!(sample_from_u32(1.0, u32::MAX));
+        assert!(sample_from_u32(0.5, (1 << 31) - 1));
+        assert!(!sample_from_u32(0.5, 1 << 31));
+    }
 }
 
 /// Run under the explicit traced-reuse contract.
@@ -481,68 +596,52 @@ fn run_with_options_inner(
         None
     };
     if let Some(reason) = bypass {
-        let mut out = execute_only_counted(request, |counters| {
-            counters.bypassed = counters.bypassed.saturating_add(1);
-        })?;
+        let mut out = execute_only(request)?;
         out.reason = reason.into();
         if reason == "stdin-unsupported" {
             out.denial_reason = Some("stdin".into());
         }
         return Ok(out);
     }
-    let count_miss = |counters: &mut store::Counters| {
-        counters.misses = counters.misses.saturating_add(1);
-    };
-    let Ok((repo, git_dir)) = key::repository(&request.cwd) else {
-        let mut out = execute_only_counted(request, count_miss)?;
-        out.reason = "repository-unavailable".into();
-        out.denial_reason = Some("repository-unavailable".into());
-        return Ok(out);
-    };
-    let Ok(cwd) = std::fs::canonicalize(&request.cwd) else {
-        let mut out = execute_only_counted(request, count_miss)?;
-        out.reason = "cwd-unavailable".into();
-        out.denial_reason = Some("cwd-unavailable".into());
-        return Ok(out);
-    };
-    if repo.to_str().is_none() || cwd.to_str().is_none() {
-        let mut out = execute_only_counted(request, count_miss)?;
-        out.reason = "trace-unsupported-path".into();
-        out.denial_reason = Some("trace-unsupported-path".into());
-        return Ok(out);
-    }
-    // A store in the work tree turns the cache off. The refusal comes before
-    // the tracer: it holds whatever the tracer can observe, and the store is
-    // the reason, not the tracing.
-    let root = store::store_dir(&cwd, &git_dir);
-    let Some(store) = usable_store(&root, &repo, &git_dir) else {
-        let mut out = execute_only_counted(request, |_| {})?;
-        out.reason = "store-in-work-tree".into();
-        out.denial_reason = Some("store-in-work-tree".into());
-        fill_key(&mut out, request);
-        return Ok(out);
-    };
     let tracer_identity = match crate::trace::identity() {
         Ok(identity) => identity,
         Err(reason) => {
-            let mut out = execute_only_counted(request, count_miss)?;
+            let mut out = execute_only(request)?;
             out.reason = "trace-unavailable".into();
             out.denial_reason = Some(reason.code().into());
             fill_key(&mut out, request);
             return Ok(out);
         }
     };
+    let Ok((repo, git_dir)) = key::repository(&request.cwd) else {
+        let mut out = execute_only(request)?;
+        out.reason = "repository-unavailable".into();
+        out.denial_reason = Some("repository-unavailable".into());
+        return Ok(out);
+    };
+    let Ok(cwd) = std::fs::canonicalize(&request.cwd) else {
+        let mut out = execute_only(request)?;
+        out.reason = "cwd-unavailable".into();
+        out.denial_reason = Some("cwd-unavailable".into());
+        return Ok(out);
+    };
+    if repo.to_str().is_none() || cwd.to_str().is_none() {
+        let mut out = execute_only(request)?;
+        out.reason = "trace-unsupported-path".into();
+        out.denial_reason = Some("trace-unsupported-path".into());
+        return Ok(out);
+    }
     let Some((program, traced_argv)) = resolve_program(&request.argv, &cwd) else {
-        let mut out = execute_only_counted(request, count_miss)?;
+        let mut out = execute_only(request)?;
         out.reason = "program-unresolved".into();
         out.denial_reason = Some("program-unresolved".into());
         fill_key(&mut out, request);
         return Ok(out);
     };
-    let start = Instant::now();
+    let store = Store::open(store::store_dir(&cwd, &git_dir));
     let prepared = prepare_trace(&store, &repo, &cwd, &traced_argv, &tracer_identity);
     let Ok(prepared) = prepared else {
-        let mut out = execute_only_counted(request, count_miss)?;
+        let mut out = execute_only(request)?;
         out.reason = "trace-store-unavailable".into();
         return Ok(out);
     };
@@ -551,21 +650,6 @@ fn run_with_options_inner(
         && !sample(options.verify_rate)
         && authorize_hit(&store, &prepared);
     if may_hit {
-        let duration_ms = u64::try_from(start.elapsed().as_millis()).unwrap_or(u64::MAX);
-        let saved_ms = prepared
-            .timing
-            .map(|recorded| recorded.saturating_sub(duration_ms));
-        let _ = store.update_counters(|counters| {
-            counters.hits = counters.hits.saturating_add(1);
-            if let Some(saved) = saved_ms {
-                counters.measured_hits = Some(
-                    counters
-                        .measured_hits
-                        .map_or(0, |count| count.saturating_add(1)),
-                );
-                counters.saved_ms = counters.saved_ms.saturating_add(saved);
-            }
-        });
         return Ok(Outcome {
             decision: Decision::Cached,
             key: prepared.id,
@@ -573,8 +657,8 @@ fn run_with_options_inner(
             cwd: cwd.to_string_lossy().into_owned(),
             mode: "bytes".into(),
             exit_code: 0,
-            duration_ms,
-            saved_ms,
+            duration_ms: 0,
+            saved_ms: 0,
             stored: false,
             invalidated: 0,
             would_skip: true,
@@ -590,12 +674,11 @@ fn run_with_options_inner(
             manifest_digest: prepared.manifest_digest,
         });
     }
+    let start = Instant::now();
     let traced = crate::trace::run_resolved(&traced_argv, &cwd, &program);
     let status = traced.child_status.ok_or(Error::TraceStatusUnknown)?;
     let exit_code = exit_code_of(&status);
     let false_green = prepared.would_skip && exit_code != 0;
-    let duration_ms = u64::try_from(start.elapsed().as_millis()).unwrap_or(u64::MAX);
-    let mut quarantined_now = false;
     let mut reason = if prepared.quarantined {
         "quarantined"
     } else {
@@ -617,16 +700,7 @@ fn run_with_options_inner(
         crate::trace::TraceObservation::Complete(_) => None,
     };
     if false_green {
-        match store.trace_transaction(|tx| tx.quarantine(&prepared.id)) {
-            Ok(created) => quarantined_now = created,
-            Err(error) => {
-                let _ = store.update_counters(|counters| {
-                    counters.misses = counters.misses.saturating_add(1);
-                    counters.executions = counters.executions.saturating_add(1);
-                });
-                return Err(Error::Store(error));
-            }
-        }
+        store.trace_transaction(|tx| tx.quarantine(&prepared.id))?;
         reason = "false-green-quarantined";
     } else if !prepared.quarantined
         && exit_code == 0
@@ -669,16 +743,7 @@ fn run_with_options_inner(
                         {
                             return Ok(false);
                         }
-                        // A duration describes the state it was measured on: a
-                        // new state replaces it, an equivalent one keeps the
-                        // first record, so a verification never replaces the
-                        // duration of the learning run. Timing is telemetry;
-                        // losing it must not undo the pass.
-                        let unchanged = prepared.previous.as_ref() == Some(&state);
                         tx.set_state(&prepared.id, &state)?;
-                        if !unchanged || tx.timing(&prepared.id).ok().flatten().is_none() {
-                            let _ = tx.set_timing(&prepared.id, duration_ms);
-                        }
                         Ok(true)
                     })
                     .unwrap_or(false);
@@ -691,15 +756,6 @@ fn run_with_options_inner(
             }
         }
     }
-    // One update per run: the miss, the execution and, when it happened, the
-    // quarantine of the pass that failed its verification.
-    let _ = store.update_counters(|counters| {
-        counters.misses = counters.misses.saturating_add(1);
-        counters.executions = counters.executions.saturating_add(1);
-        if quarantined_now {
-            counters.invalidated = counters.invalidated.saturating_add(1);
-        }
-    });
     Ok(Outcome {
         decision: Decision::Executed,
         key: prepared.id,
@@ -707,10 +763,10 @@ fn run_with_options_inner(
         cwd: cwd.to_string_lossy().into_owned(),
         mode: "bytes".into(),
         exit_code,
-        duration_ms,
-        saved_ms: Some(0),
+        duration_ms: u64::try_from(start.elapsed().as_millis()).unwrap_or(u64::MAX),
+        saved_ms: 0,
         stored,
-        invalidated: usize::from(quarantined_now),
+        invalidated: 0,
         would_skip: prepared.would_skip,
         false_green,
         warnings: Vec::new(),
@@ -801,57 +857,9 @@ fn fill_key(out: &mut Outcome, request: &Request) {
     out.key = command_key(&repo, &cwd, &request.argv);
 }
 
-/// The store of a run, when the cache may use it.
-///
-/// A store in the work tree turns the cache off: the files of the store are
-/// not part of the key, so a tracked file that happens to live there would be
-/// left out of it too, and a change of it would not change the key. The
-/// default store lives in the git directory, which git never lists, so it is
-/// safe.
-///
-/// `None` means the cache is off. Kioku then creates nothing in that store,
-/// learns nothing there and reuses nothing from it. The store is not even
-/// read: reading it would create it in the work tree.
-fn usable_store(root: &Path, repo: &Path, git_dir: &Path) -> Option<Store> {
-    if key::store_inside_work_tree(root, repo, git_dir) {
-        return None;
-    }
-    Some(Store::open(root.to_path_buf()))
-}
-
-/// Adds to the counters of the store of `cwd`.
-///
-/// Counters are telemetry: every failure is ignored and never fails a command.
-fn record_counters(cwd: &Path, update: impl FnOnce(&mut store::Counters)) {
-    let Ok((repo, git_dir)) = key::repository(cwd) else {
-        return;
-    };
-    let root = store::store_dir(cwd, &git_dir);
-    let Some(store) = usable_store(&root, &repo, &git_dir) else {
-        return;
-    };
-    let _ = store.update_counters(update);
-}
-
 fn execute_only(request: &Request) -> Result<Outcome, Error> {
-    execute_only_counted(request, |_| {})
-}
-
-/// Executes `request` and records the execution, plus the `extra` counters of
-/// the caller, in a single store update.
-fn execute_only_counted(
-    request: &Request,
-    extra: impl FnOnce(&mut store::Counters),
-) -> Result<Outcome, Error> {
     let started = Instant::now();
     let status = execute(&request.argv, &request.cwd)?;
-    // Measured before the telemetry write: the reported duration is the cost of
-    // the child, not the cost of the counters update that follows it.
-    let duration_ms = u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX);
-    record_counters(&request.cwd, |counters| {
-        counters.executions = counters.executions.saturating_add(1);
-        extra(counters);
-    });
     Ok(Outcome {
         decision: Decision::Executed,
         key: String::new(),
@@ -859,8 +867,8 @@ fn execute_only_counted(
         cwd: request.cwd.to_string_lossy().into_owned(),
         mode: "bytes".to_string(),
         exit_code: exit_code_of(&status),
-        duration_ms,
-        saved_ms: Some(0),
+        duration_ms: u64::try_from(started.elapsed().as_millis()).unwrap_or(u64::MAX),
+        saved_ms: 0,
         stored: false,
         invalidated: 0,
         would_skip: false,
@@ -896,6 +904,9 @@ pub fn explain(request: &Request) -> Result<Explanation, Error> {
 #[cfg(unix)]
 fn ast_snapshot(request: &Request) -> Option<(String, String)> {
     use std::os::unix::ffi::OsStringExt;
+    if !request.inputs.is_empty() {
+        return None;
+    }
     let (repo, git_dir) = key::repository(&request.cwd).ok()?;
     let output = Command::new("git")
         .current_dir(&repo)
@@ -919,7 +930,7 @@ fn ast_snapshot(request: &Request) -> Option<(String, String)> {
     files.sort_unstable();
     files.dedup();
     let store_path = store::store_dir(&request.cwd, &git_dir);
-    if key::store_inside_work_tree(&store_path, &repo, &git_dir) {
+    if store_path.starts_with(&repo) && !store_path.starts_with(&git_dir) {
         return None;
     }
     let store = Store::open(store_path);
@@ -1005,6 +1016,8 @@ pub fn explain_with_options(
         changed_dependencies: None,
         environment_changed: None,
         tracer_changed: None,
+        closest: None,
+        diff: None,
         denial_reason: None,
         dependencies: 0,
         traced: false,
@@ -1012,6 +1025,7 @@ pub fn explain_with_options(
     let (repo, git_dir) = key::repository(&request.cwd)?;
     config::mode(&repo, &request.argv)?;
     explanation.key = command_key(&repo, &request.cwd, &request.argv);
+    let store = Store::open(store::store_dir(&request.cwd, &git_dir));
     if let Some(snapshot) = ast_snapshot(request) {
         explanation.ast_would_skip = ast_diagnostic(request, &snapshot, false);
     }
@@ -1027,14 +1041,6 @@ pub fn explain_with_options(
         explanation.reason = "stdin-unsupported".into();
         return Ok(explanation);
     }
-    // A store in the work tree turns the cache off, so no trace can be
-    // reused. The explanation says so, as the run does.
-    let root = store::store_dir(&request.cwd, &git_dir);
-    let Some(store) = usable_store(&root, &repo, &git_dir) else {
-        explanation.reason = "store-in-work-tree".into();
-        explanation.denial_reason = Some("store-in-work-tree".into());
-        return Ok(explanation);
-    };
     let tracer = match crate::trace::identity() {
         Ok(tracer) => tracer,
         Err(reason) => {
@@ -1117,11 +1123,8 @@ pub fn explain_with_options(
 /// # Errors
 /// Returns an error if the repository or private journal cannot be accessed.
 pub fn log_verification(request: &Request, outcome: &Outcome) -> Result<(), Error> {
-    let (repo_root, git_dir) = key::repository(&request.cwd)?;
-    let root = store::store_dir(&request.cwd, &git_dir);
-    let Some(store) = usable_store(&root, &repo_root, &git_dir) else {
-        return Ok(());
-    };
+    let (_, git_dir) = key::repository(&request.cwd)?;
+    let store = Store::open(store::store_dir(&request.cwd, &git_dir));
     store.trace_transaction(|tx| {
         tx.log_verification(
             outcome.would_skip,
@@ -1138,34 +1141,10 @@ pub fn log_verification(request: &Request, outcome: &Outcome) -> Result<(), Erro
 ///
 /// Returns an error when the repository or the store cannot be read.
 pub fn status(cwd: &Path) -> Result<Status, Error> {
-    let (repo_root, git_dir) = key::repository(cwd)?;
-    let root = store::store_dir(cwd, &git_dir);
-    // A store in the work tree is off. The status says so and reads nothing:
-    // the store is not opened, because opening it would create it.
-    let Some(store) = usable_store(&root, &repo_root, &git_dir) else {
-        return Ok(Status {
-            store_root: root,
-            entries: 0,
-            invalid: 0,
-            bytes: 0,
-            counters: Counters::default(),
-            cached_ms: 0,
-            trace_states: 0,
-            quarantines: 0,
-            denial_reason: Some("store-in-work-tree".into()),
-        });
-    };
+    let (_repo_root, git_dir) = key::repository(cwd)?;
+    let store = Store::open(store::store_dir(cwd, &git_dir));
     let list = store.list_entries()?;
-    let mut counters = store.read_counters()?;
-    // A measured count above the hit count cannot be true. The document does
-    // not say how many hits were measured, so the measurement is unknown:
-    // kioku does not invent a smaller number.
-    if counters
-        .measured_hits
-        .is_some_and(|measured| measured > counters.hits)
-    {
-        counters.measured_hits = None;
-    }
+    let counters = store.read_counters()?;
     let cached_ms = list.entries.iter().fold(0_u64, |total, entry| {
         total.saturating_add(entry.duration_ms)
     });
@@ -1183,7 +1162,6 @@ pub fn status(cwd: &Path) -> Result<Status, Error> {
         bytes: list.bytes,
         counters,
         cached_ms,
-        denial_reason: None,
     })
 }
 
@@ -1193,22 +1171,13 @@ pub fn status(cwd: &Path) -> Result<Status, Error> {
 ///
 /// Returns an error when the repository or the store cannot be read.
 pub fn clean(cwd: &Path, older_than: Option<std::time::Duration>) -> Result<OutcomeClean, Error> {
-    let (repo_root, git_dir) = key::repository(cwd)?;
-    let root = store::store_dir(cwd, &git_dir);
-    // A store in the work tree is off. Nothing is removed there, and the
-    // store is not opened: opening it would create it.
-    let Some(store) = usable_store(&root, &repo_root, &git_dir) else {
-        return Ok(OutcomeClean {
-            denial_reason: Some("store-in-work-tree".into()),
-            ..OutcomeClean::default()
-        });
-    };
+    let (_repo_root, git_dir) = key::repository(cwd)?;
+    let store = Store::open(store::store_dir(cwd, &git_dir));
     let report = store.clean(older_than)?;
     Ok(OutcomeClean {
         removed: report.removed,
         kept: report.kept,
         bytes_freed: report.bytes_freed,
-        denial_reason: None,
     })
 }
 
@@ -1248,165 +1217,47 @@ pub fn exit_code_of(status: &ExitStatus) -> i32 {
 }
 
 #[cfg(test)]
-mod sampling_tests {
-    use super::sample_from_u32;
-    #[cfg(unix)]
-    #[test]
-    fn quarantine_between_prepare_and_hit_blocks_authorization() {
-        use super::{PreparedTrace, authorize_hit};
-        use crate::policy::{Identity, Manifest, ObservedPath, PathKind, observe};
-        use crate::store::Store;
-        let dir = tempfile::tempdir().unwrap();
-        let input = dir.path().join("input");
-        std::fs::write(&input, b"data").unwrap();
-        let manifest = Manifest::capture(&[ObservedPath {
-            path: input,
-            kind: PathKind::File,
-        }])
-        .unwrap();
-        let identity = Identity {
-            repository: "repo".into(),
-            cwd: "cwd".into(),
-            argv_digest: [1; 32],
-            environment_digest: [2; 32],
-            tracer_digest: [3; 32],
-            version: 2,
-        };
-        let first = observe(&identity, None, None, &manifest, true, true).unwrap();
-        let state = observe(
-            &identity,
-            Some(&first),
-            Some(&manifest),
-            &manifest,
-            true,
-            true,
-        )
-        .unwrap();
-        let id = "c".repeat(64);
-        let store = Store::open(dir.path().join("store"));
-        store
-            .trace_transaction(|tx| tx.set_state(&id, &state))
-            .unwrap();
-        let prepared = PreparedTrace {
-            identity,
-            id: id.clone(),
-            previous: Some(state),
-            before: Some(manifest),
-            would_skip: true,
-            quarantined: false,
-            manifest_digest: None,
-            timing: None,
-        };
-        assert!(authorize_hit(&store, &prepared));
-        let other = Store::open(dir.path().join("store"));
-        std::thread::spawn(move || other.trace_transaction(|tx| tx.quarantine(&id)).unwrap())
-            .join()
-            .unwrap();
-        assert!(!authorize_hit(&store, &prepared));
-    }
+mod tests {
+    use super::{Changed, Diff, Modified};
 
-    #[cfg(unix)]
-    #[test]
-    fn changed_dependency_after_prepare_blocks_authorization() {
-        use super::{PreparedTrace, authorize_hit};
-        use crate::policy::{Identity, Manifest, ObservedPath, PathKind, observe};
-        use crate::store::Store;
-        let dir = tempfile::tempdir().unwrap();
-        let input = dir.path().join("input");
-        std::fs::write(&input, b"data").unwrap();
-        let manifest = Manifest::capture(&[ObservedPath {
-            path: input.clone(),
-            kind: PathKind::File,
-        }])
-        .unwrap();
-        let identity = Identity {
-            repository: "repo".into(),
-            cwd: "cwd".into(),
-            argv_digest: [1; 32],
-            environment_digest: [2; 32],
-            tracer_digest: [3; 32],
-            version: 2,
-        };
-        let first = observe(&identity, None, None, &manifest, true, true).unwrap();
-        let state = observe(
-            &identity,
-            Some(&first),
-            Some(&manifest),
-            &manifest,
-            true,
-            true,
-        )
-        .unwrap();
-        let id = "e".repeat(64);
-        let store = Store::open(dir.path().join("store"));
-        store
-            .trace_transaction(|tx| tx.set_state(&id, &state))
-            .unwrap();
-        let prepared = PreparedTrace {
-            identity,
-            id,
-            previous: Some(state),
-            before: Some(manifest),
-            would_skip: true,
-            quarantined: false,
-            manifest_digest: None,
-            timing: None,
-        };
-        assert!(authorize_hit(&store, &prepared));
-        // The recorded dependency changed after the trace was prepared. The
-        // observation no longer supports the reuse, so the hit is refused.
-        std::fs::write(&input, b"changed").unwrap();
-        assert!(!authorize_hit(&store, &prepared));
-    }
-
-    #[cfg(unix)]
-    #[test]
-    fn ineligible_state_never_authorizes_a_hit() {
-        use super::{PreparedTrace, authorize_hit};
-        use crate::policy::{Identity, Manifest, ObservedPath, PathKind, observe};
-        use crate::store::Store;
-        let dir = tempfile::tempdir().unwrap();
-        let input = dir.path().join("input");
-        std::fs::write(&input, b"data").unwrap();
-        let manifest = Manifest::capture(&[ObservedPath {
-            path: input.clone(),
-            kind: PathKind::File,
-        }])
-        .unwrap();
-        let identity = Identity {
-            repository: "repo".into(),
-            cwd: "cwd".into(),
-            argv_digest: [1; 32],
-            environment_digest: [2; 32],
-            tracer_digest: [3; 32],
-            version: 2,
-        };
-        // A state learned without a stable observation is not eligible for
-        // reuse: the policy refuses it and the hit must be refused too.
-        let ineligible = observe(&identity, None, None, &manifest, true, true).unwrap();
-        let id = "f".repeat(64);
-        let store = Store::open(dir.path().join("store"));
-        store
-            .trace_transaction(|tx| tx.set_state(&id, &ineligible))
-            .unwrap();
-        let prepared = PreparedTrace {
-            identity,
-            id,
-            previous: Some(ineligible),
-            before: Some(manifest),
-            would_skip: false,
-            quarantined: false,
-            manifest_digest: None,
-            timing: None,
-        };
-        assert!(!authorize_hit(&store, &prepared));
+    /// A difference that touches every kind of change.
+    fn difference() -> Diff {
+        Diff {
+            added: vec!["added".to_string()],
+            removed: vec!["removed".to_string()],
+            modified: vec![Modified {
+                path: "modified".to_string(),
+                old_digest: "before".to_string(),
+                new_digest: "after".to_string(),
+                old_mode: 0o644,
+                new_mode: 0o755,
+            }],
+            env: vec![Changed {
+                name: "ENV".to_string(),
+                old: None,
+                new: Some("value".to_string()),
+            }],
+            lockfiles: vec![Changed {
+                name: "Cargo.lock".to_string(),
+                old: None,
+                new: None,
+            }],
+            tools: vec![Changed {
+                name: "cargo".to_string(),
+                old: None,
+                new: None,
+            }],
+        }
     }
 
     #[test]
-    fn deterministic_sampling_boundaries() {
-        assert!(!sample_from_u32(0.0, 0));
-        assert!(sample_from_u32(1.0, u32::MAX));
-        assert!(sample_from_u32(0.5, (1 << 31) - 1));
-        assert!(!sample_from_u32(0.5, 1 << 31));
+    fn the_length_of_a_difference_counts_every_change() {
+        assert_eq!(difference().len(), 6);
+    }
+
+    #[test]
+    fn a_difference_without_any_change_is_empty() {
+        assert!(Diff::default().is_empty());
+        assert!(!difference().is_empty());
     }
 }

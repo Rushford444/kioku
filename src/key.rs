@@ -37,6 +37,10 @@ pub const DEFAULT_ENV_VARS: &[&str] = &["PATH", "NODE_ENV", "RUSTFLAGS", "CI"];
 /// Prefix of the environment variables captured for every command.
 pub const CARGO_ENV_PREFIX: &str = "CARGO_";
 
+/// Prefix of a [`Snapshot::env`] entry that replaces a captured value by its
+/// digest. The value itself is kept out of the snapshot: it only enters the key.
+pub const ENV_VALUE_DIGEST_PREFIX: &str = "blake3:";
+
 /// Environment variable holding the cache directory. The cache directory is
 /// left out of the captured files, so that the cache cannot change the key it
 /// is stored under.
@@ -101,8 +105,18 @@ pub struct Snapshot {
     pub cwd: String,
     /// Fingerprint mode.
     pub mode: Mode,
-    /// Captured environment variables. A variable that is not set is `None`,
-    /// which is not the same as a variable set to an empty value.
+    /// Captured environment variables, **without their values**.
+    ///
+    /// A variable that is not set is `None`, which is not the same as a
+    /// variable set to an empty value (`Some("")`). A variable set to a
+    /// non-empty value is recorded as [`ENV_VALUE_DIGEST_PREFIX`] followed by
+    /// the BLAKE3 digest of that value, so a change of the value remains
+    /// visible while the value itself stays out of the serialized snapshot.
+    /// The value only takes part verbatim in [`Snapshot::key`].
+    ///
+    /// The digest is unkeyed: it hides a high-entropy secret from a casual
+    /// reader but not from an offline guess of a low-entropy value. The key
+    /// remains the only integrity reference.
     pub env: BTreeMap<String, Option<String>>,
     /// Lockfiles of the repository, with the digest of their content.
     pub lockfiles: BTreeMap<String, String>,
@@ -145,14 +159,15 @@ impl Snapshot {
         let listing = list_files(&root)?;
         let (lockfiles, lockfile_meta) = capture_lockfiles(&root, &listing)?;
         let (inputs, input_meta) = capture_inputs(&root, &listing, &matcher, options.mode)?;
-        let env = capture_env(options)?;
+        let captured_env = capture_env(options)?;
+        let env = redact_env(&captured_env);
         let detected = tools::detect(&options.cwd, &lockfiles)?;
         let mut versions: BTreeMap<String, String> = detected
             .iter()
             .map(|tool| (tool.name.clone(), tool.version.clone()))
             .collect();
         versions.insert("command-executable".to_string(), command_identity(options)?);
-        let key = compute_key(options, &cwd, &env, &lockfiles, &versions, &inputs)?;
+        let key = compute_key(options, &cwd, &captured_env, &lockfiles, &versions, &inputs)?;
         let mut guard_files = input_meta;
         guard_files.extend(lockfile_meta);
         let guard = compute_guard(&guard_files, &detected);
@@ -192,8 +207,11 @@ pub fn repository(cwd: &Path) -> Result<(PathBuf, PathBuf), Error> {
         Err(error) => return Err(error),
     };
     let git_dir = git_output(cwd, &["rev-parse", "--absolute-git-dir"])?;
-    let root = PathBuf::from(String::from_utf8_lossy(&root).trim().to_string());
-    let git_dir = PathBuf::from(String::from_utf8_lossy(&git_dir).trim().to_string());
+    // Remove only Git's record terminator, not whitespace belonging to the path.
+    let root = root.strip_suffix(b"\n").unwrap_or(&root);
+    let git_dir = git_dir.strip_suffix(b"\n").unwrap_or(&git_dir);
+    let root = PathBuf::from(String::from_utf8_lossy(root).into_owned());
+    let git_dir = PathBuf::from(String::from_utf8_lossy(git_dir).into_owned());
     if !root.is_absolute() {
         return Err(Error::NotARepository {
             path: cwd.to_path_buf(),
@@ -207,11 +225,9 @@ pub fn repository(cwd: &Path) -> Result<(PathBuf, PathBuf), Error> {
 /// The store of a run may not live in the work tree: the key leaves out the
 /// files of the store, and a tracked file that happens to be there would be
 /// left out of the key too, so a change of it would not change the key and a
-/// success could be served for a failure. The cache is off in that case: no
-/// trace is learned, no trace is reused, and the store is not created. The
-/// default store lives in the git directory, which git never lists, so it is
-/// safe.
-pub(crate) fn store_inside_work_tree(store: &Path, root: &Path, git_dir: &Path) -> bool {
+/// success could be served for a failure. The default store lives in the git
+/// directory, which git never lists, so it is safe.
+fn store_inside_work_tree(store: &Path, root: &Path, git_dir: &Path) -> bool {
     store.starts_with(root) && !store.starts_with(git_dir)
 }
 
@@ -733,6 +749,26 @@ fn capture_env(options: &CaptureOptions) -> Result<BTreeMap<String, Option<Strin
         env.insert(name, value);
     }
     Ok(env)
+}
+
+/// Replaces every captured value by its tagged digest, keeping the names and
+/// the set/empty/absent distinction of a snapshot.
+fn redact_env(env: &BTreeMap<String, Option<String>>) -> BTreeMap<String, Option<String>> {
+    env.iter()
+        .map(|(name, value)| {
+            let value = value.as_ref().map(|value| {
+                if value.is_empty() {
+                    String::new()
+                } else {
+                    let mut hasher = Hasher::new();
+                    hasher.update(b"kioku/v1/environment-value\0");
+                    hasher.update(value.as_bytes());
+                    format!("{ENV_VALUE_DIGEST_PREFIX}{}", hasher.finalize().to_hex())
+                }
+            });
+            (name.clone(), value)
+        })
+        .collect()
 }
 
 /// Byte code of the fingerprint mode, part of the key material.

@@ -1,8 +1,11 @@
-//! Real CLI tests for the execute-only policy; trace eligibility is tested separately.
+//! Real CLI tests for v0.2 execute-only policy; trace eligibility is tested separately.
 #![cfg(unix)]
 
 #[cfg(all(target_os = "linux", target_arch = "aarch64"))]
 mod support;
+
+#[path = "support/coverage.rs"]
+mod coverage;
 
 use std::process::{Command, Output, Stdio};
 use tempfile::TempDir;
@@ -10,6 +13,7 @@ use tempfile::TempDir;
 fn invoke(repo: &TempDir, args: &[&str]) -> Output {
     Command::new(env!("CARGO_BIN_EXE_kioku"))
         .env_clear()
+        .envs(coverage::profile_env())
         .env("PATH", "/usr/bin:/bin")
         .env("HOME", repo.path())
         .env("LANG", "C.UTF-8")
@@ -187,6 +191,9 @@ mod traced_readers {
             .env("KIOKU_SENTINEL_SECRET", "sk-test-SENTINEL")
             .env("KIOKU_STRACE", tracer_path())
             .stdin(Stdio::null());
+        if program == Path::new(env!("CARGO_BIN_EXE_kioku")) {
+            command.envs(crate::coverage::profile_env());
+        }
         command
     }
 
@@ -544,7 +551,7 @@ mod traced_readers {
                 if env_changed.get() { "after" } else { "before" },
             );
             cmd.current_dir(&repo)
-                .args(["run", "--json", "--trust-trace"]);
+                .args(["run", "--json", "--trust-trace", "--strict-env"]);
             if kind == "source" {
                 cmd.args(["--mode", "ast"]);
             }
@@ -715,7 +722,7 @@ mod traced_readers {
         let invoke = || {
             let mut cli = command(Path::new(env!("CARGO_BIN_EXE_kioku")), outer.path());
             cli.current_dir(&repo)
-                .args(["run", "--json", "--trust-trace", "--"]);
+                .args(["run", "--json", "--trust-trace", "--strict-env", "--"]);
             args(&mut cli);
             cli.output().unwrap()
         };
@@ -833,7 +840,7 @@ mod traced_readers {
         let mutable_file = repo.join("mutable-input");
         fs::write(&mutable_file, b"fixture").unwrap();
         cmd.current_dir(&repo)
-            .args(["run", "--json", "--trust-trace", "--"])
+            .args(["run", "--json", "--trust-trace", "--strict-env", "--"])
             .arg(binary)
             .arg(operation)
             .arg(&mutable_file);
@@ -912,7 +919,14 @@ mod traced_readers {
         for _ in 0..3 {
             let output = command(Path::new(env!("CARGO_BIN_EXE_kioku")), outer.path())
                 .current_dir(&repo)
-                .args(["run", "--json", "--trust-trace", "--require-output", "--"])
+                .args([
+                    "run",
+                    "--json",
+                    "--trust-trace",
+                    "--strict-env",
+                    "--require-output",
+                    "--",
+                ])
                 .arg(&binary)
                 .arg("none")
                 .output()
@@ -957,13 +971,14 @@ mod traced_readers {
         let input = repo.join("inherited");
         fs::write(&input, b"fixture").unwrap();
         let out = command(&support::executable("sh"), outer.path())
+            .envs(crate::coverage::profile_env())
             .current_dir(&repo)
             .arg("-c")
             .arg("exec 3<\"$1\"; shift; exec \"$@\"")
             .arg("zoo")
             .arg(&input)
             .arg(env!("CARGO_BIN_EXE_kioku"))
-            .args(["run", "--json", "--trust-trace", "--"])
+            .args(["run", "--json", "--trust-trace", "--strict-env", "--"])
             .arg(&binary)
             .arg("fd")
             .output()
@@ -1030,7 +1045,7 @@ mod traced_readers {
         for _ in 0..3 {
             let out = command(Path::new(env!("CARGO_BIN_EXE_kioku")), outer.path())
                 .current_dir(&repo)
-                .args(["run", "--json", "--trust-trace", "--"])
+                .args(["run", "--json", "--trust-trace", "--strict-env", "--"])
                 .arg(&binary)
                 .arg(&link)
                 .output()
@@ -1097,7 +1112,7 @@ mod traced_readers {
             let invoke = || {
                 command(Path::new(env!("CARGO_BIN_EXE_kioku")), outer.path())
                     .current_dir(&repo)
-                    .args(["run", "--json", "--trust-trace", "--"])
+                    .args(["run", "--json", "--trust-trace", "--strict-env", "--"])
                     .arg(&binary)
                     .arg(&input)
                     .output()
@@ -1195,7 +1210,7 @@ mod traced_readers {
         let invoke = || {
             command(Path::new(env!("CARGO_BIN_EXE_kioku")), outer.path())
                 .current_dir(&repo)
-                .args(["run", "--json", "--trust-trace", "--"])
+                .args(["run", "--json", "--trust-trace", "--strict-env", "--"])
                 .arg(&binary)
                 .arg(&link)
                 .output()

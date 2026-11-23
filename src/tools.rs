@@ -172,7 +172,7 @@ fn selected_identity(cwd: &Path, name: &str, path: &Path) -> Option<(PathBuf, Op
     if resolved.file_name().and_then(OsStr::to_str) != Some(RUSTUP) {
         return None;
     }
-    let output = Command::new(RUSTUP)
+    let output = Command::new(resolved)
         .arg("which")
         .arg(name)
         .current_dir(cwd)
