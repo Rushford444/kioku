@@ -154,9 +154,13 @@ fn fixture(root: &Path, count: usize, observed_tasks: usize) -> (ServiceBootstra
             record.state = RunState::Running;
             let directory = state.join("results").join(run_id.as_str());
             private_dir(&directory);
-            for sequence in 0..observed_tasks {
+            for (sequence, task) in request
+                .requested_task_ids
+                .iter()
+                .enumerate()
+                .take(observed_tasks)
+            {
                 use sha2::Digest as _;
-                let task = &request.requested_task_ids[sequence];
                 let digest =
                     Digest::new(&format!("sha256:{:x}", sha2::Sha256::digest(b""))).unwrap();
                 for channel in ["stdout", "stderr"] {

@@ -38,6 +38,9 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: echo "RUSTFLAGS=--remap-path-prefix=$HOME=/build --remap-path-prefix=$GITHUB_WORKSPACE=/src" >> "$GITHUB_ENV"
+      - name: Fetch locked dependencies (package.sh builds offline)
+        shell: bash
+        run: cargo fetch --locked
       - name: Build and verify archive
         shell: bash
         run: scripts/package.sh dist "${{ matrix.target }}"
